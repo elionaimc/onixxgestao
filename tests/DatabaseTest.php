@@ -2,7 +2,7 @@
 use EMC\Helpers\Database as Database;
 use PHPUnit_Framework_TestCase as PHPUnit;
 
-require_once '../src/Helpers/Database.php';
+require_once '../src/EMC/Helpers/Database.php';
 
 class DatabaseTest extends PHPUnit {
   public function testIfMySQLDatabaseWorks()
