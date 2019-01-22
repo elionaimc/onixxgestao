@@ -1,0 +1,35 @@
+{
+  "name": "onixxgestao",
+  "version": "1.0.0",
+  "description": "Interface web do aplicativo de gestão de gastos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elionaimc/onixxgestao.git"
+  },
+  "keywords": [
+    "Gestão",
+    "Finanças",
+    "PWA",
+    "Prefeitura"
+  ],
+  "author": "Elionai Moura Cordeiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elionaimc/onixxgestao/issues"
+  },
+  "homepage": "https://github.com/elionaimc/onixxgestao#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.1-alpha.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.4.0",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0"
+  }
+}
