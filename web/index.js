@@ -1,20 +1,21 @@
-'use strict'
 /*
 * @author Elionai Moura Cordeiro
 * @version 1.0.0
 * @description Setup everything for the app
 */
+
+//Dependencies
 const express      = require('express');
 const logger       = require('morgan');
 const bodyParser   = require('body-parser');
-const passport      = require('passport');
-const pe            = require('parse-error');
-const cors          = require('cors');
+const passport     = require('passport');
+const pe           = require('parse-error');
+const cors         = require('cors');
 
-const v1    = require('./routes/v1');
-const app   = express();
-
-const CONFIG = require('./config/config');
+//Definitions for routing and connection
+const v1           = require('./routes/v1');
+const app          = express();
+const CONFIG       = require('./config/config');
 
 //Initializing enviroment
 app.use(logger('dev'));
@@ -73,13 +74,7 @@ process.on('unhandledRejection', error => {
     console.error('Uncaught Error', pe(error));
 });
 
-
-
-
-
-
-
-app.listen(port, () => {
+app.listen(1982, () => {
   //Samantha tells that the system is up and running
-  console.log('_FNORD » The past is just a story we tell ourselves on port ' + port + '.');
+  console.log('_FNORD » The past is just a story we tell ourselves on port ' + 1982 + '.');
 });
