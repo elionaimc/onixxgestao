@@ -4,26 +4,26 @@
 * @description Setup everything for the app
 */
 
-const Company 			    = require('./../models').Company;
+const Company 			    = require('./../models').Expense;
 const { to, ReE, ReS } = require('../services/util.service');
 
-let company = async function (req, res, next) {
-    let company_id, err, company;
-    company_id = req.params.company_id;
+let expense = async function (req, res, next) {
+    let expense_id, err, expense;
+    expense_id = req.params.expense_id;
 
-    [err, company] = await to(Company.findOne({where:{id:company_id}}));
-    if(err) return ReE(res, "err finding company");
+    [err, expense] = await to(Expense.findOne({where:{id:expense_id}}));
+    if(err) return ReE(res, "err finding expense");
 
-    if(!company) return ReE(res, "Company not found with id: "+company_id);
+    if(!expense) return ReE(res, "expense not found with id: "+expense_id);
     let user, users_array, users;
     user = req.user;
-    [err, users] = await to(company.getUsers());
+    [err, users] = await to(expense.getUsers());
 
     users_array = users.map(obj=>String(obj.user));
 
     if(!users_array.includes(String(user._id))) return ReE(res, "User does not have permission to read app with id: "+app_id);
 
-    req.company = company;
+    req.expense = expense;
     next();
 }
-module.exports.company = company;
+module.exports.expense = expense;

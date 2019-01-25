@@ -28,14 +28,14 @@ app.use(passport.initialize());
 //Connect to database and load models
 const models = require("./models");
 models.sequelize.authenticate().then(() => {
-    console.log('Connected to SQL database:', CONFIG.db_name);
+    console.log("_FNORD » Onixx App is connected to database: ", CONFIG.db_name);
 })
 .catch(err => {
-    console.error('Unable to connect to SQL database:',CONFIG.db_name);
+  //HAL explains error on database connection
+  console.error("_FNORD » I´m sorry Dave. I´m afraid I can´t connect to database: ",CONFIG.db_name);
 });
 if(CONFIG.app==='dev'){
     models.sequelize.sync();
-    // models.sequelize.sync({ force: true });
 }
 
 //CORS
@@ -46,7 +46,7 @@ app.use('/v1', v1);
 
 app.use('/', function(req, res, next){
    res.statusCode = 200;//send the appropriate status code
-   res.json({status:"success", message: "_FNORD » Onixx Gestor is up and running!", data:{}})
+   res.json({status:"success", message: "_FNORD » Onixx Gestor is up and running!  <index will appears here>", data:{file:"index.html", status:"not configured"}})
 });
 
 // catch 404 and forward to error handler
