@@ -1,2 +1,4 @@
-web/node_modules/*
-web/.env
+**/node_modules
+.env
+.DS_Store
+.idea
