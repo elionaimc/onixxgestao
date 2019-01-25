@@ -18,10 +18,9 @@ const path              = require('path');
 
 require('./../middleware/passport')(passport)
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.json({status:"success", message:"Parcel Pending API", data:{"version_number":"v1.0.0"}})
-});
-
+router.get('/', (req, res, next) => res.json(
+  { message: '_FNORD » OnixxApp is up and running!' }
+));
 
 router.post(    '/users',           UserController.create);                                                    // C
 router.get(     '/users',           passport.authenticate('jwt', {session:false}), UserController.get);        // R
@@ -40,6 +39,13 @@ router.get('/dash', passport.authenticate('jwt', {session:false}),HomeController
 
 
 //********* API DOCUMENTATION **********
-router.use('/docs/api.json',            express.static(path.join(__dirname, '/../public/v1/documentation/api.json')));
-router.use('/docs',                     express.static(path.join(__dirname, '/../public/v1/documentation/dist')));
+router.use('/docs/api.json', express.static(path.join(__dirname, '/../public/v1/documentation/api.json')));
+router.use('/docs', express.static(path.join(__dirname, '/../public/v1/documentation/dist')));
+
+// Any other GET request will fall here
+router.get('*', function (req, res, next) {
+  res.status(404);
+  res.json({message: "_FNORD » It is a ∑ꞦꞦꝊꝶ <404> message::" })
+});
+
 module.exports = router;

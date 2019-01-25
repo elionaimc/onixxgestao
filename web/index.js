@@ -44,9 +44,9 @@ app.use(cors());
 //Routes and errors handling
 app.use('/v1', v1);
 
-app.use('/', function(req, res){
+app.use('/', function(req, res, next){
    res.statusCode = 200;//send the appropriate status code
-   res.json({status:"success", message:"Parcel Pending API", data:{}})
+   res.json({status:"success", message: "_FNORD » OnixxApp is up and running!", data:{}})
 });
 
 // catch 404 and forward to error handler
