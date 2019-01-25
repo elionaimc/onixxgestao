@@ -74,7 +74,7 @@ process.on('unhandledRejection', error => {
     console.error('Uncaught Error', pe(error));
 });
 
-app.listen(1982, () => {
+app.listen(CONFIG.port, () => {
   //Samantha tells that the system is up and running
-  console.log('_FNORD » The past is just a story we tell ourselves on port ' + 1982 + '.');
+  console.log('_FNORD » The past is just a story we tell ourselves on port ' + CONFIG.port + '.');
 });
