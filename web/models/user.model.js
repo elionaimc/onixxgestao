@@ -5,19 +5,19 @@
 */
 
 //Dependencies
-const bcrypt 			= require('bcrypt');
-const bcrypt_p 			= require('bcrypt-promise');
-const jwt           	= require('jsonwebtoken');
-const {TE, to}          = require('../services/util.service');
-const CONFIG            = require('../config/config');
+const bcrypt = require('bcrypt');
+const bcrypt_p = require('bcrypt-promise');
+const jwt = require('jsonwebtoken');
+const {TE, to} = require('../services/util.service');
+const CONFIG = require('../config/config');
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        first     : DataTypes.STRING,
-        last      : DataTypes.STRING,
-        email     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Phone number invalid."} }},
-        phone     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
-        password  : DataTypes.STRING,
+        first : DataTypes.STRING,
+        last : DataTypes.STRING,
+        email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
+        phone : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Telefone muito curto."}, isNumeric: { msg: "não é um número de telefone válido."} }},
+        password : DataTypes.STRING,
     });
 
     Model.associate = function(models){
@@ -40,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
 
     Model.prototype.comparePassword = async function (pw) {
         let err, pass
-        if(!this.password) TE('password not set');
+        if(!this.password) TE('senha não definida');
 
         [err, pass] = await to(bcrypt_p.compare(pw, this.password));
         if(err) TE(err);
 
-        if(!pass) TE('invalid password');
+        if(!pass) TE('senha inválida');
 
         return this;
     }

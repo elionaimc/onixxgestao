@@ -8,7 +8,9 @@ const { User } 	    = require('../models');
 const validator     = require('validator');
 const { to, TE }    = require('../services/util.service');
 
-const getUniqueKeyFromBody = function(body){// this is so they can send in 3 options unique_key, email, or phone and it will work
+// This is so they can send in 3 options unique_key, email, or phone and it will work
+// We SHOULD CHANGE to work only with username and password
+const getUniqueKeyFromBody = function(body){
     let unique_key = body.unique_key;
     if(typeof unique_key==='undefined'){
         if(typeof body.email != 'undefined'){
@@ -31,14 +33,14 @@ const createUser = async (userInfo) => {
     auth_info.status='create';
 
     unique_key = getUniqueKeyFromBody(userInfo);
-    if(!unique_key) TE('An email or phone number was not entered.');
+    if(!unique_key) TE('Informe um número de telefone ou e-mail.');
 
     if(validator.isEmail(unique_key)){
         auth_info.method = 'email';
         userInfo.email = unique_key;
 
         [err, user] = await to(User.create(userInfo));
-        if(err) TE('user already exists with that email');
+        if(err) TE('Já existe um usuário cadastrado com este e-mail');
 
         return user;
 
@@ -47,11 +49,11 @@ const createUser = async (userInfo) => {
         userInfo.phone = unique_key;
 
         [err, user] = await to(User.create(userInfo));
-        if(err) TE('user already exists with that phone number');
+        if(err) TE('Já existe um usuário cadastrado com este telefone');
 
         return user;
     }else{
-        TE('A valid email or phone number was not entered.');
+        TE('Informe um numero de telefone ou um e-mail válido.');
     }
 }
 module.exports.createUser = createUser;
@@ -62,10 +64,10 @@ const authUser = async function(userInfo){//returns token
     auth_info.status = 'login';
     unique_key = getUniqueKeyFromBody(userInfo);
 
-    if(!unique_key) TE('Please enter an email or phone number to login');
+    if(!unique_key) TE('Informe um e-mail ou telefone válido para fazer login');
 
 
-    if(!userInfo.password) TE('Please enter a password to login');
+    if(!userInfo.password) TE('Informe uma senha para login');
 
     let user;
     if(validator.isEmail(unique_key)){
@@ -81,13 +83,12 @@ const authUser = async function(userInfo){//returns token
         if(err) TE(err.message);
 
     }else{
-        TE('A valid email or phone number was not entered');
+        TE('Um número de telefone ou e-mail válido não foi informado');
     }
 
-    if(!user) TE('Not registered');
+    if(!user) TE('Usuário não identificado');
 
     [err, user] = await to(user.comparePassword(userInfo.password));
-
     if(err) TE(err.message);
 
     return user;

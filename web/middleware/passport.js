@@ -4,9 +4,9 @@
 * @description Setup everything for the app
 */
 const { ExtractJwt, Strategy } = require('passport-jwt');
-const { User }      = require('../models');
-const CONFIG        = require('../config/config');
-const {to}          = require('../services/util.service');
+const { User } = require('../models');
+const CONFIG = require('../config/config');
+const {to} = require('../services/util.service');
 
 module.exports = function(passport){
     var opts = {};

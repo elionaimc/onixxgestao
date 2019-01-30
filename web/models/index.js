@@ -5,13 +5,14 @@
 */
 
 //Dependencies
-const fs        = require('fs');
-const path      = require('path');
+const fs = require('fs');
+const path = require('path');
 const Sequelize = require('Sequelize');
-const basename  = path.basename(__filename);
-const db        = {};
+const basename = path.basename(__filename);
+const db = {};
 const CONFIG = require('../config/config');
 
+//Instantiates a 'sequelize' database object
 const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {
   host: CONFIG.db_host,
   dialect: CONFIG.db_dialect,
@@ -19,6 +20,7 @@ const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_passwo
   operatorsAliases: false
 });
 
+//Read&update the Models set of entities based in files located at '.' folder
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
@@ -28,6 +30,7 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
+//keys associated with entities
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
@@ -36,5 +39,4 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
 module.exports = db;

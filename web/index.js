@@ -5,17 +5,18 @@
 */
 
 //Dependencies
-const express      = require('express');
-const logger       = require('morgan');
-const bodyParser   = require('body-parser');
-const passport     = require('passport');
-const pe           = require('parse-error');
-const cors         = require('cors');
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const pe = require('parse-error');
+const cors = require('cors');
 
 //Definitions for routing and connection
-const v1           = require('./routes/v1');
-const app          = express();
-const CONFIG       = require('./config/config');
+const web = require('./config/routes.web');
+const api = require('./config/routes.api');
+const app = express();
+const CONFIG = require('./config/config');
 
 //Initializing enviroment
 app.use(logger('dev'));
@@ -42,12 +43,17 @@ if(CONFIG.app==='dev'){
 app.use(cors());
 
 //Routes and errors handling
-app.use('/v1', v1);
+app.use('/v1', api);
 
-app.use('/', function(req, res, next){
-   res.statusCode = 200;//send the appropriate status code
-   res.json({status:"success", message: "_FNORD » Onixx Gestor is up and running!  <index will appears here>", data:{file:"index.html", status:"not configured"}})
-});
+app.use('/', web);
+
+
+//GET requests not planned will fall here
+function handleRedirect(req, res) {
+  const targetUrl = CONFIG.targetUrl;
+  res.redirect(targetUrl);
+}
+app.get('*', handleRedirect);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

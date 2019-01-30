@@ -3,7 +3,7 @@
 * @version 1.0.0
 * @description Setup everything for the app
 */
-const {TE, to}              = require('../services/util.service');
+const {TE, to} = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
   var Model = sequelize.define('Expense', {

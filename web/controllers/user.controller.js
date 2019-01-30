@@ -3,24 +3,22 @@
 * @version 1.0.0
 * @description Router module for outgo_test app
 */
-const { User }          = require('../models');
-const authService       = require('../services/auth.service');
-const { to, ReE, ReS }  = require('../services/util.service');
+const { User } = require('../models');
+const authService = require('../services/auth.service');
+const { to, ReE, ReS } = require('../services/util.service');
 
 const create = async function(req, res){
     const body = req.body;
-
     if(!body.unique_key && !body.email && !body.phone){
-        return ReE(res, 'Please enter an email or phone number to register.');
+        return ReE(res, 'Por favor, informe um e-mail ou número de telefone para cadastro.');
     } else if(!body.password){
-        return ReE(res, 'Please enter a password to register.');
+        return ReE(res, 'Insira corretamente uma senha para cadastro.');
     }else{
         let err, user;
-
         [err, user] = await to(authService.createUser(body));
 
         if(err) return ReE(res, err, 422);
-        return ReS(res, {message:'Successfully created new user.', user:user.toWeb(), token:user.getJWT()}, 201);
+        return ReS(res, {message:'Novo usuário cadastrado com sucesso.', user:user.toWeb(), token:user.getJWT()}, 201);
     }
 }
 module.exports.create = create;
@@ -40,29 +38,27 @@ const update = async function(req, res){
 
     [err, user] = await to(user.save());
     if(err){
-        if(err.message=='Validation error') err = 'The email address or phone number is already in use';
+        if(err.message=='Erro de validação') err = 'Este e-mail ou número de telefone já existe em nossa base de dados.';
         return ReE(res, err);
     }
-    return ReS(res, {message :'Updated User: '+user.email});
+    return ReS(res, {message :'Atualizar usuário: '+user.email});
 }
 module.exports.update = update;
 
 const remove = async function(req, res){
     let user, err;
     user = req.user;
-
     [err, user] = await to(user.destroy());
-    if(err) return ReE(res, 'error occured trying to delete user');
+    if(err) return ReE(res, 'Ocorreu um erro ao tentar excluir um usuário');
 
-    return ReS(res, {message:'Deleted User'}, 204);
+    return ReS(res, {message:'Usuário apagado com sucesso.'}, 204);
 }
 module.exports.remove = remove;
 
-
+//Using JWT e Authentication services to best connected experience
 const login = async function(req, res){
     const body = req.body;
     let err, user;
-
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
 
