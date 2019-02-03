@@ -13,10 +13,10 @@ const pe = require('parse-error');
 const cors = require('cors');
 
 //Definitions for routing and connection
-const web = require('./config/routes.web');
+const wpa = require('./config/routes.wpa');
 const api = require('./config/routes.api');
 const app = express();
-const CONFIG = require('./config/config');
+const CONFIG = require('./config/globals');
 
 //Initializing enviroment
 app.use(logger('dev'));
@@ -43,10 +43,9 @@ if(CONFIG.app==='dev'){
 app.use(cors());
 
 //Routes and errors handling
-app.use('/v1', api);
+app.use('/api', api);
 
-app.use('/', web);
-
+app.use('/', wpa);
 
 //GET requests not planned will fall here
 function handleRedirect(req, res) {
@@ -80,6 +79,7 @@ process.on('unhandledRejection', error => {
     console.error('Uncaught Error', pe(error));
 });
 
+//Just run, server, RUN!
 app.listen(CONFIG.port, () => {
   //Samantha tells that the system is up and running
   console.log('_FNORD » The past is just a story we tell ourselves on port ' + CONFIG.port + '.');

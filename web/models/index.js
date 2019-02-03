@@ -10,7 +10,7 @@ const path = require('path');
 const Sequelize = require('Sequelize');
 const basename = path.basename(__filename);
 const db = {};
-const CONFIG = require('../config/config');
+const CONFIG = require('../config/globals');
 
 //Instantiates a 'sequelize' database object
 const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {

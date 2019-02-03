@@ -38,8 +38,8 @@ router.delete( '/expenses/:expense_id', passport.authenticate('jwt', {session:fa
 //Dashboard routes
 router.get('/dash', passport.authenticate('jwt', {session:false}), HomeController.Dashboard)
 
-//public files from root address
-router.use('/', express.static(path.join(__dirname, '/../public/')));
+//private statics files trough api
+router.use('/', passport.authenticate('jwt', {session:false}), express.static(path.join(__dirname, '/../files/private/')));
 
 //GET requests not planned will fall here
 router.get('*', function (req, res, next) {
