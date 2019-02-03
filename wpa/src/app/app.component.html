@@ -1,0 +1,29 @@
+<div class="d-flex bg-light" id="wrapper" [class.toggled]="showMenu">
+<!-- Sidebar navigation -->
+<app-sidebar></app-sidebar>
+<!-- end of sidebar -->
+<div id="d-flex flex-column flex-md-row align-items-center px-md-4 mb-3 bg-white border-bottom box-shadowpage-content-wrapper">
+  <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-primary shadow">
+      <button class="my-0 mr-md-auto font-weight-normal btn btn-link" id="menu-toggle" (click)="toggleClass()">
+        <fa-icon [icon]="faArrowLeft" class="change" [class.toggled]="showMenu"></fa-icon>
+        <fa-icon [icon]="faArrowRight" class="change" [class.toggled]="!showMenu"></fa-icon>
+      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="true"><fa-icon [icon]="faUserCircle"></fa-icon> Usuário Teste
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <button class="dropdown-item"><fa-icon [icon]="faUserCog"></fa-icon> Editar perfil</button>
+            <button class="dropdown-item" type="button"><fa-icon [icon]="faPowerOff"></fa-icon> SAIR</button>
+          </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row p-4">
+      <!-- Dinamic contents will be injected here-->
+      <router-outlet></router-outlet>
+      <!-- end of dinamic contents -->
+      </div>
+    </div>
+  </div>
+</div>
