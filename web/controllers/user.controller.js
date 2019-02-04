@@ -24,11 +24,27 @@ const create = async function(req, res){
 module.exports.create = create;
 
 const get = async function(req, res){
-    let user = req.user;
+    let user = req.user || null;
 
     return ReS(res, {user:user.toWeb()});
 }
 module.exports.get = get;
+
+const getAll = async function(req, res){
+    let err, users;
+    let usersjson = [];
+
+    [err, users] = await to(User.findAll());
+    if(err) return ReE(res, err, 204);
+    if(!users.length) return ReE(res, 204);
+    
+    for (let i in users){
+        user = users[i];
+        usersjson.push(user.toWeb());
+    }
+    ReS(res, {users:usersjson}, 200);
+}
+module.exports.getAll = getAll;
 
 const update = async function(req, res){
     let err, user, data

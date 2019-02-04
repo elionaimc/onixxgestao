@@ -13,15 +13,20 @@ const CONFIG = require('../config/globals');
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        first : DataTypes.STRING,
-        last : DataTypes.STRING,
-        email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
-        phone : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Telefone muito curto."}, isNumeric: { msg: "não é um número de telefone válido."} }},
+        status: DataTypes.BOOLEAN,
+        name : DataTypes.STRING,
+        role : DataTypes.STRING,
         password : DataTypes.STRING,
+        email : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
+        login : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 40], msg: "Login deve possuir de 5 a 40 caracteres"} }}
     });
 
     Model.associate = function(models){
         this.Expenses = this.belongsToMany(models.Expense, {through: 'UserExpense'});
+    };
+
+    Model.associate = function(models){
+        this.Prefecture = this.belongsToMany(models.Prefecture, {through: 'UserPrefecture'});
     };
 
     Model.beforeSave(async (user, options) => {
@@ -52,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Model.prototype.getJWT = function () {
         let expiration_time = parseInt(CONFIG.jwt_expiration);
-        return "Bearer "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
+        return "_FN0RD_ "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
     };
 
     Model.prototype.toWeb = function (pw) {

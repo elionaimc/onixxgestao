@@ -22,8 +22,9 @@ router.get('/', (req, res, next) => res.json(
 ));
 
 //Users routes
-router.post( '/users', UserController.create);
-router.get( '/users', passport.authenticate('jwt', {session:false}), UserController.get);
+router.post( '/users', UserController.create); //creates a user based on properties sent via POST
+//router.get( '/users', passport.authenticate('jwt', {session:false}), UserController.get);
+router.get( '/users', UserController.getAll);
 router.put( '/users', passport.authenticate('jwt', {session:false}), UserController.update);
 router.delete( '/users', passport.authenticate('jwt', {session:false}), UserController.remove);
 router.post( '/users/login', UserController.login);

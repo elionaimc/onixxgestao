@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
+import { ExpenseComponent } from './expenses/expense/expense.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ROUTES } from './app.routes';
     FooterComponent,
     SidebarComponent,
     HomeComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    ExpenseComponent
   ],
   imports: [
     BrowserModule,
