@@ -1,3 +1,6 @@
 .env
 .DS_Store
 .idea
+wpa/node_modules/
+web/node_modules/
+mobile/node_modules/
