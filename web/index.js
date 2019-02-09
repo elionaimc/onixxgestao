@@ -45,14 +45,7 @@ app.use(cors());
 //Routes and errors handling
 app.use('/api', api);
 
-app.use('/', wpa);
-
-//GET requests not planned will fall here
-function handleRedirect(req, res) {
-  const targetUrl = CONFIG.targetUrl;
-  res.redirect(targetUrl);
-}
-app.get('*', handleRedirect);
+app.get('*', wpa);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

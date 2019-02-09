@@ -7,46 +7,45 @@ const { User } = require('../models');
 const authService = require('../services/auth.service');
 const { to, ReE, ReS } = require('../services/util.service');
 
-const create = async function(req, res){
+const create = async (req, res) => {
     const body = req.body;
-    if(!body.unique_key && !body.email && !body.phone){
-        return ReE(res, 'Por favor, informe um e-mail ou número de telefone para cadastro.');
+    if(!body.unique_key && !body.email && !body.username){
+        return ReE(res, 'Por favor, informe um e-mail ou nome de usuário para cadastro.', 400);
     } else if(!body.password){
         return ReE(res, 'Insira corretamente uma senha para cadastro.');
     }else{
         let err, user;
         [err, user] = await to(authService.createUser(body));
 
-        if(err) return ReE(res, err, 422);
-        return ReS(res, {message:'Novo usuário cadastrado com sucesso.', user:user.toWeb(), token:user.getJWT()}, 201);
+        if(err) return ReE(res, err, 409);
+        return ReS(res, {message:'Novo usuário cadastrado com sucesso.', user:user.toJSON(), token:user.getJWT()}, 201);
     }
 }
 module.exports.create = create;
 
-const get = async function(req, res){
-    let user = req.user || null;
-
-    return ReS(res, {user:user.toWeb()});
+const get = async (req, res) => {
+    let uid = req.params.user_id;
+    
+    [err, user] = await to(User.findOne({where:{id:uid}}));
+    if(err) TE(err.message);
+    
+    if(!user) return ReE(res, 'Reajuste os parâmetros e tente novamente', 202);
+    user.password = undefined;
+    return ReS(res, user);
 }
 module.exports.get = get;
 
-const getAll = async function(req, res){
-    let err, users;
-    let usersjson = [];
 
+const getAll = async (req, res) => {
     [err, users] = await to(User.findAll());
-    if(err) return ReE(res, err, 204);
-    if(!users.length) return ReE(res, 204);
-    
-    for (let i in users){
-        user = users[i];
-        usersjson.push(user.toWeb());
-    }
-    ReS(res, {users:usersjson}, 200);
+    if(err) return TE(err.message);
+
+    for (user of users) user.password = undefined;
+    return ReS(res, {users: users});
 }
 module.exports.getAll = getAll;
 
-const update = async function(req, res){
+const update = async (req, res) => {
     let err, user, data
     user = req.user;
     data = req.body;
@@ -54,14 +53,14 @@ const update = async function(req, res){
 
     [err, user] = await to(user.save());
     if(err){
-        if(err.message=='Erro de validação') err = 'Este e-mail ou número de telefone já existe em nossa base de dados.';
+        if(err.message=='Erro de validação') err = 'Este e-mail ou nome de usuário já existe em nossa base de dados.';
         return ReE(res, err);
     }
     return ReS(res, {message :'Atualizar usuário: '+user.email});
 }
 module.exports.update = update;
 
-const remove = async function(req, res){
+const remove = async (req, res) => {
     let user, err;
     user = req.user;
     [err, user] = await to(user.destroy());
@@ -72,12 +71,12 @@ const remove = async function(req, res){
 module.exports.remove = remove;
 
 //Using JWT e Authentication services to best connected experience
-const login = async function(req, res){
+const login = async (req, res) => {
     const body = req.body;
     let err, user;
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {token:user.getJWT(), user:user.toWeb()});
+    return ReS(res, {token:user.getJWT(), user:user.toJSON()});
 }
 module.exports.login = login;

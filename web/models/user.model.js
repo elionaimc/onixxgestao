@@ -13,12 +13,12 @@ const CONFIG = require('../config/globals');
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        status: DataTypes.BOOLEAN,
+        status: {type: DataTypes.ENUM(CONFIG.user_status), allowNull: CONFIG.allow_null_status, defaultValue:CONFIG.user_default_status},
         name : DataTypes.STRING,
-        role : DataTypes.STRING,
-        password : DataTypes.STRING,
-        email : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
-        login : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 40], msg: "Login deve possuir de 5 a 40 caracteres"} }}
+        role : {type: DataTypes.ENUM(CONFIG.user_role), allowNull: false, defaultValue: CONFIG.user_default_role},
+        password : {type: DataTypes.STRING, allowNull: false},
+        email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
+        username : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 20], msg: "Nome de usuário deve possuir de 5 a 20 caracteres"} }}
     });
 
     Model.associate = function(models){
@@ -57,12 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Model.prototype.getJWT = function () {
         let expiration_time = parseInt(CONFIG.jwt_expiration);
-        return "_FN0RD_ "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
-    };
-
-    Model.prototype.toWeb = function (pw) {
-        let json = this.toJSON();
-        return json;
+        return "Bearer "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
     };
 
     return Model;

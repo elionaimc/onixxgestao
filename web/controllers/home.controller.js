@@ -3,10 +3,9 @@
 * @version 1.0.0
 * @description Router module for outgo_test app
 */
-const { to, ReE, ReS } = require('../services/util.service');
+const { ReS } = require('../services/util.service');
 
-const Dashboard = function(req, res){
-	let user = req.user.id;
-	return res.json({success:true, message:'Funcionou', data:'o nome de usuário é:'});
+const dashboard = (req, res) => {
+	return ReS(res, {success:true, message: '_FNORD » OnixxAPI is up and running!'});
 }
-module.exports.Dashboard = Dashboard
+module.exports.dashboard = dashboard

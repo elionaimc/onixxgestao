@@ -5,9 +5,9 @@
 */
 
 const Expense = require('./../models').Expense;
-const { to, ReE, ReS } = require('../services/util.service');
+const { to, ReE } = require('../services/util.service');
 
-let expense = async function (req, res, next) {
+let expense = async (req, res, next) => {
     let expense_id, err, expense;
     expense_id = req.params.expense_id;
     [err, expense] = await to(Expense.findOne({where:{id:expense_id}}));

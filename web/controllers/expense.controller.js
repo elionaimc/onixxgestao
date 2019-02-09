@@ -9,7 +9,7 @@ const { Expense } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
 
 //Creates a expense
-const create = async function(req, res){
+const create = async (req, res) => {
     let err, expense;
     //get data from request object
     let user = req.user;
@@ -21,7 +21,7 @@ const create = async function(req, res){
 
     [err, expense] = await to(expense.save());
     if(err) return ReE(res, err, 422);
-    let expense_json = expense.toWeb();
+    let expense_json = expense.toJSON();
     expense_json.users = [{user:user.id}];
     //An Expense object, in json format
     return ReS(res, {expense:expense_json}, 201);
@@ -29,17 +29,17 @@ const create = async function(req, res){
 module.exports.create = create;
 
 //Read a expense
-const getAll = async function(req, res){
+const getAll = async (req, res) => {
     let user = req.user;
     let err, expenses;
 
     [err, expenses] = await to(user.getExpenses({include: [ {association: Expense.Users} ] }));
 
     let expenses_json =[]
-    for( let i in expenses){
+    for(let i in expenses){
         let expense = expenses[i];
         let users =  expense.Users;
-        let expense_info = expense.toWeb();
+        let expense_info = expense.toJSON();
         let users_info = [];
         for (let i in users){
             let user = users[i];
@@ -54,15 +54,14 @@ const getAll = async function(req, res){
 }
 module.exports.getAll = getAll;
 
-const get = function(req, res){
+const get = (req, res) => {
     let expense = req.expense;
-
-    return ReS(res, {expense:expense.toWeb()});
+    return ReS(res, {expense:expense.toJSON()});
 }
 module.exports.get = get;
 
 //Updates a expense
-const update = async function(req, res){
+const update = async (req, res) => {
     let err, expense, data;
     expense = req.expense;
     data = req.body;
@@ -72,12 +71,12 @@ const update = async function(req, res){
     if(err){
         return ReE(res, err);
     }
-    return ReS(res, {expense:expense.toWeb()});
+    return ReS(res, {expense:expense.toJSON()});
 }
 module.exports.update = update;
 
 //Deletes a expense
-const remove = async function(req, res){
+const remove = async (req, res) => {
     let expense, err;
     expense = req.expense;
 

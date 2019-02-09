@@ -28,10 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     this.Prefecture = this.belongsToMany(models.Prefecture, {through: 'PrefectureExpense'});
   };
 
-  Model.prototype.toWeb = function (pw) {
-      let json = this.toJSON();
-      return json;
-  };
-
   return Model;
 };

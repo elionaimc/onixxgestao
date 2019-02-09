@@ -1,5 +1,5 @@
 {
-  "name": "onixxApi",
+  "name": "onixxapi",
   "version": "1.0.0",
   "description": "Server-side do app OnixxGestor",
   "main": "index.js",
@@ -30,6 +30,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.4",
+    "package.json": "^2.0.1",
     "parse-error": "^0.2.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

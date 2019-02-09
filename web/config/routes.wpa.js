@@ -11,14 +11,12 @@ const path = require('path');
 
 require('./../middleware/passport')(passport)
 
-/* GET home page. */
-router.get('/', express.static(path.join(__dirname, '/../files/public/index.html')));
-
 //public files from root address
 router.use('/', express.static(path.join(__dirname, '/../files/public')));
 
-router.get('/login', (req, res, next) => res.json(
-    { message: '_FNORD » Login page!' }
-  ));
+/* GET home page. */
+router.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/../files/public/index.html'));
+  });
 
 module.exports = router;
