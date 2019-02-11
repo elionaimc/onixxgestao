@@ -1,1 +1,0 @@
-export const APP_API = "http://localhost:1982/api"

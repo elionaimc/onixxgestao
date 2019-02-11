@@ -7,7 +7,7 @@
 //Dependencies
 const fs = require('fs');
 const path = require('path');
-const Sequelize = require('Sequelize');
+const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const db = {};
 const CONFIG = require('../config/globals');

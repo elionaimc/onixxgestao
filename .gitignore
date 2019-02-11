@@ -1,6 +1,7 @@
 .env
 .DS_Store
 .idea
+.vscode
 wpa/node_modules/
 web/node_modules/
 mobile/node_modules/

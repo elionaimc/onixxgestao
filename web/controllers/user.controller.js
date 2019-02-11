@@ -41,7 +41,7 @@ const getAll = async (req, res) => {
     if(err) return TE(err.message);
 
     for (user of users) user.password = undefined;
-    return ReS(res, {users: users});
+    return res.send(users);
 }
 module.exports.getAll = getAll;
 

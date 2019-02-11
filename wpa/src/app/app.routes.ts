@@ -13,4 +13,4 @@ import { ExpensesComponent } from './expenses/expenses.component';
 export const ROUTES: Routes = [
     { path: '', component: HomeComponent},
     { path: 'expenses', component: ExpensesComponent}
-]
+];
