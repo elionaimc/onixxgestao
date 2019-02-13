@@ -1,5 +1,6 @@
 export interface User {
     id: number;
+    password: string;
     status: string;
     name: string;
     role: string;

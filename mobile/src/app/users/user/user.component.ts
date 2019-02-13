@@ -3,6 +3,7 @@ import { UsersService } from '../users.service';
 import { User } from './user.model';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { delay, catchError } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-user',
@@ -11,10 +12,11 @@ import { delay, catchError } from 'rxjs/operators';
 })
 export class UserComponent implements OnInit {
 
+  splash = true;
   users$: Observable<User[]>;
   error$ = new Subject<boolean>();
 
-  constructor(private service: UsersService) { }
+  constructor(private service: UsersService, publicnavCtrl: NavController) { }
 
   ngOnInit() {
     this.onRefresh();
@@ -23,7 +25,7 @@ export class UserComponent implements OnInit {
   onRefresh() {
     this.users$ = this.service.listAll()
     .pipe(
-      delay(2000),
+      delay(1000),
       catchError(error => {
         this.error$.next(true);
         return EMPTY;
@@ -31,4 +33,7 @@ export class UserComponent implements OnInit {
     );
   }
 
+  ionViewDidLoad() {
+    setTimeout(() => this.splash = false, 4000);
+  }
 }

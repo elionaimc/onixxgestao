@@ -9,9 +9,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PopoverModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TopbarComponent } from './topbar/topbar.component';
+import { AuthService } from './login/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -22,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
   entryComponents: [],
   imports: [
     BrowserModule,
+    PopoverModule.forRoot(),
     IonicModule.forRoot(),
     AppRoutingModule,
     FontAwesomeModule,
@@ -30,9 +33,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [
+    AuthService,
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
 })

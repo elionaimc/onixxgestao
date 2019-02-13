@@ -4,8 +4,9 @@ import { UserComponent } from './user/user.component';
 import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
-  { path: '', component: UserComponent},
-  { path: ':id', component: PerfilComponent }
+  { path: '', component: UserComponent },
+  { path: ':id', component: PerfilComponent },
+  { path: 'novo', component: PerfilComponent }
 ];
 
 @NgModule({

@@ -17,7 +17,7 @@
 </div>
 
 <ng-template #loadingError>
-  <div *ngIf="error$ | async; else paramError" class="card mt-3 border-0">
+  <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
     <div class="card-body">
       <alert type="danger">
         <h3>OMG!!!!</h3>
@@ -29,9 +29,16 @@
 </ng-template>
 
 <ng-template #loading>
-  <alert type="danger">
-    <h3>Aguarde,</h3>
-    <hr>
-    <p><span>Carregando usuários...</span></p>
-    </alert>
+  <div id="preloader" [style.display]="splash ? 'flex': 'none'">
+    <div id="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
 </ng-template>

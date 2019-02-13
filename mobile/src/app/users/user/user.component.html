@@ -1,3 +1,17 @@
+<ng-template #loading>
+  <div id="preloader" [style.display]="splash ? 'flex': 'none'">
+    <div id="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+</div>
+</ng-template>
 <div class="card mt-3">
   <div class="card-header">
     <div class="float-left">
@@ -50,11 +64,6 @@
         </div>
       </div>
     </ng-template>
-
-    <ng-template #loading>
-      <div class="loader-overlay"></div>
-      <span class="loader">Carregando usuários...</span>
-      <div class="loader-overlay"></div>
-    </ng-template>
   </div>
 </div>
+

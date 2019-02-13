@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, EMPTY, Observable, Subject } from 'rxjs';
 import { User } from '../user/user.model';
 import { UsersService } from '../users.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-perfil',
@@ -12,6 +12,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class PerfilComponent implements OnInit {
 
+  splash = true;
   id: number;
   user$: Observable<User>;
   error$ = new Subject<boolean>();
@@ -24,6 +25,7 @@ export class PerfilComponent implements OnInit {
       this.id = params['id'];
       this.user$ = this.service.listOne(this.id)
         .pipe(
+          delay(1000),
           catchError(error => {
             this.error$.next(true);
             return EMPTY;
