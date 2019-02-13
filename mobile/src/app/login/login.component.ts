@@ -22,10 +22,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(f: NgForm) {
     this.user = f.value;
-    console.log(f.value);  // { first: '', last: '' }
-    console.log(f.valid);  // false
 
     this.authService.doLogin(this.user);
   }
-  
 }
