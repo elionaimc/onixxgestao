@@ -10,34 +10,51 @@
     </div>
   </div>
   <div class="card-body">
-    <table class="table table-hover" *ngIf="users$ | async as users; else loading">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Usuário</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>
-            <span class="float-right">
-              <button class="btn btn-warning mb-1 btn-sm">
-                Atualizar
-              </button>
+    <div class="panel row" *ngIf="users$ | async as response; else loadingError">
+      <table class="table table-hover" *ngIf="response.success; else loading">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Usuário</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of response.users">
+            <td>{{ user.id }}</td>
+            <td><a [routerLink]="[ '/users', user.id ]">{{ user.name }}</a></td>
+            <td>
+              <span class="float-right">
+                <button class="btn btn-warning mb-1 btn-sm">
+                  Atualizar
+                </button>
 
-              <button class="btn btn-danger mb-1 btn-sm">
-                Remover
-              </button>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                <button class="btn btn-danger mb-1 btn-sm">
+                  Remover
+                </button>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #loadingError>
+      <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+        <div class="card-body">
+          <alert type="danger">
+            <h3>OMG!!!!</h3>
+            <hr>
+            <p><span>Servidor não responde.</span></p>
+          </alert>
+        </div>
+      </div>
+    </ng-template>
+
     <ng-template #loading>
-      <span>Carregando usuários</span>
+      <div class="loader-overlay"></div>
+      <span class="loader">Carregando usuários...</span>
+      <div class="loader-overlay"></div>
     </ng-template>
   </div>
 </div>

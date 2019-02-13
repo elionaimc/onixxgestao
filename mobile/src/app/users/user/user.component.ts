@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../users.service';
 import { User } from './user.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject, EMPTY } from 'rxjs';
+import { delay, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -10,16 +11,24 @@ import { Observable } from 'rxjs';
 })
 export class UserComponent implements OnInit {
 
-  // users: User[];
-
   users$: Observable<User[]>;
+  error$ = new Subject<boolean>();
 
   constructor(private service: UsersService) { }
 
   ngOnInit() {
-    this.users$ = this.service.list(); // .subscribe( dados => { this.users = dados } );
+    this.onRefresh();
   }
 
-  onRefresh() {}
+  onRefresh() {
+    this.users$ = this.service.listAll()
+    .pipe(
+      delay(2000),
+      catchError(error => {
+        this.error$.next(true);
+        return EMPTY;
+      })
+    );
+  }
 
 }

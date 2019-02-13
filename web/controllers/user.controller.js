@@ -31,7 +31,7 @@ const get = async (req, res) => {
     
     if(!user) return ReE(res, 'Reajuste os parâmetros e tente novamente', 202);
     user.password = undefined;
-    return ReS(res, user);
+    return ReS(res, {user: user});
 }
 module.exports.get = get;
 
@@ -41,7 +41,7 @@ const getAll = async (req, res) => {
     if(err) return TE(err.message);
 
     for (user of users) user.password = undefined;
-    return res.send(users);
+    return ReS(res, {users: users});
 }
 module.exports.getAll = getAll;
 
