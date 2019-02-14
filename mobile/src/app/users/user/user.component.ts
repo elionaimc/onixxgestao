@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
   users$: Observable<User[]>;
   error$ = new Subject<boolean>();
 
-  constructor(private service: UsersService, publicnavCtrl: NavController) { }
+  constructor(private service: UsersService, public navCtrl: NavController) { }
 
   ngOnInit() {
     this.onRefresh();
