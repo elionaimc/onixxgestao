@@ -34,6 +34,7 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+// tslint:disable-next-line: use-life-cycle-interface
   ngOnDestroy(): void {
     this.control.unsubscribe();
   }
