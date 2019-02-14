@@ -16,6 +16,7 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { AuthService } from './login/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './login/auth.guard';
+import { UsersGuard } from './users/users.guard';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AuthGuard } from './login/auth.guard';
   providers: [
     AuthService,
     AuthGuard,
+    UsersGuard,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
