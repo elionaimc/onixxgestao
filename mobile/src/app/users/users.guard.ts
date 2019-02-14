@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UsersGuard implements CanActivateChild {
 
   canActivateChild(
@@ -10,7 +12,8 @@ export class UsersGuard implements CanActivateChild {
     state: RouterStateSnapshot
   ): Observable <boolean> | boolean {
 
-    if (state.url.includes('novo')) {
+    console.log('UsersGuard');
+     if (state.url.includes('novo')) {
       return false;
     }
     return true;
