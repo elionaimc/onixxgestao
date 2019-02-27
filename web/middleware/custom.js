@@ -14,13 +14,7 @@ let expense = async (req, res, next) => {
     if(err) return ReE(res, "erro ao buscar uma despesa");
 
     if(!expense) return ReE(res, "despesa não encontrada com o identificador: "+expense_id);
-    let user, users_array, users;
-    user = req.user;
-    [err, users] = await to(expense.getUsers());
-
-    users_array = users.map(obj=>String(obj.user));
-    if(!users_array.includes(String(user._id))) return ReE(res, "Usuário não possui nível de acesso para acessar o serviço: "+app_id);
-
+    
     req.expense = expense;
     next();
 }

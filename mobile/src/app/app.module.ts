@@ -14,9 +14,11 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { AuthService } from './login/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './login/auth.guard';
 import { UsersGuard } from './users/users.guard';
+import { JwtInterceptor } from './login/jwt.interceptor';
+import { ErrorInterceptor } from './login/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { UsersGuard } from './users/users.guard';
     HttpClientModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     AuthService,
     AuthGuard,
     UsersGuard,

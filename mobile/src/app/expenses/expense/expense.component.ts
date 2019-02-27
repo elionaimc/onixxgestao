@@ -1,15 +1,40 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject, EMPTY } from 'rxjs';
+import { Expense } from './expense.model';
+import { ExpensesService } from '../expenses.service';
+import { catchError } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.scss']
+  preserveWhitespaces: true
 })
 export class ExpenseComponent implements OnInit {
 
-  constructor() { }
+  splash = true;
+  expenses$: Observable<Expense[]>;
+  error$ = new Subject<boolean>();
+
+  constructor(private service: ExpensesService, public navCtrl: NavController) { }
 
   ngOnInit() {
+    this.onRefresh();
+  }
+
+  onRefresh() {
+    this.expenses$ = this.service.listAll()
+      .pipe(
+        catchError(error => {
+          this.error$.next(true);
+          return EMPTY;
+        })
+      );
+      console.log(this.expenses$);
+  }
+
+  ionViewDidLoad() {
+    setTimeout(() => this.splash = false, 4000);
   }
 
 }

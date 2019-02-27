@@ -22,6 +22,9 @@ body {
   overflow-x: hidden;
 }
 
+a, a:hover {
+  text-decoration: none;
+}
 /* Sidebar navigation */
 #sidebar-wrapper {
   min-height: 100vh;

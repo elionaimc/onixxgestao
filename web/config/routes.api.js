@@ -22,11 +22,11 @@ const concierge = passport.authenticate('jwt', {session:false});
 router.get('/', (req, res, next) => ReS(res, {message: '_FNORD » OnixxAPI is up and running!'}));
 
 //Users routes
-router.post( '/users', UserController.create); //creates a user based on properties sent via POST
+router.post('/users', concierge, UserController.create); //creates a user based on properties sent via POST
 router.put( '/users', concierge, UserController.update);
 router.delete( '/users', concierge, UserController.remove);
-router.get( '/users', UserController.getAll);
-router.get( '/users/:user_id', UserController.get);
+router.get('/users', concierge, UserController.getAll);
+router.get('/users/:user_id', concierge, UserController.get);
 
 router.post( '/login', UserController.login);
 

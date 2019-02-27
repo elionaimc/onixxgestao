@@ -1,17 +1,17 @@
-<div id="sidebar-wrapper" class="sticky-top">
-    <div class="sidebar-heading bg-primary shadow">
-        <a routerLink="">
-            <img src="/assets/img/bomjesusrn.png" alt="Prefeitura de Bom Jesus/RN"/>
-        </a>
-    </div>
-    <div class="list-group list-group-flush">
-        <a routerLink="" type="buton" class="list-group-item list-group-item-action"><fa-icon [icon]="faThLarge"></fa-icon> Iniciar</a>
-        <a routerLink="" type="buton" class="list-group-item list-group-item-action"><fa-icon [icon]="faUser"></fa-icon> Usuários</a>
-        <a routerLink="" type="buton" class="list-group-item list-group-item-action"><fa-icon [icon]="faTruck"></fa-icon> Fornecedores</a>
-        <a routerLink="" type="buton" class="list-group-item list-group-item-action"><fa-icon [icon]="faSitemap"></fa-icon> Categorias</a>
-        <a routerLink="expenses" class="list-group-item list-group-item-action" type="buton"><fa-icon [icon]="faWallet"></fa-icon> Despesas</a>
-    </div>
-    <!-- Footer comes here -->
-<app-footer></app-footer>
-<!-- end of footer -->
+<div class="border-right border-primary" id="sidebar-wrapper">
+  <div class="sidebar-heading bg-primary shadow">
+    <a routerLink="/home">
+      <img src="/assets/img/bomjesusrn.png" alt="Prefeitura de Bom Jesus/RN" />
+    </a>
+  </div>
+  <div class="list-group">
+    <a [routerLink]="['/home']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="list-group-item list-group-item-action"><fa-icon [icon]="faThLarge"></fa-icon> Iniciar</a>
+    <a [routerLink]="['/users']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faUser"></fa-icon> Usuários</a>
+    <a [routerLink]="['/outfitters']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faTruck"></fa-icon> Fornecedores</a>
+    <a [routerLink]="['/categories']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faSitemap"></fa-icon> Categorias</a>
+    <a [routerLink]="['/expenses']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faWallet"></fa-icon> Despesas</a>
+  </div>
+  <footer>
+    <img src="/assets/img/onixx.png" alt="Onixx Sistemas" />
+  </footer>
 </div>

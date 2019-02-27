@@ -12,24 +12,23 @@ const {TE, to} = require('../services/util.service');
 const CONFIG = require('../config/globals');
 
 module.exports = (sequelize, DataTypes) => {
-    var Model = sequelize.define('User', {
-        status: {type: DataTypes.ENUM(CONFIG.user_status), allowNull: CONFIG.allow_null_status, defaultValue:CONFIG.user_default_status},
+    let User = sequelize.define('User', {
         name : DataTypes.STRING,
         role : {type: DataTypes.ENUM(CONFIG.user_role), allowNull: false, defaultValue: CONFIG.user_default_role},
-        password : {type: DataTypes.STRING, allowNull: false},
         email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
-        username : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 20], msg: "Nome de usuário deve possuir de 5 a 20 caracteres"} }}
+        username : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 20], msg: "Nome de usuário deve possuir de 5 a 20 caracteres"} }},
+        password: { type: DataTypes.STRING, allowNull: false },
+        token: DataTypes.VIRTUAL,
+        status: { type: DataTypes.ENUM(CONFIG.user_status), allowNull: CONFIG.allow_null_status, defaultValue: CONFIG.user_default_status },
+        isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
     });
 
-    Model.associate = function(models){
-        this.Expenses = this.belongsToMany(models.Expense, {through: 'UserExpense'});
+    User.associate = models => {
+        User.belongsTo(models.Prefecture);
+        User.hasMany(models.Expense);
     };
 
-    Model.associate = function(models){
-        this.Prefecture = this.belongsToMany(models.Prefecture, {through: 'UserPrefecture'});
-    };
-
-    Model.beforeSave(async (user, options) => {
+    User.beforeSave(async (user, options) => {
         let err;
         if (user.changed('password')){
             let salt, hash
@@ -43,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    Model.prototype.comparePassword = async function (pw) {
+    User.prototype.comparePassword = async function (pw) {
         let err, pass
         if(!this.password) TE('senha não definida');
 
@@ -55,10 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         return this;
     }
 
-    Model.prototype.getJWT = function () {
+    User.prototype.getJWT = function () {
         let expiration_time = parseInt(CONFIG.jwt_expiration);
-        return "Bearer "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
+        return jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
     };
 
-    return Model;
+    return User;
 };

@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  //API: '/api'
+  API: 'https://api.plused.com.br/api'
 };

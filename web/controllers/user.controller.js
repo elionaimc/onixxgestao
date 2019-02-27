@@ -6,6 +6,7 @@
 const { User } = require('../models');
 const authService = require('../services/auth.service');
 const { to, ReE, ReS } = require('../services/util.service');
+const Prefecture = require('../models/prefecture.model');
 
 const create = async (req, res) => {
     const body = req.body;
@@ -14,6 +15,7 @@ const create = async (req, res) => {
     } else if(!body.password){
         return ReE(res, 'Insira corretamente uma senha para cadastro.');
     }else{
+        body.prefecture = Prefecture;
         let err, user;
         [err, user] = await to(authService.createUser(body));
 
@@ -77,6 +79,8 @@ const login = async (req, res) => {
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {token:user.getJWT(), user:user.toJSON()});
+    user.token = user.getJWT();
+
+    return res.json(user);
 }
 module.exports.login = login;

@@ -1,14 +1,14 @@
 <div class="d-flex" id="wrapper" [class.toggled]="sidebar" >
 
   <!-- Sidebar -->
-  <app-sidebar *ngIf="showNavigation"></app-sidebar>
+  <app-sidebar *ngIf="currentUser"></app-sidebar>
   <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
   <div id="page-content-wrapper">
 
     <!-- Topbar -->
-    <app-topbar (showSidebar)="showMenu($event)" *ngIf="showNavigation"></app-topbar>
+    <app-topbar (showSidebar)="showMenu($event)" *ngIf="currentUser"></app-topbar>
     <!-- /#topbar-wrapper -->
 
     <!-- Embeded Content -->

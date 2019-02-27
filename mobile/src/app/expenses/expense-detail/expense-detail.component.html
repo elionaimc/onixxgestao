@@ -1,0 +1,48 @@
+<div *ngIf="expense$ | async as response; else loadingError">
+  <div *ngIf="response.success; else paramError">
+    <p>Fornecedor: {{ response.expense.ProviderId }}</p>
+    <p>Categoria: {{ response.expense.CategoryId }} Vencimento: {{ response.expense.due_date }}</p>
+    <p>Detalhes: {{ response.expense.description }}</p>
+    <p class="text-center">Valor solicitado: <br/></p>
+    <input type="number" class="text-center" value="{{ response.expense.requested_value }}" />
+  </div>
+
+  <ng-template #paramError>
+    <div class="card mt-3 border-0">
+      <div class="card-body">
+        <alert type="warning">
+          <h3>Ops!</h3>
+          <hr>
+          <p><strong>Todo mundo erra... </strong> <span>{{response.message}}</span></p>
+        </alert>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #loadingError>
+  <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+    <div class="card-body">
+      <alert type="danger">
+        <h3>OMG!!!!</h3>
+        <hr>
+        <p><span>Servidor não responde.</span></p>
+      </alert>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div id="preloader" [style.display]="splash ? 'flex': 'none'">
+    <div id="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</ng-template>

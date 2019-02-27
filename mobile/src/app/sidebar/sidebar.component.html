@@ -1,17 +1,15 @@
 <div class="border-right border-primary" id="sidebar-wrapper">
   <div class="sidebar-heading bg-primary shadow">
-    <a routerLink="">
+    <a routerLink="/expenses">
       <img src="/assets/img/bomjesusrn.png" alt="Prefeitura de Bom Jesus/RN" />
     </a>
   </div>
   <div class="list-group">
-    <a [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="list-group-item list-group-item-action"><fa-icon [icon]="faThLarge"></fa-icon> Iniciar</a>
-    <a [routerLink]="['/users']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faUser"></fa-icon> Usuários</a>
-    <a [routerLink]="['/outfitters']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faTruck"></fa-icon> Fornecedores</a>
-    <a [routerLink]="['/categories']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faSitemap"></fa-icon> Categorias</a>
-    <a [routerLink]="['/expenses']" routerLinkActive="active" class="list-group-item list-group-item-action"><fa-icon [icon]="faWallet"></fa-icon> Despesas</a>
+    <a [routerLink]="['/expenses']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="list-group-item list-group-item-action">Novas despesas</a>
+    <a [routerLink]="['/expenses/authorized']" routerLinkActive="active" class="list-group-item list-group-item-action">Autorizadas</a>
+    <a [routerLink]="['/expenses/denied']" routerLinkActive="active" class="list-group-item list-group-item-action">Recusadas</a>
   </div>
   <footer>
-    <img src="/assets/img/onixx.png" alt="Onixx Sistemas" />
+    <img src="/assets/img/onixx.png" alt="Onixx Sistemas" class="bottom-0" />
   </footer>
 </div>

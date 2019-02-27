@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  //API: 'https://api.plused.com.br/api'
   API: 'http://localhost:1982/api'
 };
 

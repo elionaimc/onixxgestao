@@ -32,6 +32,8 @@ CONFIG.user_default_status = 'ativo';
 CONFIG.user_status = ['ativo', 'inativo', 'suspenso'];
 CONFIG.user_role = ['admin', 'analista', 'gestor', 'god'];
 CONFIG.user_default_role = 'analista';
+CONFIG.expense_status = ['nova', 'autorizada', 'recusada'];
+CONFIG.expense_status_default = 'nova';
 
 //Exports config as a module
 module.exports = CONFIG;

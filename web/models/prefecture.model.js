@@ -6,20 +6,19 @@
 const {TE, to} = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
-  var Model = sequelize.define('Prefecture', {
-        status : DataTypes.BOOLEAN,
-        name   : DataTypes.STRING,
-        code   : DataTypes.STRING,
-        file   : DataTypes.STRING
+  let Prefecture = sequelize.define('Prefecture', {
+    name: DataTypes.STRING,
+    code: DataTypes.STRING,
+    image: DataTypes.STRING,
+    isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });
 
-  Model.associate = function(models){
-      this.Users = this.belongsToMany(models.User, {through: 'UserPrefecture'});
+  Prefecture.associate = models => {
+    Prefecture.hasMany(models.User);
+    Prefecture.hasMany(models.Expense);
+    Prefecture.hasMany(models.Provider);
+    Prefecture.hasMany(models.Category);
   };
 
-  Model.associate = function(models){
-      this.Expenses = this.belongsToMany(models.Expense, {through: 'PrefectureExpense'});
-  };
-
-  return Model;
+  return Prefecture;
 };

@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  //API: 'https://api.plused.com.br/api'
+  API: 'http://localhost:1982/api'
 };
 
 /*

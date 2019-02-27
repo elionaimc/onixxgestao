@@ -8,8 +8,6 @@ const { User } 	    = require('../models');
 const validator     = require('validator');
 const { to, TE }    = require('../services/util.service');
 
-// This is so they can send in 3 options unique_key, email, or phone and it will work
-// We SHOULD CHANGE to work only with username and password
 const getUniqueKeyFromBody = (body) => {
     let unique_key = body.unique_key;
     if(typeof unique_key==='undefined'){
@@ -39,6 +37,7 @@ const createUser = async (userInfo) => {
         auth_info.method = 'email';
         userInfo.email = unique_key;
 
+
         [err, user] = await to(User.create(userInfo));
         if(err) TE('Não foi possível cadastrar novo usuário!');
 
@@ -61,7 +60,7 @@ const createUser = async (userInfo) => {
 }
 module.exports.createUser = createUser;
 
-const authUser = async (userInfo) => {//returns token
+const authUser = async (userInfo) => {
     let unique_key;
     let auth_info = {};
     auth_info.status = 'login';
@@ -76,11 +75,13 @@ const authUser = async (userInfo) => {//returns token
     if(validator.isEmail(unique_key)){
         auth_info.method='email';
 
-        [err, user] = await to(User.findOne({where:{email:unique_key}}));
+        [err, user] = await to(User.findOne({where:{email:unique_key, status: 'ativo'}}));
         if(err) TE(err.message);
 
     } else {
-        [err, user] = await to(User.findOne({where:{username: unique_key}}));
+        auth_info.method = 'username';
+        
+        [err, user] = await to(User.findOne({ where: { username: unique_key, status: 'ativo'}}));
         if(err) TE('O e-mail ou nome de usuário informados não funcionou');
     }
 
@@ -89,7 +90,6 @@ const authUser = async (userInfo) => {//returns token
     [err, user] = await to(user.comparePassword(userInfo.password));
     if(err) TE(err.message);
 
-    auth_info.method = 'username';
     return user;
 
 }

@@ -1,3 +1,52 @@
-<p>
-  expense works!
-</p>
+<ng-template #loading>
+  <div id="preloader" [style.display]="splash ? 'flex': 'none'">
+    <div id="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</ng-template>
+<div class="card mt-3">
+  <div class="card-header">
+    <div class="float-left">
+      <h4>Novas despesas</h4>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-success" (click)="onRefresh()">Atualizar</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="panel row" *ngIf="expenses$ | async as response; else loadingError">
+      <div class="table table-hover" *ngIf="response.success; else loading">
+        <a [routerLink]="[ '/expenses', expense.id ]" *ngFor="let expense of response.expenses">
+          <div class="card">
+            <h5 class="card-header">{{ expense.id }} - {{ expense.ProviderId }}</h5>
+            <div class="card-body">
+              <h5 class="card-title">R$ {{ expense.requested_value }}</h5>
+              <p class="card-text">{{ expense }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <ng-template #loadingError>
+      <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+        <div class="card-body">
+          <alert type="danger">
+            <h3>OMG!!!!</h3>
+            <hr>
+            <p><span>Servidor não responde.</span></p>
+          </alert>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
