@@ -31,17 +31,8 @@ const getAll = async (req, res) => {
     
     let clause = req.query.status? { PrefectureId: user.PrefectureId, isActive: true, status: req.query.status } : { PrefectureId: user.PrefectureId, isActive: true };
 
-    [err, expenses] = await to( Expense.findAll({ where: clause} ));
+    [err, expenses] = await to( Expense.findAll({ where: clause, include: [Provider] }));
     if (err) TE(err.message);
-
-    for (let index = 0; index < expenses.length; index++) {
-        //const element = array[index];
-        //expenses[index][ProviderId];
-        console.log(expenses[index]);
-        console.log("---------------------------------------------");
-        
-        
-    }
 
     return ReS(res, { expenses: expenses });
 }

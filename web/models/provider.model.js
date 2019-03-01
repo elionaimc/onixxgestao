@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   Provider.associate = models => {
     Provider.belongsTo(models.Prefecture);
     Provider.belongsTo(models.User);
-    Provider.hasMany(models.Expense);
   };
 
   return Provider;

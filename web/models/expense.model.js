@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     authorized_by: DataTypes.INTEGER,
     authorization_code: DataTypes.STRING,
     authorization_date: DataTypes.DATEONLY,
-    requested_value: { type: DataTypes.DECIMAL, validate: { isNumeric: true } },
-    authorized_value: { type: DataTypes.DECIMAL, validate: { isNumeric: true } },
+    requested_value: { type: DataTypes.DECIMAL(10, 2), validate: { isNumeric: true } },
+    authorized_value: { type: DataTypes.DECIMAL(10, 2), validate: { isNumeric: true } },
     status: { type: DataTypes.ENUM(CONFIG.expense_status), allowNull: false, defaultValue: CONFIG.expense_status_default },
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   Expense.associate = models => {
     Expense.belongsTo(models.User);
     Expense.belongsTo(models.Prefecture);
+    Expense.belongsTo(models.Provider);
   };
 
   return Expense;
