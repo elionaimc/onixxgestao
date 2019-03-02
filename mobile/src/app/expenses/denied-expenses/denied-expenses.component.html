@@ -12,47 +12,30 @@
     </div>
   </div>
 </ng-template>
-<div class="card mt-3">
-  <div class="card-header">
+<div class="card mt-3 border-0">
+  <div class="card-header bg-white">
     <div class="float-left">
-      <h4>Despesas</h4>
+      <h4>Recusadas</h4>
     </div>
     <div class="float-right">
-      <button type="button" class="btn btn-primary" [routerLink]="['nova']">Nova Despesa</button>
-
-      <button type="button" class="btn btn-secondary" (click)="onRefresh()">Atualizar</button>
+      <button type="button" class="btn btn-success" (click)="onRefresh()">Atualizar</button>
     </div>
   </div>
   <div class="card-body">
     <div class="panel row" *ngIf="expenses$ | async as response; else loadingError">
-      <table class="table table-hover" *ngIf="response.success; else loading">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Despesa</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let expense of response.expenses">
-            <td>{{ expense.id }}</td>
-            <td><a [routerLink]="[ '/expenses', expense.id ]">{{ expense.description }}</a></td>
-            <td>
-              <span class="float-right">
-                <button class="btn btn-warning mb-1 btn-sm">
-                  Atualizar
-                </button>
-
-                <button class="btn btn-danger mb-1 btn-sm">
-                  Remover
-                </button>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table table-hover" *ngIf="response.success; else loading">
+        <a [routerLink]="[ '/expenses', expense.id ]" *ngFor="let expense of response.expenses">
+          <div class="card">
+            <h5 class="card-header">{{ expense.id }} - {{ expense.Provider.name }}</h5>
+            <div class="card-body">
+              <span class="card-title">{{ expense.requested_value | currency:'BRL':'R$ ' }}</span>
+              <p class="card-text">Vencimento: {{ expense.due_date | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+          <br />
+        </a>
+      </div>
     </div>
-
     <ng-template #loadingError>
       <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
         <div class="card-body">

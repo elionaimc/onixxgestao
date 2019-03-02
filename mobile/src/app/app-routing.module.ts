@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     loadChildren: './login/login.module#LoginModule'},
   { path: 'home',
-    loadChildren: './home/home.module#HomeModule',
+    loadChildren: './expenses/expenses.module#ExpensesModule',
     canActivate: [AuthGuard]},
   { path: 'users',
     loadChildren: './users/users.module#UsersModule',

@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { Expense } from './expense.model';
 import { ExpensesService } from '../expenses.service';
 import { catchError } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
 export class ExpenseComponent implements OnInit {

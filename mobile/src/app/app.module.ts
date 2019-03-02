@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -19,6 +19,9 @@ import { AuthGuard } from './login/auth.guard';
 import { UsersGuard } from './users/users.guard';
 import { JwtInterceptor } from './login/jwt.interceptor';
 import { ErrorInterceptor } from './login/error.interceptor';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
@@ -45,6 +48,10 @@ import { ErrorInterceptor } from './login/error.interceptor';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR' // 'de' for Germany, 'fr' for France ...
+    }
   ],
   bootstrap: [AppComponent]
 })

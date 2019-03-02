@@ -102,7 +102,6 @@ a, a:hover {
 
 /* Topbar navigation */
 .navbar {
-  position:sticky;
   max-height:80px;
   min-height:80px;
 }
@@ -285,17 +284,6 @@ a, a:hover {
     opacity: 0;
     transform: scale(1);
   }
-}
-
-@keyframes load {
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
-}
-
-.spinner-message {
-  text-align: center;
 }
 /* end loader */
 

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   //API: '/api'
-  API: 'https://api.plused.com.br/api'
+  API: 'http://wakenfun.com.br/api'
 };
