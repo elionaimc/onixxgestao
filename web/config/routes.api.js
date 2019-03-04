@@ -33,7 +33,7 @@ router.post( '/login', UserController.login);
 //Expenses routes
 router.post( '/expenses', concierge, ExpenseController.create);
 router.get ('/expenses', concierge, ExpenseController.getAll);
-router.get( '/expenses/:expense_id', concierge, custom.expense, ExpenseController.get);
+router.get( '/expenses/:expense_id', custom.expense, ExpenseController.get);
 router.put( '/expenses/:expense_id', concierge, custom.expense, ExpenseController.update);
 router.delete( '/expenses/:expense_id', concierge, custom.expense, ExpenseController.remove);
 

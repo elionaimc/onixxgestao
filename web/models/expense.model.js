@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     Expense.belongsTo(models.User);
     Expense.belongsTo(models.Prefecture);
     Expense.belongsTo(models.Provider);
+    Expense.belongsTo(models.Category);
   };
 
   return Expense;
