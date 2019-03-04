@@ -4,7 +4,6 @@ import { Expense } from './expense.model';
 import { ExpensesService } from '../expenses.service';
 import { catchError } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-expense',

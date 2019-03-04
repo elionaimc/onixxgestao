@@ -25,6 +25,18 @@ body {
 a, a:hover {
   text-decoration: none;
 }
+
+h5 {
+  margin-top: 0 !important;
+  font-weight: bold !important;
+}
+
+#main-content {
+  margin-top:-100px;
+  padding-top:100px;
+  border: 0;
+}
+
 /* Sidebar navigation */
 #sidebar-wrapper {
   min-height: 100vh;

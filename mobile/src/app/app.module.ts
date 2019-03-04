@@ -21,6 +21,8 @@ import { JwtInterceptor } from './login/jwt.interceptor';
 import { ErrorInterceptor } from './login/error.interceptor';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
+import { ExpensesModule } from './expenses/expenses.module';
+import { ExpenseComponent } from './expenses/expense/expense.component';
 registerLocaleData(ptBr);
 
 @NgModule({
@@ -28,7 +30,7 @@ registerLocaleData(ptBr);
     AppComponent,
     SidebarComponent,
     TopbarComponent],
-  entryComponents: [],
+  entryComponents: [ExpenseComponent],
   imports: [
     BrowserModule,
     PopoverModule.forRoot(),
@@ -37,7 +39,8 @@ registerLocaleData(ptBr);
     FontAwesomeModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    ExpensesModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
