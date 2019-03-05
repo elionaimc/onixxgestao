@@ -1,11 +1,46 @@
-<div *ngIf="expense$ | async as response; else loadingError">
-  <div *ngIf="response.success; else paramError">
-    <p>Fornecedor: {{ response.expense.ProviderId }}</p>
-    <p>Categoria: {{ response.expense.CategoryId }} Vencimento: {{ response.expense.due_date }}</p>
-    <p>Detalhes: {{ response.expense.description }}</p>
-    <p class="text-center">Valor solicitado: <br/></p>
-    <input type="number" class="text-center" value="{{ response.expense.requested_value }}" />
-  </div>
+<div *ngIf="expense$ | async as response; else loadingError" style="height:100% !important;" class="row">
+<ion-content padding style="min-height:100% !important;" *ngIf="response.success; else paramError">
+<ion-card >
+  <ion-card-header [ngClass]="{'bg-danger': response.expense.status=='recusada', 'bg-success': response.expense.status=='autorizada'}">
+    <ion-card-subtitle [ngClass]="{'text-white': response.expense.status!='nova'}">
+      Cód.: {{ response.expense.id }} - {{ response.expense.Provider.name }}
+    </ion-card-subtitle>
+    <ion-card-title [ngClass]="{'text-white': response.expense.status!='nova'}">
+      <span class="badge badge-light">Solicitado:</span> {{ response.expense.requested_value | currency: 'BRL' }} <br/>
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p class="card-text">
+      <span class="badge badge-light">Categoria:</span><br />
+      {{ response.expense.Category.description }}
+    </p>
+    <p class="card-text">
+      <span class="badge badge-light">Vencimento:</span><br />
+      {{ response.expense.due_date | date: 'dd/MM/yyyy' }}
+    </p>
+    <p class="card-text"><span class="badge badge-light">Detalhes:</span><br />
+      {{ response.expense.description }}
+      <br/>
+    </p>
+    <ion-card-title *ngIf="response.expense.status == 'autorizada' ">
+      <span class="badge badge-light">Autorizado:</span>
+      {{ response.expense.authorized_value == NULL? "R$ 0,00" : response.expense.authorized_value | currency: 'BRL' }}
+    </ion-card-title>
+    <small>
+      Cadastrada em {{ response.expense.createdAt | date: 'dd/MM/yyyy' }} por {{ response.expense.User.name }}
+    </small>
+    <br/>
+    <div class="float-right">
+      <button type="button" class="btn btn-primary btn-sm" *ngIf="response.expense.status!='nova'"
+        [routerLink]="response.expense.status=='recusada' ? ['/expenses/denied'] : ['/expenses/authorized']">Voltar</button>
+      <button type="button" class="btn btn-primary btn-sm" *ngIf="response.expense.status=='nova'"
+        [routerLink]="['/expenses']">Voltar</button>
+    </div>
+    <br/>
+  </ion-card-content>
+</ion-card>
+</ion-content>
 
   <ng-template #paramError>
     <div class="card mt-3 border-0">
@@ -18,6 +53,7 @@
       </div>
     </div>
   </ng-template>
+  
 </div>
 
 <ng-template #loadingError>

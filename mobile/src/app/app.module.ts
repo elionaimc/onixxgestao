@@ -23,6 +23,9 @@ import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
 import { ExpensesModule } from './expenses/expenses.module';
 import { ExpenseComponent } from './expenses/expense/expense.component';
+import { ExpenseDetailComponent } from './expenses/expense-detail/expense-detail.component';
+import { AuthorizedExpensesComponent } from './expenses/authorized-expenses/authorized-expenses.component';
+import { DeniedExpensesComponent } from './expenses/denied-expenses/denied-expenses.component';
 registerLocaleData(ptBr);
 
 @NgModule({
@@ -30,7 +33,7 @@ registerLocaleData(ptBr);
     AppComponent,
     SidebarComponent,
     TopbarComponent],
-  entryComponents: [ExpenseComponent],
+  entryComponents: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent],
   imports: [
     BrowserModule,
     PopoverModule.forRoot(),
