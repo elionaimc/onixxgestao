@@ -6,16 +6,19 @@ import { AlertModule } from 'ngx-bootstrap';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 import { AuthorizedExpensesComponent } from './authorized-expenses/authorized-expenses.component';
 import { DeniedExpensesComponent } from './denied-expenses/denied-expenses.component';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
+import { LoadingComponent } from '../loading/loading/loading.component';
+import { ParamErrorComponent } from '../loading/param-error/param-error.component';
+import { ServerErrorComponent } from '../loading/server-error/server-error.component';
 
 @NgModule({
-  declarations: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent],
+  declarations: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent, LoadingComponent, ParamErrorComponent, ServerErrorComponent],
   imports: [
     CommonModule,
     ExpensesRoutingModule,
     IonicModule,
     AlertModule.forRoot()
   ],
-  entryComponents: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent]
+  entryComponents: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent, LoadingComponent, ParamErrorComponent]
 })
 export class ExpensesModule { }
