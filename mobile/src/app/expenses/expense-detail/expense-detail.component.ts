@@ -4,10 +4,12 @@ import { Subscription, EMPTY, Observable, Subject } from 'rxjs';
 import { Expense } from '../expense/expense.model';
 import { ExpensesService } from '../expenses.service';
 import { catchError } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-expense-detail',
-  templateUrl: './expense-detail.component.html'
+  templateUrl: './expense-detail.component.html',
+  preserveWhitespaces: true
 })
 export class ExpenseDetailComponent implements OnInit {
 
@@ -16,6 +18,7 @@ export class ExpenseDetailComponent implements OnInit {
   expense$: Observable<Expense>;
   error$ = new Subject<boolean>();
   control: Subscription;
+  submitted = false;
 
   constructor(private router: ActivatedRoute, private service: ExpensesService) { }
 
@@ -30,6 +33,13 @@ export class ExpenseDetailComponent implements OnInit {
           })
         );
     });
+  }
+
+  onSubmit(f: NgForm) {
+    this.submitted = true;
+    if (f.invalid) {
+      return;
+    }
   }
 
   ngOnDestroy(): void {
