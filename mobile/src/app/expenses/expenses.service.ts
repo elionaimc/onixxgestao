@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Expense } from './expense/expense.model';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +15,9 @@ export class ExpensesService {
   public authorized = new HttpParams().set('status', 'autorizada');
   public denied = new HttpParams().set('status', 'recusada');
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  listAll() {
+  listNew() {
     return this.http.get<Expense[]>(this.RESOURCE, { params: this.new });
   }
 
@@ -29,5 +31,18 @@ export class ExpensesService {
 
   listOne(id: number) {
     return this.http.get<Expense>(this.RESOURCE + '/' + id);
+  }
+
+  updateOne(id, authorized_value, status) {
+    return this.http.put(
+      this.RESOURCE + '/' + id,
+      {authorized_value: authorized_value, status: status}
+    ).pipe(
+      map(success => {
+        if (success) {
+          this.router.navigate(['/expenses']);
+        }
+      })
+    );
   }
 }

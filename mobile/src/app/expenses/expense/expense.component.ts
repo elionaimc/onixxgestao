@@ -24,7 +24,7 @@ export class ExpenseComponent implements OnInit {
   }
 
   onRefresh() {
-    this.expenses$ = this.service.listAll()
+    this.expenses$ = this.service.listNew()
       .pipe(
         catchError(error => {
           this.error$.next(true);
@@ -34,7 +34,6 @@ export class ExpenseComponent implements OnInit {
   }
 
   ionViewDidLoad() {
-    setTimeout(() => this.splash = false, 4000);
+    setTimeout(() => this.splash = false, 1000);
   }
-
 }

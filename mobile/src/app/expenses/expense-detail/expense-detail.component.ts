@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, EMPTY, Observable, Subject } from 'rxjs';
 import { Expense } from '../expense/expense.model';
 import { ExpensesService } from '../expenses.service';
@@ -20,10 +20,12 @@ export class ExpenseDetailComponent implements OnInit {
   control: Subscription;
   submitted = false;
 
-  constructor(private router: ActivatedRoute, private service: ExpensesService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private service: ExpensesService) { }
 
   ngOnInit() {
-    this.control = this.router.params.subscribe(params => {
+    this.control = this.route.params.subscribe(params => {
       this.id = params['id'];
       this.expense$ = this.service.listOne(this.id)
         .pipe(
@@ -35,11 +37,13 @@ export class ExpenseDetailComponent implements OnInit {
     });
   }
 
-  onSubmit(f: NgForm) {
+  onSubmit(f: NgForm, status) {
     this.submitted = true;
     if (f.invalid) {
       return;
     }
+    this.service.updateOne(this.id, f.form.value.authorized_value, status)
+      .subscribe();
   }
 
   ngOnDestroy(): void {

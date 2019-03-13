@@ -16,7 +16,6 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { AuthService } from './login/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './login/auth.guard';
-import { UsersGuard } from './users/users.guard';
 import { JwtInterceptor } from './login/jwt.interceptor';
 import { ErrorInterceptor } from './login/error.interceptor';
 import { registerLocaleData } from '@angular/common';
@@ -50,7 +49,6 @@ registerLocaleData(ptBr);
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     AuthService,
     AuthGuard,
-    UsersGuard,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

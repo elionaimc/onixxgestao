@@ -40,6 +40,11 @@ module.exports.getAll = getAll;
 
 const get = (req, res) => {
     let expense = req.expense;
+    if (expense.authorized_value === null) {
+        expense.set({
+            authorized_value: expense.requested_value
+        })
+    }
     return ReS(res, {expense:expense.toJSON()});
 }
 module.exports.get = get;
@@ -47,8 +52,19 @@ module.exports.get = get;
 //Updates a expense
 const update = async (req, res) => {
     let err, expense, data;
+    if (req.body.status === 'autorizada') {
+        data = req.body;
+        let date = Date.now();
+        data.authorized_by = req.user.id;
+        data.authorization_date = date;
+        data.authorization_code = req.user.id + date + '_' + date * req.body.authorized_value;
+    } else if (req.body.status === 'recusada') {
+        data = {
+            status: 'recusada',
+            authorized_by: req.user.id
+        };
+    }
     expense = req.expense;
-    data = req.body;
     expense.set(data);
 
     [err, expense] = await to(expense.save());

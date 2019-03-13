@@ -20,6 +20,4 @@ export class UsersService {
   listOne(id: number) {
     return this.http.get<User>(this.RESOURCE + '/' + id);
   }
-
-
 }

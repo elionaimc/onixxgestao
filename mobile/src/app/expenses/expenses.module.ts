@@ -10,15 +10,31 @@ import { IonicModule } from '@ionic/angular';
 import { LoadingComponent } from '../loading/loading/loading.component';
 import { ParamErrorComponent } from '../loading/param-error/param-error.component';
 import { ServerErrorComponent } from '../loading/server-error/server-error.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent, LoadingComponent, ParamErrorComponent, ServerErrorComponent],
+  declarations: [
+    ExpenseComponent,
+    ExpenseDetailComponent,
+    AuthorizedExpensesComponent,
+    DeniedExpensesComponent,
+    LoadingComponent,
+    ParamErrorComponent,
+    ServerErrorComponent],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     ExpensesRoutingModule,
     IonicModule,
     AlertModule.forRoot()
   ],
-  entryComponents: [ExpenseComponent, ExpenseDetailComponent, AuthorizedExpensesComponent, DeniedExpensesComponent, LoadingComponent, ParamErrorComponent]
+  entryComponents: [
+    ExpenseComponent,
+    ExpenseDetailComponent,
+    AuthorizedExpensesComponent,
+    DeniedExpensesComponent,
+    LoadingComponent,
+    ParamErrorComponent]
 })
 export class ExpensesModule { }

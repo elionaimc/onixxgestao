@@ -10,8 +10,17 @@
   <div class="panel row h-100" *ngIf="expenses$ | async as response; else loadingError">
     <div class="table table-hover" *ngIf="response.success; else loading" style="height:100% !important;">
       <ion-content padding style="min-height:100% !important;">
+        <div class="card mt-3 border-0" *ngIf="response.expenses.length == 0">
+          <div class="card-body">
+            <alert type="light">
+              <h3>Tudo certo por aqui</h3>
+              <hr>
+              <p><strong>Nenhuma despesa autorizada para exibir.</strong></p>
+            </alert>
+          </div>
+        </div>
         <ion-list>
-          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/expenses', expense.id ]" lines="none">
+          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/expenses', expense.id ]" lines="none" detail="false">
             <ion-label>
               <div class="card">
                 <h5 class="card-header alert-success">{{ expense.id }} - {{ expense.Provider.name }}</h5>

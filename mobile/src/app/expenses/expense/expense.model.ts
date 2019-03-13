@@ -7,7 +7,7 @@ export interface Expense {
     authorization_code: string;
     authorization_date: string;
     requested_value: number;
-    authorized_value: string;
+    authorized_value: number;
     status: string;
     CategoryId: string;
     PrefectureId: number;
