@@ -11,6 +11,8 @@ const router = express.Router();
 
 const UserController = require('../controllers/user.controller');
 const ExpenseController = require('../controllers/expense.controller');
+const ProviderControler = require('../controllers/provider.controler');
+const CategoryControler = require('../controllers/category.controler');
 const HomeController = require('../controllers/home.controller');
 
 const custom = require('./../middleware/custom');
@@ -36,6 +38,20 @@ router.get ('/expenses', concierge, ExpenseController.getAll);
 router.get( '/expenses/:expense_id', concierge, custom.expense, ExpenseController.get);
 router.put('/expenses/:expense_id', concierge, custom.expense, ExpenseController.update);
 router.delete( '/expenses/:expense_id', concierge, custom.expense, ExpenseController.remove);
+
+//Providers routes
+router.post('/providers', concierge, ProviderControler.create);
+router.get('/providers', concierge, ProviderControler.getAll);
+router.get('/providers/:provider_id', concierge, custom.provider, ProviderControler.get);
+router.put('/providers/:provider_id', concierge, custom.provider, ProviderControler.update);
+router.delete('/providers/:provider_id', concierge, custom.provider, ProviderControler.remove);
+
+//Categories routes
+router.post('/categories', concierge, CategoryControler.create);
+router.get('/categories', concierge, CategoryControler.getAll);
+router.get('/categories/:category_id', concierge, custom.category, CategoryControler.get);
+router.put('/categories/:category_id', concierge, custom.category, CategoryControler.update);
+router.delete('/categories/:category_id', concierge, custom.category, CategoryControler.remove);
 
 //Dashboard routes
 router.get('/home', concierge, HomeController.dashboard)

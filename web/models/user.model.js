@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = models => {
         User.belongsTo(models.Prefecture);
         User.hasMany(models.Expense);
+        User.hasMany(models.Provider);
+        User.hasMany(models.Category);
     };
 
     User.beforeSave(async (user, options) => {

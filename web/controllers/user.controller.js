@@ -1,7 +1,7 @@
 /*
 * @author Elionai Moura Cordeiro
 * @version 1.0.0
-* @description Router module for outgo_test app
+* @description
 */
 const { User } = require('../models');
 const authService = require('../services/auth.service');
