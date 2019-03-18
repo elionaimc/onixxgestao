@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"panel py-5 px-5\">\n  <form class=\"form-auth border rounded border-primary px-2 py-2\" #f=\"ngForm\" (ngSubmit)=\"onSubmit(f)\" novalidate>\n    <div class=\"row justify-content-center\">\n      <div class=\"col-sm-9\">\n        <label for=\"authorized\">\n          <h3>Cadastrar Fornecedor</h3>\n        </label>\n      </div>\n    </div>\n    <div class=\"row justify-content-center\">\n      <div class=\"col-sm-9\">\n        <label for=\"name\">Nome</label>\n        <input type=\"text\" id=\"name\" class=\"form-control\" ngModel #name=\"ngModel\" \n         name=\"name\" placeholder=\"Nome\" minlength=\"5\" maxlength=\"40\" required/>\n      </div>\n    </div>\n    <div class=\"row justify-content-center py-1\">\n      <div class=\"col-sm-9\">\n        <label for=\"cnpj\">CNPJ</label>\n        <input type=\"text\" id=\"cnpj\" class=\"form-control\" ngModel #cnpj=\"ngModel\"\n         name=\"cnpj\" placeholder=\"CNPJ\" minlength=\"10\" maxlength=\"40\" required/>\n      </div>\n    </div>\n    <div class=\"row justify-content-center py-3\">\n      <div class=\"text-center\">\n        <button type=\"submit\" [disabled]=\"!f.form.valid\" class=\"btn btn-success btn-lg\" id=\"cadastrar\"\n          name=\"cadastrar\">Cadastrar</button>\n      </div>\n    </div>\n  </form>\n</div>"
+module.exports = "<div class=\"panel py-5 px-5\">\n  <form class=\"form-auth border rounded border-primary px-2 py-2\" #f=\"ngForm\" (ngSubmit)=\"onSubmit(f)\" novalidate>\n    <div class=\"row justify-content-center\">\n      <div class=\"col-sm-9\">\n        <label for=\"authorized\">\n          <h3>Cadastrar Fornecedor</h3>\n        </label>\n      </div>\n    </div>\n    <div class=\"row justify-content-center\">\n      <div class=\"col-sm-9\">\n        <label for=\"razaoSocial\">Razão Social</label>\n        <input type=\"text\" class=\"form-control\" ngModel #razaoSocial=\"ngModel\" \n         name=\"razaoSocial\" placeholder=\"Ex: Indústrias Acme LTDA\" minlength=\"5\" maxlength=\"100\" required/>\n      </div>\n    </div>\n    <div class=\"row justify-content-center py-1\">\n      <div class=\"col-sm-9\">\n        <label for=\"CNPJ\">CNPJ</label>\n        <input type=\"text\" class=\"form-control\" ngModel #CNPJ=\"ngModel\"\n         name=\"CNPJ\" placeholder=\"CNPJ\" minlength=\"10\" maxlength=\"40\" required/>\n      </div>\n    </div>\n    <div class=\"row justify-content-center py-1\">\n      <div *ngIf=\"error\" class=\"alert alert-warning\">\n        <small>{{error}}</small>\n      </div>\n    </div>\n    <div class=\"row justify-content-center py-3\">\n      <div class=\"text-center\">\n        <button type=\"submit\" [disabled]=\"!f.form.valid\" class=\"btn btn-success btn-lg\" id=\"cadastrar\"\n          name=\"cadastrar\">Cadastrar</button>\n      </div>\n    </div>\n  </form>\n</div>"
 
 /***/ }),
 
@@ -24,28 +24,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var src_app_services_providers_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/providers.service */ "./src/app/services/providers.service.ts");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 
 
 
 
 var CreateComponent = /** @class */ (function () {
-    function CreateComponent(service) {
-        this.service = service;
-        this.splash = true;
-        this.error$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+    function CreateComponent(providersService, router) {
+        this.providersService = providersService;
+        this.router = router;
         this.submitted = false;
     }
     CreateComponent.prototype.ngOnInit = function () {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     };
     CreateComponent.prototype.onSubmit = function (f) {
+        var _this = this;
         this.submitted = true;
         if (f.invalid) {
             return;
         }
-        console.log(f.form.value.name);
-        this.service.create(f.form.value.name, f.form.value.cnpj)
-            .subscribe();
+        this.provider = {
+            razaoSocial: f.form.value.razaoSocial,
+            CNPJ: f.form.value.CNPJ,
+            PrefectureId: this.currentUser.PrefectureId,
+            UserId: this.currentUser.id
+        };
+        this.providersService.create(this.provider)
+            .subscribe(function (success) { return _this.router.navigate(['/providers']); }, function (error) { return _this.error = error; });
     };
     CreateComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -53,7 +59,8 @@ var CreateComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./create.component.html */ "./src/app/providers/create/create.component.html"),
             preserveWhitespaces: true
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_providers_service__WEBPACK_IMPORTED_MODULE_2__["ProvidersService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_providers_service__WEBPACK_IMPORTED_MODULE_2__["ProvidersService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], CreateComponent);
     return CreateComponent;
 }());
@@ -69,7 +76,7 @@ var CreateComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"provider$ | async as response; else loadingError\">\n  <div *ngIf=\"response.success; else paramError\">\n    <span>Nome: {{ response.provider.name }}</span>\n  </div>\n\n  <ng-template #paramError>\n    <app-param-error></app-param-error>\n  </ng-template>\n\n</div>\n\n<ng-template #loading>\n  <app-loading></app-loading>\n</ng-template>\n\n<ng-template #loadingError>\n  <div *ngIf=\"error$ | async; else loading\" class=\"card mt-3 border-0\">\n    <app-server-error></app-server-error>\n  </div>\n</ng-template>"
+module.exports = "<div *ngIf=\"provider$ | async as response; else loadingError\">\n  <div *ngIf=\"response.success; else paramError\" class=\"p-5\">\n    <div class=\"card\">\n      <div class=\"card-header bg-light\"\n        [ngClass]=\"{'text-danger': response.provider.isActive == false}\">\n          <h3>{{ response.provider.razaoSocial }}</h3>\n      </div>\n      <div class=\"card-body\">\n        \n        <h5 class=\"card-subtitle mb-2 text-muted\">CNPJ: {{ response.provider.CNPJ }}</h5>\n        <p class=\"card-text\">\n          <small>\n            Fornecedor cadastrado em {{ response.provider.createdAt | date: 'dd/MM/yyyy' }}\n            por {{ response.provider.User.name }}.\n          </small>\n        </p>\n        <a [routerLink]=\"[ '/providers']\" class=\"card-link\">Voltar</a>\n      </div>\n    </div>\n  </div>\n\n  <ng-template>\n    <app-param-error #paramError></app-param-error>\n  </ng-template>\n\n</div>\n\n<ng-template #loading>\n  <app-loading></app-loading>\n</ng-template>\n\n<ng-template #loadingError>\n  <div *ngIf=\"error$ | async; else loading\" class=\"card mt-3 border-0\">\n    <app-server-error></app-server-error>\n  </div>\n</ng-template>"
 
 /***/ }),
 
@@ -104,7 +111,7 @@ var DetailComponent = /** @class */ (function () {
     }
     DetailComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.control = this.router.params.subscribe(function (params) {
+        this.router.params.subscribe(function (params) {
             _this.id = params['id'];
             _this.provider$ = _this.service.listOne(_this.id)
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
@@ -112,9 +119,6 @@ var DetailComponent = /** @class */ (function () {
                 return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
             }));
         });
-    };
-    DetailComponent.prototype.ngOnDestroy = function () {
-        this.control.unsubscribe();
     };
     DetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -138,7 +142,7 @@ var DetailComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card mt-3 border-0\">\n  <div class=\"card-header border-0 bg-white\">\n    <div class=\"float-left\">\n      <h4>Fornecedores</h4>\n    </div>\n    <div class=\"float-right\">\n      <button type=\"button\" class=\"btn btn-success\" [routerLink]=\"['novo']\">Cadastrar</button>\n\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"onRefresh()\">Atualizar</button>\n    </div>\n  </div>\n  <div class=\"card-body\">\n    <div class=\"panel row\" *ngIf=\"providers$ | async as response; else loadingError\">\n      <table class=\"table table-hover\" *ngIf=\"response.success; else loading\">\n        <!--<thead>\n          <tr>\n            <th>Fornecedor</th>\n            <th></th>\n          </tr>\n        </thead>-->\n        <tbody>\n          <tr *ngFor=\"let provider of response.providers\">\n            <td class=\"border-0\"><a [routerLink]=\"[ '/providers', provider.id ]\">{{ provider.name }}</a></td>\n            <td class=\"border-0\">\n              <span class=\"float-right\">\n                <button class=\"btn btn-warning mb-1 btn-sm\">\n                  Atualizar\n                </button>\n\n                <button class=\"btn btn-danger mb-1 btn-sm\">\n                  Remover\n                </button>\n              </span>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <ng-template #loading>\n      <app-loading></app-loading>\n    </ng-template>\n\n    <ng-template #loadingError>\n      <div *ngIf=\"error$ | async; else loading\" class=\"card mt-3 border-0\">\n        <app-server-error></app-server-error>\n      </div>\n    </ng-template>\n  </div>\n</div>"
+module.exports = "<div class=\"card mt-3 border-0\">\n  <div class=\"card-header border-0 bg-white\">\n    <div class=\"float-left\">\n      <h4>Fornecedores</h4>\n    </div>\n    <div class=\"float-right\">\n      <button type=\"button\" class=\"btn btn-outline-success\" [routerLink]=\"['novo']\">Cadastrar</button>\n      <button type=\"button\" class=\"btn btn-outline-primary\" (click)=\"onRefresh()\">Atualizar</button>\n    </div>\n  </div>\n  <div class=\"card-body\">\n    <div class=\"panel row\" *ngIf=\"providers$ | async as response; else loadingError\">\n      <table class=\"table table-hover\" *ngIf=\"response.success; else loading\">\n        <thead>\n          <tr>\n            <th class=\"border-top border-secondary bg-secondary text-white\">#</th>\n            <th class=\"border-top border-secondary bg-secondary text-white\">Fornecedor</th>\n            <th class=\"border-top border-secondary bg-secondary text-white\"></th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let provider of response.providers\">\n            <td class=\"border-bottom border-primary\">\n              {{ provider.id }}\n            </td>\n            <td class=\"border-bottom border-primary\">\n              <a [routerLink]=\"[ '/providers', provider.id ]\">\n                {{ provider.razaoSocial }}\n              </a>\n            </td>\n            <td class=\"border-bottom border-primary\">\n              <span class=\"float-right\">\n                <button class=\"btn btn-warning mb-1 btn-sm\">\n                  Editar\n                </button>\n\n                <button class=\"btn btn-danger mb-1 btn-sm\">\n                  Ativar/Desativar\n                </button>\n              </span>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <ng-template #loading>\n      <app-loading></app-loading>\n    </ng-template>\n\n    <ng-template #loadingError>\n      <div *ngIf=\"error$ | async; else loading\" class=\"card mt-3 border-0\">\n        <app-server-error></app-server-error>\n      </div>\n    </ng-template>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -165,7 +169,6 @@ __webpack_require__.r(__webpack_exports__);
 var ListComponent = /** @class */ (function () {
     function ListComponent(service) {
         this.service = service;
-        this.splash = true;
         this.error$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
     }
     ListComponent.prototype.ngOnInit = function () {
@@ -178,10 +181,6 @@ var ListComponent = /** @class */ (function () {
             _this.error$.next(true);
             return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
         }));
-    };
-    ListComponent.prototype.ionViewDidLoad = function () {
-        var _this = this;
-        setTimeout(function () { return _this.splash = false; }, 4000);
     };
     ListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -316,38 +315,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-
 
 
 
 
 
 var ProvidersService = /** @class */ (function () {
-    function ProvidersService(http, router) {
+    function ProvidersService(http) {
         this.http = http;
-        this.router = router;
-        this.RESOURCE = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API + "/providers";
+        this.RESOURCE = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API + "/providers/";
     }
     ProvidersService.prototype.listAll = function () {
         return this.http.get(this.RESOURCE);
     };
     ProvidersService.prototype.listOne = function (id) {
-        return this.http.get(this.RESOURCE + '/' + id);
+        return this.http.get(this.RESOURCE + id);
     };
-    ProvidersService.prototype.create = function (name, cnpj) {
-        var _this = this;
-        return this.http.post(this.RESOURCE + '/', { name: name, cnpj: cnpj }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (success) {
-            if (success) {
-                _this.router.navigate(['/providers']);
-            }
-        }));
+    ProvidersService.prototype.create = function (provider) {
+        return this.http.post(this.RESOURCE, provider).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1));
     };
     ProvidersService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
     ], ProvidersService);
     return ProvidersService;
 }());
