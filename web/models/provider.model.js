@@ -7,8 +7,8 @@ const {TE, to} = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
   let Provider = sequelize.define('Provider', {
-    name: DataTypes.STRING,
-    cnpj: DataTypes.STRING,
+    razaoSocial: DataTypes.STRING,
+    CNPJ: DataTypes.STRING,
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });
   
