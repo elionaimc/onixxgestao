@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01/03/2019 às 03:21
+-- Tempo de geração: 18/03/2019 às 21:00
 -- Versão do servidor: 8.0.15
 -- Versão do PHP: 7.1.23
 
@@ -38,13 +38,6 @@ CREATE TABLE `Categories` (
   `UserId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Despejando dados para a tabela `Categories`
---
-
-INSERT INTO `Categories` (`id`, `description`, `isActive`, `createdAt`, `updatedAt`, `PrefectureId`, `UserId`) VALUES
-(1, 'Festas', 1, '2019-02-16 00:00:00', '2019-02-16 00:00:00', 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -70,18 +63,6 @@ CREATE TABLE `Expenses` (
   `PrefectureId` int(11) DEFAULT NULL,
   `ProviderId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Despejando dados para a tabela `Expenses`
---
-
-INSERT INTO `Expenses` (`id`, `description`, `file`, `due_date`, `authorized_by`, `authorization_code`, `authorization_date`, `requested_value`, `authorized_value`, `status`, `isActive`, `createdAt`, `updatedAt`, `CategoryId`, `UserId`, `PrefectureId`, `ProviderId`) VALUES
-(1, 'Aniversário da cidade de Bom Jesus RN', NULL, '2019-12-25', NULL, NULL, NULL, '50001.00', NULL, 'nova', 1, '2019-02-16 16:27:26', '2019-02-16 16:27:26', 1, 1, 1, 1),
-(2, 'Copa do Mundo', NULL, '2019-07-10', NULL, NULL, NULL, '50210.00', NULL, 'nova', 1, '2019-02-16 16:30:07', '2019-02-16 16:30:07', 1, 1, 1, 1),
-(7, 'Descrição teste despesa', NULL, '2019-12-25', NULL, NULL, NULL, '2323998.87', NULL, 'nova', 1, '2019-02-16 16:27:26', '2019-02-16 16:27:26', 1, 1, 1, 1),
-(8, 'Novo teste de despesa cadastrada', NULL, '2019-07-10', NULL, NULL, NULL, '50210.66', NULL, 'autorizada', 1, '2019-02-16 16:30:07', '2019-02-16 16:30:07', 1, 1, 1, 1),
-(9, 'Despesa cadastrada com sucesso', NULL, '2019-07-10', NULL, NULL, NULL, '1210.43', NULL, 'autorizada', 1, '2019-02-16 16:30:07', '2019-02-16 16:30:07', 1, 1, 1, 1),
-(10, 'Despesa teste', NULL, '2019-07-10', NULL, NULL, NULL, '34308349.77', NULL, 'nova', 1, '2019-02-16 16:30:07', '2019-02-16 16:30:07', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -114,8 +95,8 @@ INSERT INTO `Prefectures` (`id`, `name`, `code`, `image`, `isActive`, `createdAt
 
 CREATE TABLE `Providers` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `cnpj` varchar(255) DEFAULT NULL,
+  `razaoSocial` varchar(255) DEFAULT NULL,
+  `CNPJ` varchar(255) DEFAULT NULL,
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -127,8 +108,11 @@ CREATE TABLE `Providers` (
 -- Despejando dados para a tabela `Providers`
 --
 
-INSERT INTO `Providers` (`id`, `name`, `cnpj`, `isActive`, `createdAt`, `updatedAt`, `PrefectureId`, `UserId`) VALUES
-(1, 'Fornecedor Teste', '000.000.000/000-00', 1, '2019-02-16 00:00:00', '2019-02-16 00:00:00', 1, 1);
+INSERT INTO `Providers` (`id`, `razaoSocial`, `CNPJ`, `isActive`, `createdAt`, `updatedAt`, `PrefectureId`, `UserId`) VALUES
+(1, 'Indústrias ACME LTDA', '000.000.000/0000-00', 1, '2019-03-15 20:45:02', '2019-03-15 20:45:02', 1, 2),
+(2, 'Wayne Industries', '000.000.000/0000-00', 1, '2019-03-15 21:21:58', '2019-03-15 21:21:58', 1, 2),
+(3, 'Luthor Corp', '000.000.000/0000-00', 1, '2019-03-16 05:20:33', '2019-03-16 05:20:33', 1, 2),
+(4, 'Big Blue Company', '000.000.000/0000-00', 1, '2019-03-16 09:14:06', '2019-03-16 09:14:06', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -156,8 +140,8 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`id`, `name`, `role`, `email`, `username`, `password`, `status`, `isActive`, `createdAt`, `updatedAt`, `PrefectureId`) VALUES
 (1, 'Analista Bom Jesus', 'analista', 'analista@gmail.com', 'analista', '$2b$10$53uzxmRVPYHeZvlhGENQ4O1XaieIqg5G44RSHNb6b4ne7/XWo2Kc2', 'ativo', 1, '2019-02-16 15:48:38', '2019-02-16 15:48:38', 1),
-(2, 'Elton Cayo', 'gestor', 'eltoncayo@gmail.com', 'eltoncayo', '$2b$10$Hk/hwrrP2OtfLtbVsDp7gu5r4TtQvGF0fwURhZzwgtzZ77cj7T46i', 'ativo', 1, '2019-02-16 15:49:10', '2019-02-16 15:49:10', NULL),
-(3, 'Gestor Bom Jesus', 'gestor', 'gestor@gmail.com', 'gestor', '$2b$10$kXCU81iREz41foigyHJhzeDe7vn0ZcBG.vBP2rZME1lcPSFalWYx.', 'ativo', 1, '2019-02-16 15:50:22', '2019-02-16 15:50:22', 1);
+(2, 'Gestor Bom Jesus', 'gestor', 'gestor@gmail.com', 'gestor', '$2b$10$kXCU81iREz41foigyHJhzeDe7vn0ZcBG.vBP2rZME1lcPSFalWYx.', 'ativo', 1, '2019-02-16 15:50:22', '2019-02-16 15:50:22', 1),
+(3, 'Elton Cayo', 'god', 'eltoncayo@gmail.com', 'eltoncayo', '$2b$10$Hk/hwrrP2OtfLtbVsDp7gu5r4TtQvGF0fwURhZzwgtzZ77cj7T46i', 'ativo', 1, '2019-02-16 15:49:10', '2019-02-16 15:49:10', NULL);
 
 --
 -- Índices de tabelas apagadas
@@ -212,13 +196,13 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT de tabela `Categories`
 --
 ALTER TABLE `Categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `Expenses`
 --
 ALTER TABLE `Expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `Prefectures`
@@ -230,7 +214,7 @@ ALTER TABLE `Prefectures`
 -- AUTO_INCREMENT de tabela `Providers`
 --
 ALTER TABLE `Providers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `Users`
