@@ -1,0 +1,20 @@
+<div *ngIf="user$ | async as response; else loadingError">
+  <div *ngIf="response.success; else paramError">
+    <span>Nome: {{ response.user.name }}</span>
+  </div>
+
+<ng-template #paramError>
+  <app-param-error></app-param-error>
+</ng-template>
+
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>
+
+<ng-template #loadingError>
+  <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+    <app-server-error></app-server-error>
+  </div>
+</ng-template>

@@ -1,0 +1,88 @@
+<div *ngIf="expense$ | async as response; else loadingError" style="height:100% !important;" class="panel">
+    <div class="card mt-3" *ngIf="response.success; else paramError">
+  
+      <div class="card-header"
+        [ngClass]="{'bg-light': response.expense.status=='nova', 'bg-danger': response.expense.status=='recusada', 'bg-success': response.expense.status=='autorizada'}">
+        <div class="card-subtitle" [ngClass]="{'text-white': response.expense.status!='nova'}">
+          Cód.: {{ response.expense.id }} - {{ response.expense.Provider.name }}
+        </div>
+        <div class="card-title" [ngClass]="{'text-white': response.expense.status!='nova'}">
+          <span class="badge badge-light">Solicitado:</span> {{ response.expense.requested_value | currency: 'BRL' }}
+          <br />
+        </div>
+      </div>
+  
+      <div class="row panel py-2 px-2">
+        <div class="col-sm-6">
+          <p class="card-text">
+            <span class="badge badge-light">Categoria:</span><br />
+            {{ response.expense.Category.description }}
+          </p>
+          <p class="card-text">
+            <span class="badge badge-light">Vencimento:</span><br />
+            {{ response.expense.due_date | date: 'dd/MM/yyyy' }}
+          </p>
+          <p class="card-text"><span class="badge badge-light">Detalhes:</span><br />
+            <span class="content">{{ response.expense.description }}</span>
+            <br />
+          </p>
+          <div class="card-title" *ngIf="response.expense.status == 'autorizada' ">
+            <span class="badge badge-light">Autorizado:</span>
+            {{ response.expense.authorized_value == NULL? response.expense.requested_value : response.expense.authorized_value | currency: 'BRL' }}
+          </div>
+          <small>
+            Cadastrada em {{ response.expense.createdAt | date: 'dd/MM/yyyy' }} por {{ response.expense.User.name }}
+          </small>
+        </div>
+  
+        <div class="col-sm-6" *ngIf="response.expense.status=='nova'">
+          <form class="form-auth border rounded border-danger px-2 py-2" novalidate #f="ngForm">
+            <div class="row justify-content-center">
+              <div class="col-sm-9">
+                <label for="authorized">
+                  <h3>Autorizar ou Recusar</h3>
+                </label>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-sm-9">
+                <input type="number" id="authorized" class="form-control" [(ngModel)]="response.expense.authorized_value"
+                  #authorized="ngModel" name="authorized_value" autofocus />
+              </div>
+            </div>
+            <div class="row justify-content-center py-3">
+              <div class="col-6 text-center">
+                <button (click)="onSubmit(f, 'recusada')" class="btn btn-danger" id="recusada"
+                  name="recusada">Recusar</button>
+              </div>
+              <div class="col-6 text-center">
+                <button (click)="onSubmit(f, 'autorizada')" class="btn btn-success" id="autorizada"
+                  name="autorizada">Autorizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+  
+        <div class="py-2 px-3 panel w-100">
+          <button type="button" class="float-right btn btn-primary btn-sm" *ngIf="response.expense.status!='nova'"
+            [routerLink]="response.expense.status=='recusada' ? ['/expenses/denied'] : ['/expenses/authorized']">Voltar</button>
+          <button type="button" class="float-right btn btn-primary btn-sm" *ngIf="response.expense.status=='nova'"
+            [routerLink]="['/expenses']">Voltar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<ng-template #paramError>
+  <app-param-error></app-param-error>
+</ng-template>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>
+
+<ng-template #loadingError>
+  <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+    <app-server-error></app-server-error>
+  </div>
+</ng-template>

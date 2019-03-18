@@ -1,0 +1,56 @@
+<div class="card mt-3 border-0">
+  <div class="card-header border-0 bg-white">
+    <div class="float-left">
+      <h4>Fornecedores</h4>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-outline-success" [routerLink]="['novo']">Cadastrar</button>
+      <button type="button" class="btn btn-outline-primary" (click)="onRefresh()">Atualizar</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="panel row" *ngIf="providers$ | async as response; else loadingError">
+      <table class="table table-hover" *ngIf="response.success; else loading">
+        <thead>
+          <tr>
+            <th class="border-top border-secondary bg-secondary text-white">#</th>
+            <th class="border-top border-secondary bg-secondary text-white">Fornecedor</th>
+            <th class="border-top border-secondary bg-secondary text-white"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let provider of response.providers">
+            <td class="border-bottom border-primary">
+              {{ provider.id }}
+            </td>
+            <td class="border-bottom border-primary">
+              <a [routerLink]="[ '/providers', provider.id ]">
+                {{ provider.razaoSocial }}
+              </a>
+            </td>
+            <td class="border-bottom border-primary">
+              <span class="float-right">
+                <button class="btn btn-warning mb-1 btn-sm">
+                  Editar
+                </button>
+
+                <button class="btn btn-danger mb-1 btn-sm">
+                  Ativar/Desativar
+                </button>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #loading>
+      <app-loading></app-loading>
+    </ng-template>
+
+    <ng-template #loadingError>
+      <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+        <app-server-error></app-server-error>
+      </div>
+    </ng-template>
+  </div>
+</div>

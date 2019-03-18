@@ -1,0 +1,49 @@
+<div class="card mt-3 border-0">
+  <div class="card-header border-0 bg-white">
+    <div class="float-left">
+      <h4>Usuários</h4>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-success" [routerLink]="['novo']">Novo Usuário</button>
+
+      <button type="button" class="btn btn-primary" (click)="onRefresh()">Atualizar</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="panel row" *ngIf="users$ | async as response; else loadingError">
+      <table class="table table-hover" *ngIf="response.success; else loading">
+        <!--<thead>
+          <tr>
+            <th>Usuário</th>
+            <th></th>
+          </tr>
+        </thead>-->
+        <tbody>
+          <tr *ngFor="let user of response.users">
+            <td class="border-0"><a [routerLink]="[ '/users', user.id ]">{{ user.name }}</a></td>
+            <td class="border-0">
+              <span class="float-right">
+                <button class="btn btn-warning mb-1 btn-sm">
+                  Atualizar
+                </button>
+
+                <button class="btn btn-danger mb-1 btn-sm">
+                  Remover
+                </button>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #loading>
+      <app-loading></app-loading>
+    </ng-template>
+    
+    <ng-template #loadingError>
+      <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+        <app-server-error></app-server-error>
+      </div>
+    </ng-template>
+  </div>
+</div>

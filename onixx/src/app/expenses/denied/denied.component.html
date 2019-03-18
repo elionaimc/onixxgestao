@@ -1,0 +1,47 @@
+<div class="card mt-3 border-0">
+
+  <div class="card-header bg-white border-0">
+    <div class="float-left">
+      <h4>Recusadas</h4>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-primary btn-sm" (click)="onRefresh()">Atualizar</button>
+    </div>
+  </div>
+
+  <div *ngIf="expenses$ | async as response; else loadingError">
+    <div class="table table-hover col-sm-offset-3" *ngIf="response.success; else loading">
+      <div class="px-2 py-2">
+        <div class="card mt-3 border-0" *ngIf="response.expenses.length == 0">
+          <div class="card-body">
+            <div class="alert light">
+              <h3>PARABÉNS</h3>
+              <hr>
+              <p>Nenhuma despesa recusada para exibir.</p>
+            </div>
+          </div>
+        </div>
+        <a [routerLink]="[ '/expenses', expense.id ]" *ngFor="let expense of response.expenses">
+          <div class="card border-danger">
+            <h5 class="card-header text-white bg-danger">{{ expense.id }} - {{ expense.Provider.name }}</h5>
+            <div class="card-body text-danger">
+              <span class="card-title">{{ expense.requested_value | currency:'BRL':'R$ ' }}</span>
+              <p class="card-text">Vencimento: {{ expense.due_date | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+          <br />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
+
+  <ng-template #loadingError>
+    <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+      <app-server-error></app-server-error>
+    </div>
+  </ng-template>
+</div>

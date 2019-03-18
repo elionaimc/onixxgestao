@@ -1,0 +1,36 @@
+<div *ngIf="provider$ | async as response; else loadingError">
+  <div *ngIf="response.success; else paramError" class="p-5">
+    <div class="card">
+      <div class="card-header bg-light"
+        [ngClass]="{'text-danger': response.provider.isActive == false}">
+          <h3>{{ response.provider.razaoSocial }}</h3>
+      </div>
+      <div class="card-body">
+        
+        <h5 class="card-subtitle mb-2 text-muted">CNPJ: {{ response.provider.CNPJ }}</h5>
+        <p class="card-text">
+          <small>
+            Fornecedor cadastrado em {{ response.provider.createdAt | date: 'dd/MM/yyyy' }}
+            por {{ response.provider.User.name }}.
+          </small>
+        </p>
+        <a [routerLink]="[ '/providers']" class="card-link">Voltar</a>
+      </div>
+    </div>
+  </div>
+
+  <ng-template>
+    <app-param-error #paramError></app-param-error>
+  </ng-template>
+
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>
+
+<ng-template #loadingError>
+  <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+    <app-server-error></app-server-error>
+  </div>
+</ng-template>

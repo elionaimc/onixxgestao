@@ -1,0 +1,55 @@
+<div class="border-right border-primary" id="sidebar-wrapper" >
+  <ul class="list-group sticky-top">
+      <div class="sidebar-heading bg-primary shadow">
+        <li routerLink="/expenses">
+          <img src="/assets/img/bomjesusrn.png" alt="Prefeitura de Bom Jesus/RN" />
+        </li>
+      </div>
+    <li *ngIf="currentUser.role != 'analista'">
+      <a [routerLink]="['/users']"
+      routerLinkActive="active"
+      class="list-group-item list-group-item-action text-primary">
+        <fa-icon [icon]="faUserCog"></fa-icon> Usuários
+      </a>
+    </li>
+    <li><a [routerLink]="['/providers']"
+      routerLinkActive="active"
+      class="list-group-item list-group-item-action text-primary">
+        <fa-icon [icon]="faTruck"></fa-icon> Fornecedores
+      </a>
+    </li>
+    <li>
+      <a
+      [routerLink]="['/categories']"
+      routerLinkActive="active"
+      class="list-group-item list-group-item-action text-primary">
+        <fa-icon [icon]="faSitemap"></fa-icon> Categorias
+      </a>
+    </li>
+    <li class="list-group-item p-0" *ngIf="currentUser.role != 'analista'">
+      <ul class="list-group">
+      <li class="list-group-item text-muted">
+        <fa-icon [icon]="faWallet"></fa-icon> Despesas
+      </li>
+        <li class="px-4">
+          <a [routerLink]="['/expenses']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            class="list-group-item list-group-item-action text-primary">
+            <fa-icon [icon]="faPaperClip"></fa-icon> Pendentes
+          </a>
+        </li>
+        <li class="px-4"><a [routerLink]="['/expenses/authorized']" routerLinkActive="active"
+           class="list-group-item list-group-item-action text-success">
+            <fa-icon [icon]="faCheckDouble"></fa-icon> Autorizadas
+          </a>
+        </li>
+        <li class="px-4"><a [routerLink]="['/expenses/denied']" routerLinkActive="active"
+           class="list-group-item list-group-item-action text-danger">
+            <fa-icon [icon]="faTimes"></fa-icon> Recusadas
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <footer>
+  </footer>
+</div>

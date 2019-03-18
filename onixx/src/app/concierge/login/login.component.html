@@ -1,0 +1,26 @@
+<form class="form-signin" #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+  <img class="mb-4" src="/assets/img/onixx.png" alt="Onixx Sistemas" class="mx-auto d-block p-3" />
+
+  <!-- Login form -->
+  <h4 class="h4 mb-3 font-weight-normal">&nbsp;</h4>
+  <label for="email" class="sr-only">E-mail</label>
+  <input type="email" id="email" class="form-control" placeholder="E-mail" required name="email" ngModel
+    #email="ngModel" email autofocus>
+
+  <label for="password" class="sr-only">Senha</label>
+  <input type="password" id="password" class="form-control" placeholder="Senha" minlength="5" maxlength="40" required
+    name="password" ngModel #password="ngModel" password>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!f.form.valid">
+    <fa-icon [icon]="faSignInAlt"></fa-icon> Entrar
+  </button>
+  <alert [hidden]="email.valid || email.pristine" type="warning">
+    <small><strong>Erro: </strong>O email informado é inválido.</small>
+  </alert>
+  <alert [hidden]="password.valid || password.pristine" type="warning">
+    <small><strong>Erro: </strong>Senha muito curta.</small>
+  </alert>
+  <alert *ngIf="error" type="warning">
+    <small><strong>Erro: </strong>{{error}}</small>
+  </alert>
+  <!--#login-form end-->
+</form>
