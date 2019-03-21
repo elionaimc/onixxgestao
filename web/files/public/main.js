@@ -10,6 +10,7 @@
 var map = {
 	"./categories/categories.module": [
 		"./src/app/categories/categories.module.ts",
+		"common",
 		"categories-categories-module"
 	],
 	"./concierge/concierge.module": [
@@ -22,10 +23,12 @@ var map = {
 	],
 	"./providers/providers.module": [
 		"./src/app/providers/providers.module.ts",
+		"common",
 		"providers-providers-module"
 	],
 	"./users/users.module": [
 		"./src/app/users/users.module.ts",
+		"common",
 		"users-users-module"
 	]
 };
@@ -38,7 +41,7 @@ function webpackAsyncContext(req) {
 			throw e;
 		});
 	}
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		var id = ids[0];
 		return __webpack_require__(id);
 	});
@@ -223,6 +226,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _concierge_error_interceptor__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./concierge/error.interceptor */ "./src/app/concierge/error.interceptor.ts");
 /* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./services/authentication.service */ "./src/app/services/authentication.service.ts");
 /* harmony import */ var _guards_authentication_guard__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./guards/authentication.guard */ "./src/app/guards/authentication.guard.ts");
+/* harmony import */ var ngx_bootstrap__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ngx-bootstrap */ "./node_modules/ngx-bootstrap/esm5/ngx-bootstrap.js");
+/* harmony import */ var _shared_shared_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./shared/shared.module */ "./src/app/shared/shared.module.ts");
+/* harmony import */ var _shared_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./shared/alert-modal/alert-modal.component */ "./src/app/shared/alert-modal/alert-modal.component.ts");
+
+
+
 
 
 
@@ -247,12 +256,14 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
             ],
-            entryComponents: [_layout_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_6__["SidebarComponent"], _layout_topbar_topbar_component__WEBPACK_IMPORTED_MODULE_7__["TopbarComponent"]],
+            entryComponents: [_layout_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_6__["SidebarComponent"], _layout_topbar_topbar_component__WEBPACK_IMPORTED_MODULE_7__["TopbarComponent"], _shared_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_17__["AlertModalComponent"]],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
                 _layout_layout_module__WEBPACK_IMPORTED_MODULE_5__["LayoutModule"],
-                _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"]
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"],
+                ngx_bootstrap__WEBPACK_IMPORTED_MODULE_15__["ModalModule"].forRoot(),
+                _shared_shared_module__WEBPACK_IMPORTED_MODULE_16__["SharedModule"]
             ],
             providers: [
                 { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HTTP_INTERCEPTORS"], useClass: _concierge_jwt_interceptor__WEBPACK_IMPORTED_MODULE_11__["JwtInterceptor"], multi: true },
@@ -679,7 +690,7 @@ var LoadingComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card mt-3 border-0\">\n  <div class=\"card-body\">\n    <div class=\"alert warning\">\n      <h3>Ops!</h3>\n      <hr>\n      <p><strong>Todo mundo ERRA... </strong> Nada foi encontrado com o identificador informado!</p>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"card panel border-0\">\n  <div class=\"card-body\">\n    <alert type=\"{{ type }}\">\n      <p>{{ message }}</p>\n    </alert>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -699,9 +710,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var ParamErrorComponent = /** @class */ (function () {
     function ParamErrorComponent() {
+        this.type = '';
+        this.message = '';
     }
     ParamErrorComponent.prototype.ngOnInit = function () {
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], ParamErrorComponent.prototype, "type", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], ParamErrorComponent.prototype, "message", void 0);
     ParamErrorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-param-error',
@@ -723,7 +744,7 @@ var ParamErrorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card-body\">\n  <div class=\"alert danger\">\n    <h3>OMG!!!!</h3>\n    <hr>\n    <p><span>Servidor não responde.</span></p>\n  </div>\n</div>"
+module.exports = "<div class=\"card-body\">\n  <div class=\"alert danger\">\n    <h3>OMG!!!!</h3>\n    <hr>\n    <p><span>Servidor não responde.</span></p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -767,7 +788,7 @@ var ServerErrorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"border-right border-primary\" id=\"sidebar-wrapper\" >\n  <ul class=\"list-group sticky-top\">\n      <div class=\"sidebar-heading bg-primary shadow\">\n        <li routerLink=\"/expenses\">\n          <img src=\"/assets/img/bomjesusrn.png\" alt=\"Prefeitura de Bom Jesus/RN\" />\n        </li>\n      </div>\n    <li *ngIf=\"currentUser.role != 'analista'\">\n      <a [routerLink]=\"['/users']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action text-primary\">\n        <fa-icon [icon]=\"faUserCog\"></fa-icon> Usuários\n      </a>\n    </li>\n    <li><a [routerLink]=\"['/providers']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action text-primary\">\n        <fa-icon [icon]=\"faTruck\"></fa-icon> Fornecedores\n      </a>\n    </li>\n    <li>\n      <a\n      [routerLink]=\"['/categories']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action text-primary\">\n        <fa-icon [icon]=\"faSitemap\"></fa-icon> Categorias\n      </a>\n    </li>\n    <li class=\"list-group-item p-0\" *ngIf=\"currentUser.role != 'analista'\">\n      <ul class=\"list-group\">\n      <li class=\"list-group-item text-muted\">\n        <fa-icon [icon]=\"faWallet\"></fa-icon> Despesas\n      </li>\n        <li class=\"px-4\">\n          <a [routerLink]=\"['/expenses']\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\"\n            class=\"list-group-item list-group-item-action text-primary\">\n            <fa-icon [icon]=\"faPaperClip\"></fa-icon> Pendentes\n          </a>\n        </li>\n        <li class=\"px-4\"><a [routerLink]=\"['/expenses/authorized']\" routerLinkActive=\"active\"\n           class=\"list-group-item list-group-item-action text-success\">\n            <fa-icon [icon]=\"faCheckDouble\"></fa-icon> Autorizadas\n          </a>\n        </li>\n        <li class=\"px-4\"><a [routerLink]=\"['/expenses/denied']\" routerLinkActive=\"active\"\n           class=\"list-group-item list-group-item-action text-danger\">\n            <fa-icon [icon]=\"faTimes\"></fa-icon> Recusadas\n          </a>\n        </li>\n      </ul>\n    </li>\n  </ul>\n  <footer>\n  </footer>\n</div>"
+module.exports = "<div class=\"border-right border-primary\" id=\"sidebar-wrapper\" >\n  <ul class=\"list-group sticky-top\">\n      <div class=\"sidebar-heading bg-primary shadow\">\n        <li routerLink=\"/home\">\n          <img src=\"/assets/img/{{ this.currentUser.Prefecture.image }}\"\n          alt=\"{{ this.currentUser.Prefecture.name }}\"\n          title=\"{{ this.currentUser.Prefecture.name }}\" />\n        </li>\n      </div>\n    <li *ngIf=\"currentUser.role != 'analista'\">\n      <a [routerLink]=\"['/users']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action\">\n        <fa-icon [icon]=\"faUserCog\"></fa-icon> Usuários\n      </a>\n    </li>\n    <li><a [routerLink]=\"['/providers']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action\">\n        <fa-icon [icon]=\"faTruck\"></fa-icon> Fornecedores\n      </a>\n    </li>\n    <li>\n      <a\n      [routerLink]=\"['/categories']\"\n      routerLinkActive=\"active\"\n      class=\"list-group-item list-group-item-action\">\n        <fa-icon [icon]=\"faSitemap\"></fa-icon> Categorias\n      </a>\n    </li>\n    <li class=\"list-group-item p-0\">\n      <ul class=\"list-group\">\n      <li class=\"list-group-item\">\n        <fa-icon [icon]=\"faWallet\"></fa-icon> Despesas\n      </li>\n        <li class=\"px-4\">\n          <a [routerLink]=\"['/expenses']\" routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\"\n            class=\"list-group-item list-group-item-action text-primary\">\n            <fa-icon [icon]=\"faPaperClip\"></fa-icon> Pendentes\n          </a>\n        </li>\n        <li class=\"px-4\"><a [routerLink]=\"['/expenses/authorized']\" routerLinkActive=\"active\"\n           class=\"list-group-item list-group-item-action text-success\">\n            <fa-icon [icon]=\"faCheckDouble\"></fa-icon> Autorizadas\n          </a>\n        </li>\n        <li class=\"px-4\"><a [routerLink]=\"['/expenses/denied']\" routerLinkActive=\"active\"\n           class=\"list-group-item list-group-item-action text-danger\">\n            <fa-icon [icon]=\"faTimes\"></fa-icon> Recusadas\n          </a>\n        </li>\n      </ul>\n    </li>\n  </ul>\n</div>"
 
 /***/ }),
 
@@ -831,7 +852,7 @@ var SidebarComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"sticky-top navbar navbar-expand-lg navbar-dark bg-primary shadow\">\n  <button class=\"my-0 mr-md-auto font-weight-normal btn btn-link\" id=\"menu-toggle\" (click)=\"toggleMenu()\">\n    <fa-icon [icon]=\"faBars\"></fa-icon>\n  </button>\n  <div class=\"btn-group\" dropdown>\n    <a dropdownToggle type=\"button\" class=\"btn btn-primary dropdown-toggle text-white\"\n      aria-controls=\"logout\">\n      <fa-icon [icon]=\"faUserCircle\"></fa-icon> {{currentUser.name}}\n  </a>\n    <ul id=\"logout\" *dropdownMenu class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"button-basic\">\n      <li role=\"menuitem btn-sm\"><a class=\"dropdown-item text-primary text-right\" href=\"/logout\">\n           SAIR <fa-icon [icon]=\"faSignOutAlt\"></fa-icon>\n        </a>\n      </li>\n    </ul>\n  </div>\n</nav>\n"
+module.exports = "<nav class=\"sticky-top navbar navbar-expand-lg navbar-dark bg-primary shadow\">\n  <button class=\"my-0 mr-md-auto font-weight-normal btn btn-link\" id=\"menu-toggle\" (click)=\"toggleMenu()\">\n    <fa-icon [icon]=\"faBars\"></fa-icon>\n  </button>\n  <div class=\"btn-group\" dropdown>\n    <a dropdownToggle type=\"button\" class=\"btn btn-primary dropdown-toggle text-white\"\n      aria-controls=\"logout\">\n      <fa-icon [icon]=\"faUserCircle\"></fa-icon> {{currentUser.name}}\n  </a>\n    <ul id=\"logout\" *dropdownMenu class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"button-basic\">\n      <li role=\"menuitem btn-sm\"><a class=\"dropdown-item\" href=\"/logout\">\n           SAIR <fa-icon [icon]=\"faSignOutAlt\"></fa-icon>\n        </a>\n      </li>\n    </ul>\n  </div>\n</nav>\n"
 
 /***/ }),
 
@@ -954,6 +975,102 @@ var AuthenticationService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/shared/alert-modal/alert-modal.component.html":
+/*!***************************************************************!*\
+  !*** ./src/app/shared/alert-modal/alert-modal.component.html ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"alert alert-{{ type }} my-0\">\n  <strong>{{ message }}</strong>\n  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\" (click)=\"onClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n </div>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/alert-modal/alert-modal.component.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/shared/alert-modal/alert-modal.component.ts ***!
+  \*************************************************************/
+/*! exports provided: AlertModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlertModalComponent", function() { return AlertModalComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var ngx_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-bootstrap */ "./node_modules/ngx-bootstrap/esm5/ngx-bootstrap.js");
+
+
+
+var AlertModalComponent = /** @class */ (function () {
+    function AlertModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    AlertModalComponent.prototype.ngOnInit = function () {
+    };
+    AlertModalComponent.prototype.onClose = function () {
+        this.bsModalRef.hide();
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
+    ], AlertModalComponent.prototype, "type", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
+    ], AlertModalComponent.prototype, "message", void 0);
+    AlertModalComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-alert-modal',
+            template: __webpack_require__(/*! ./alert-modal.component.html */ "./src/app/shared/alert-modal/alert-modal.component.html")
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_bootstrap__WEBPACK_IMPORTED_MODULE_2__["BsModalRef"]])
+    ], AlertModalComponent);
+    return AlertModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/shared.module.ts":
+/*!*****************************************!*\
+  !*** ./src/app/shared/shared.module.ts ***!
+  \*****************************************/
+/*! exports provided: SharedModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function() { return SharedModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./alert-modal/alert-modal.component */ "./src/app/shared/alert-modal/alert-modal.component.ts");
+
+
+
+
+var SharedModule = /** @class */ (function () {
+    function SharedModule() {
+    }
+    SharedModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            declarations: [_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_3__["AlertModalComponent"]],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]
+            ],
+            exports: [_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_3__["AlertModalComponent"]],
+            entryComponents: [_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_3__["AlertModalComponent"]]
+        })
+    ], SharedModule);
+    return SharedModule;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/environments/environment.ts":
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -969,7 +1086,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 var environment = {
     production: false,
-    API: 'http://localhost:1982/api'
+    API: 'https://wakenfun.com.br/api'
 };
 /*
  * For easier debugging in development mode, you can import the following file
