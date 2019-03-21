@@ -4,7 +4,7 @@
 * @description Router module for outgo_test app
 */
 
-const { User } 	    = require('../models');
+const { User, Prefecture } 	    = require('../models');
 const validator     = require('validator');
 const { to, TE }    = require('../services/util.service');
 
@@ -36,7 +36,6 @@ const createUser = async (userInfo) => {
     if(validator.isEmail(unique_key)){
         auth_info.method = 'email';
         userInfo.email = unique_key;
-
 
         [err, user] = await to(User.create(userInfo));
         if(err) TE('Não foi possível cadastrar novo usuário!');
@@ -75,22 +74,36 @@ const authUser = async (userInfo) => {
     if(validator.isEmail(unique_key)){
         auth_info.method='email';
 
-        [err, user] = await to(User.findOne({where:{email:unique_key, status: 'ativo'}}));
+        //[err, user] = await to(User.findOne({where:{email:unique_key, status: 'ativo'}}));
+        [err, user] = await to(User.findOne({
+            attributes: ['name', 'password', 'email', 'status', 'role', 'id', 'PrefectureId'],
+            where: { email: unique_key, isActive: true },
+            include: [{ model: Prefecture, attributes: ["name", "image"] }]
+        }));
         if(err) TE(err.message);
 
     } else {
         auth_info.method = 'username';
         
-        [err, user] = await to(User.findOne({ where: { username: unique_key, status: 'ativo'}}));
+        //[err, user] = await to(User.findOne({ where: { username: unique_key, status: 'ativo'}}));
+        [err, user] = await to(User.findOne({
+            attributes: ['name', 'password', 'email', 'status', 'role', 'id', 'PrefectureId'],
+            where: { username: unique_key, isActive: true },
+            include: [{ model: Prefecture, attributes: ["name", "image"] }]
+        }));
         if(err) TE('O e-mail ou nome de usuário informados não funcionou');
     }
 
     if(!user) TE('O e-mail ou nome de usuário informados não funcionou');
 
     [err, user] = await to(user.comparePassword(userInfo.password));
-    if(err) TE(err.message);
+    if(err) {
+        TE(err.message);
+    } else {
+        user.set({password: '_FNORD'});
+        return user;
+    }
 
-    return user;
 
 }
 module.exports.authUser = authUser;

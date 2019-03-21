@@ -1,19 +1,16 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description
+* @version 1.2.0
+* @description Controller for Category entities
 */
 
-//Actions for Category entity
 const { Category } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
 
 //Creates a category
 const create = async (req, res) => {
     let err, category;
-    //get data from request object
     let category_info = req.body;
-    //Assynchronous function
     [err, category] = await to(Category.create(category_info));
     if (err) return ReE(res, err, 422);
 
@@ -24,20 +21,24 @@ const create = async (req, res) => {
 }
 module.exports.create = create;
 
-//Read all category
+//Reads all categories
 const getAll = async (req, res) => {
     let user = req.user;
-    let err, categorys;
+    let err, categories;
 
-    let clause = req.query.status ? { PrefectureId: user.PrefectureId, isActive: true, status: req.query.status } : { PrefectureId: user.PrefectureId, isActive: true };
+    let clause = req.query.status ? { PrefectureId: user.PrefectureId, status: req.query.status } : { PrefectureId: user.PrefectureId };
 
-    [err, categorys] = await to(Category.findAll({ where: clause }));
+    [err, categories] = await to(Category.findAll({
+        where: clause,
+        order: [['description', 'ASC']]
+    }));
     if (err) TE(err.message);
 
-    return ReS(res, { categorys: categorys });
+    return ReS(res, { categories: categories });
 }
 module.exports.getAll = getAll;
 
+//Reads one category
 const get = (req, res) => {
     let category = req.category;
     return ReS(res, { category: category.toJSON() });
@@ -46,9 +47,9 @@ module.exports.get = get;
 
 //Updates a category
 const update = async (req, res) => {
-    let err, category, data;
+    let err, category;
     category = req.category;
-    category.set(data);
+    category.set(req.body);
 
     [err, category] = await to(category.save());
     if (err) {
@@ -64,7 +65,7 @@ const remove = async (req, res) => {
     category = req.category;
 
     [err, category] = await to(category.destroy());
-    if (err) return ReE(res, 'ocorreu um erro enquanto tentava excluir a categoria.');
+    if (err) return ReE(res, 'Ocorreu um erro enquanto tentava excluir a categoria.');
 
     return ReS(res, { message: 'Categoria apagada.' }, 204);
 }

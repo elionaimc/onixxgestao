@@ -1,19 +1,16 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description
+* @version 1.2.0
+* @description Controller for Provider entities
 */
 
-//Actions for Provider entity
 const { Provider } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
 
 //Creates a provider
 const create = async (req, res) => {
     let err, provider;
-    //get data from request object
     let provider_info = req.body;
-    //Assynchronous function
     [err, provider] = await to(Provider.create(provider_info));
     if (err) return ReE(res, err, 422);
 
@@ -24,20 +21,22 @@ const create = async (req, res) => {
 }
 module.exports.create = create;
 
-//Read all provider
+//Reads all providers
 const getAll = async (req, res) => {
-    let user = req.user;
+    const user = req.user;
     let err, providers;
-
-    let clause = req.query.status ? { PrefectureId: user.PrefectureId, isActive: true, status: req.query.status } : { PrefectureId: user.PrefectureId, isActive: true };
-
-    [err, providers] = await to(Provider.findAll({ where: clause }));
+    [err, providers] = await to(Provider.findAll({
+        where: { PrefectureId: user.PrefectureId },
+        order: [['socialName', 'ASC']]
+    }));
     if (err) TE(err.message);
+    if (providers.length < 1) return ReE(res, 'Não existem fornecedores cadastrados ainda', 200);
 
     return ReS(res, { providers: providers });
 }
 module.exports.getAll = getAll;
 
+//Reads one provider
 const get = (req, res) => {
     let provider = req.provider;
     return ReS(res, { provider: provider.toJSON() });
@@ -46,9 +45,9 @@ module.exports.get = get;
 
 //Updates a provider
 const update = async (req, res) => {
-    let err, provider, data;
+    let err, provider;
     provider = req.provider;
-    provider.set(data);
+    provider.set(req.body);
 
     [err, provider] = await to(provider.save());
     if (err) {
@@ -64,8 +63,8 @@ const remove = async (req, res) => {
     provider = req.provider;
 
     [err, provider] = await to(provider.destroy());
-    if (err) return ReE(res, 'ocorreu um erro enquanto tentava excluir o fornecedor.');
+    if (err) return ReE(res, 'Ocorreu um erro enquanto tentava excluir o fornecedor.');
 
-    return ReS(res, { message: 'Fornecedor apagada.' }, 204);
+    return ReS(res, { message: 'Fornecedor apagado com sucesso.' }, 204);
 }
 module.exports.remove = remove;

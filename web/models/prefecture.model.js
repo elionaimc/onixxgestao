@@ -1,9 +1,8 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description Setup everything for the app
+* @version 2.0.0
+* @description Prefecture model schema
 */
-const {TE, to} = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
   let Prefecture = sequelize.define('Prefecture', {
@@ -14,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Prefecture.associate = models => {
-    Prefecture.hasMany(models.User);
-    Prefecture.hasMany(models.Expense);
-    Prefecture.hasMany(models.Provider);
-    Prefecture.hasMany(models.Category);
+    this.Users = Prefecture.hasMany(models.User);
+    this.Expenses = Prefecture.hasMany(models.Expense);
+    this.Providers = Prefecture.hasMany(models.Provider);
+    this.Categories = Prefecture.hasMany(models.Category);
   };
 
   return Prefecture;

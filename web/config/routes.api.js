@@ -20,15 +20,16 @@ const custom = require('./../middleware/custom');
 const { ReE, ReS } = require('../services/util.service');
 require('./../middleware/passport')(passport)
 const concierge = passport.authenticate('jwt', {session:false});
-/* GET home page. */
+
+/* GET initial api page. */
 router.get('/', (req, res, next) => ReS(res, {message: '_FNORD » OnixxAPI is up and running!'}));
 
 //Users routes
-router.post('/users', concierge, UserController.create); //creates a user based on properties sent via POST
-router.put( '/users', concierge, UserController.update);
-router.delete( '/users', concierge, UserController.remove);
+router.post('/users', concierge, UserController.create);
 router.get('/users', concierge, UserController.getAll);
 router.get('/users/:user_id', concierge, UserController.get);
+router.put('/users/:user_id', concierge, custom.user, UserController.update);
+router.delete('/users', concierge, UserController.remove);
 
 router.post( '/login', UserController.login);
 

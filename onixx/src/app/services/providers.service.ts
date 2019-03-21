@@ -18,10 +18,14 @@ export class ProvidersService {
     }
 
     listOne(id: number) {
-        return this.http.get<Provider>(this.RESOURCE + id);
+        return this.http.get<Provider>(`${this.RESOURCE}${id}`);
     }
 
     create(provider: Provider) {
         return this.http.post<Provider>(this.RESOURCE, provider).pipe(take(1));
+    }
+
+    edit(provider) {
+        return this.http.put<Provider>(`${this.RESOURCE}${provider.id}`, provider).pipe(take(1));
     }
 }

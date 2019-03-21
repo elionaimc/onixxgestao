@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from 'src/app/services/users.service';
+import { ProvidersService } from 'src/app/services/providers.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef } from 'ngx-bootstrap';
@@ -18,20 +18,19 @@ export class EditComponent implements OnInit {
   id: number;
 
   constructor(
-    private usersService: UsersService,
-    private bsModalRef: BsModalRef,
-    private fb: FormBuilder
+    private providersService: ProvidersService,
+    private fb: FormBuilder,
+    private bsModalRef: BsModalRef
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       id: [null],
-      name: [null],
-      email: [null],
-      role: [null]
+      cnpj: [null],
+      socialName: [null]
     });
-    const user$ = this.usersService.listOne(this.id);
-    user$.subscribe(data => this.updateForm(data['user']));
+    const provider$ = this.providersService.listOne(this.id);
+    provider$.subscribe(data => this.updateForm(data['provider']));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -40,25 +39,23 @@ export class EditComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.usersService.edit({
+    this.providersService.edit({
       id: this.form.value.id,
-      name: this.form.value.name,
-      email: this.form.value.email,
-      role: this.form.value.role
+      socialName: this.form.value.socialName,
+      cnpj: this.form.value.cnpj
     }).subscribe(
-      success => {
+        success => {
         this.bsModalRef.hide();
-      },
-      error => this.error = `Erro ao editar usuário. Servidor retornou ${error}`
-    );
+        },
+        error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
+      );
   }
 
-  updateForm(user) {
+  updateForm(provider) {
     this.form.patchValue({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
+      id: provider.id,
+      socialName: provider.socialName,
+      cnpj: provider.cnpj
     });
   }
 

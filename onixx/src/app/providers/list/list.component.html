@@ -4,52 +4,63 @@
       <h4>Fornecedores</h4>
     </div>
     <div class="float-right">
-      <button type="button" class="btn btn-outline-success" [routerLink]="['novo']">Cadastrar</button>
-      <button type="button" class="btn btn-outline-primary" (click)="onRefresh()">Atualizar</button>
+      <button type="button" class="btn btn-outline-primary" (click)="create()">
+        <fa-icon [icon]="faPlus"></fa-icon> <span class="d-none d-lg-inline">Cadastrar</span>
+      </button>
+      <button type="button" class="btn btn-outline-success" (click)="onRefresh()">
+        <fa-icon [icon]="faSync"></fa-icon> <span class="d-none d-lg-inline">Atualizar</span>
+      </button>
     </div>
   </div>
   <div class="card-body">
     <div class="panel row" *ngIf="providers$ | async as response; else loadingError">
-      <table class="table table-hover" *ngIf="response.success; else loading">
+      <table class="table table-hover" *ngIf="response.success; else paramError">
         <thead>
           <tr>
-            <th class="border-top border-secondary bg-secondary text-white">#</th>
-            <th class="border-top border-secondary bg-secondary text-white">Fornecedor</th>
-            <th class="border-top border-secondary bg-secondary text-white"></th>
+            <th class="border-0 bg-dark text-white">Razão Social</th>
+            <th class="border-0 bg-dark text-white"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let provider of response.providers">
-            <td class="border-bottom border-primary">
-              {{ provider.id }}
-            </td>
-            <td class="border-bottom border-primary">
-              <a [routerLink]="[ '/providers', provider.id ]">
-                {{ provider.razaoSocial }}
+            <td class="border-bottom border-dark text-left">
+              <a [routerLink]="[ '/providers', provider.id ]" [ngClass]="{'text-secondary': !provider.isActive}">
+                {{ provider.socialName }}
               </a>
             </td>
-            <td class="border-bottom border-primary">
+            <td class="border-bottom border-dark">
               <span class="float-right">
-                <button class="btn btn-warning mb-1 btn-sm">
-                  Editar
-                </button>
-
-                <button class="btn btn-danger mb-1 btn-sm">
-                  Ativar/Desativar
-                </button>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                  <button class="btn btn-outline-primary mb-1 btn-sm" (click)="edit(provider.id)">
+                    <fa-icon [icon]="faPencilAlt"></fa-icon>
+                  </button>
+                  <button *ngIf="provider.isActive" class="btn btn-success mb-1 btn-sm"
+                  (click)="changeState(provider.id, provider.isActive)">
+                    <fa-icon [icon]="faCheck"></fa-icon>
+                  </button>
+                  <button *ngIf="!provider.isActive" class="btn btn-outline-secondary mb-1 btn-sm"
+                  (click)="changeState(provider.id, provider.isActive)">
+                  <fa-icon [icon]="faCheck"></fa-icon>
+                  </button>
+                </div>
               </span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <ng-template #paramError>
+      <app-param-error [message]="emptyMessage"></app-param-error>
+    </ng-template>
+
     <ng-template #loading>
       <app-loading></app-loading>
     </ng-template>
 
     <ng-template #loadingError>
       <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
-        <app-server-error></app-server-error>
+        <app-param-error message="Entre em contato com o administrador do sistema!" type="danger"></app-param-error>
       </div>
     </ng-template>
   </div>

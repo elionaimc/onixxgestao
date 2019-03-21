@@ -1,6 +1,6 @@
 export interface Provider {
-    razaoSocial: string;
-    CNPJ: string;
+    socialName: string;
+    cnpj: string;
     UserId: number;
     PrefectureId: number;
 }

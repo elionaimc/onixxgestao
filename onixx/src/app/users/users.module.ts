@@ -6,10 +6,11 @@ import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { CreateComponent } from './create/create.component';
 import { EditComponent } from './edit/edit.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutModule } from '../layout/layout.module';
 import { ParamErrorComponent } from '../layout/param-error/param-error.component';
 import { ServerErrorComponent } from '../layout/server-error/server-error.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [ListComponent, DetailComponent, CreateComponent, EditComponent],
@@ -25,7 +26,9 @@ import { ServerErrorComponent } from '../layout/server-error/server-error.compon
     CommonModule,
     UsersRoutingModule,
     FormsModule,
-    LayoutModule
+    LayoutModule,
+    ReactiveFormsModule,
+    FontAwesomeModule
   ]
 })
 export class UsersModule { }

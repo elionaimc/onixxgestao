@@ -23,6 +23,16 @@ p.card-text span.badge {
   margin-left: -4px !important;
 }
 
+table td, table th {
+  vertical-align:middle !important;
+}
+
+.modal-header .close {
+  font-size: 2rem;
+  color: #c82333;
+  opacity: 1;
+}
+
 /* Sidebar navigation */
 #sidebar-wrapper {
   min-height: 100vh;

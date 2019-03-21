@@ -4,45 +4,63 @@
       <h4>Usuários</h4>
     </div>
     <div class="float-right">
-      <button type="button" class="btn btn-success" [routerLink]="['novo']">Novo Usuário</button>
-
-      <button type="button" class="btn btn-primary" (click)="onRefresh()">Atualizar</button>
+      <button type="button" class="btn btn-outline-primary" (click)="create()">
+        <fa-icon [icon]="faPlus"></fa-icon> <span class="d-none d-lg-inline">Cadastrar</span>
+      </button>
+      <button type="button" class="btn btn-outline-success" (click)="onRefresh()">
+        <fa-icon [icon]="faSync"></fa-icon> <span class="d-none d-lg-inline">Atualizar</span>
+      </button>
     </div>
   </div>
   <div class="card-body">
     <div class="panel row" *ngIf="users$ | async as response; else loadingError">
-      <table class="table table-hover" *ngIf="response.success; else loading">
-        <!--<thead>
+      <table class="table table-hover" *ngIf="response.success; else paramError">
+        <thead>
           <tr>
-            <th>Usuário</th>
-            <th></th>
+            <th class="border-0 bg-dark text-white">Nome</th>
+            <th class="border-0 bg-dark text-white"></th>
           </tr>
-        </thead>-->
+        </thead>
         <tbody>
           <tr *ngFor="let user of response.users">
-            <td class="border-0"><a [routerLink]="[ '/users', user.id ]">{{ user.name }}</a></td>
-            <td class="border-0">
+            <td class="border-bottom border-dark text-left">
+              <a [routerLink]="[ '/users', user.id ]" [ngClass]="{'text-secondary': !user.isActive}">
+                {{ user.name }}
+              </a>
+            </td>
+            <td class="border-bottom border-dark">
               <span class="float-right">
-                <button class="btn btn-warning mb-1 btn-sm">
-                  Atualizar
-                </button>
-
-                <button class="btn btn-danger mb-1 btn-sm">
-                  Remover
-                </button>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                  <button class="btn btn-outline-primary mb-1 btn-sm" (click)="edit(user.id)">
+                    <fa-icon [icon]="faPencilAlt"></fa-icon>
+                  </button>
+                  <button *ngIf="user.isActive" class="btn btn-success mb-1 btn-sm"
+                    (click)="changeState(user.id, user.isActive)">
+                    <fa-icon [icon]="faCheck"></fa-icon>
+                  </button>
+                  <button *ngIf="!user.isActive" class="btn btn-outline-secondary mb-1 btn-sm"
+                    (click)="changeState(user.id, user.isActive)">
+                    <fa-icon [icon]="faCheck"></fa-icon>
+                  </button>
+                </div>
               </span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <ng-template #paramError>
+      <app-param-error [message]="emptyMessage"></app-param-error>
+    </ng-template>
+
     <ng-template #loading>
       <app-loading></app-loading>
     </ng-template>
-    
+
     <ng-template #loadingError>
       <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
-        <app-server-error></app-server-error>
+        <app-param-error message="Entre em contato com o administrador do sistema!" type="danger"></app-param-error>
       </div>
     </ng-template>
   </div>

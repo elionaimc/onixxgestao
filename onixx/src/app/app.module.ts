@@ -13,18 +13,23 @@ import { JwtInterceptor } from './concierge/jwt.interceptor';
 import { ErrorInterceptor } from './concierge/error.interceptor';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationGuard } from './guards/authentication.guard';
+import { ModalModule } from 'ngx-bootstrap';
+import { SharedModule } from './shared/shared.module';
+import { AlertModalComponent } from './shared/alert-modal/alert-modal.component';
 registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-  entryComponents: [SidebarComponent, TopbarComponent],
+  entryComponents: [SidebarComponent, TopbarComponent, AlertModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     LayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot(),
+    SharedModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

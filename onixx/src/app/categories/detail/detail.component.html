@@ -1,3 +1,30 @@
-<p>
-  detail works!
-</p>
+<div class="card mt-3 border-0">
+  <div *ngIf="category$ | async as response; else loadingError">
+    <div *ngIf="response.success; else paramError">
+      <div class="card">
+        <div class="card-header bg-light" [ngClass]="{'text-danger': response.category.isActive == false}">
+          <h3>{{ response.category.description }}</h3>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            <small>
+              Categoria cadastrada em {{ response.category.createdAt | date: 'dd/MM/yyyy' }}
+              por {{ response.category.User.name }}.
+            </small>
+          </p>
+          <a [routerLink]="[ '/categories']" class="card-link">Voltar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
+
+  <ng-template #loadingError>
+    <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+      <app-param-error [message]="defaultMessage" type="warning"></app-param-error>
+    </div>
+  </ng-template>
+</div>

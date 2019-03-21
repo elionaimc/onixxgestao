@@ -3,7 +3,8 @@ import { NgForm } from '@angular/forms';
 import { ProvidersService } from 'src/app/services/providers.service';
 import { Provider } from 'src/app/models/provider.model';
 import { User } from 'src/app/models/user.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
+import { BsModalRef } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-create',
@@ -19,7 +20,9 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private providersService: ProvidersService,
-    private router: Router
+    private bsModalRef: BsModalRef,
+    private router: Router,
+    public route: ActivatedRoute
     ) { }
 
   ngOnInit() {
@@ -32,16 +35,24 @@ export class CreateComponent implements OnInit {
       return;
     }
     this.provider = {
-      razaoSocial: f.form.value.razaoSocial,
-      CNPJ: f.form.value.CNPJ,
-      PrefectureId: this.currentUser.PrefectureId,
-      UserId: this.currentUser.id
+      socialName: f.form.value.socialName,
+      cnpj: f.form.value.cnpj,
+      PrefectureId: this.currentUser['PrefectureId'],
+      UserId: this.currentUser['id']
     };
     this.providersService.create(this.provider)
       .subscribe(
-        success => this.router.navigate(['/providers']),
+        success => {
+          this.bsModalRef.hide();
+          this.router.navigate(['/providers']);
+        },
         error => this.error = error
       );
+  }
+
+  onClose() {
+    this.bsModalRef.hide();
+    this.router.navigate(['/providers']);
   }
 
 }

@@ -1,9 +1,8 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description Setup everything for the app
+* @version 2.0.0
+* @description Category model schema
 */
-const {TE, to} = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
   let Category = sequelize.define('Category', {
@@ -12,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
   });
   
   Category.associate = models => {
-    Category.belongsTo(models.Prefecture);
-    Category.belongsTo(models.User);
-    Category.hasMany(models.Expense);
+    this.Prefecture = Category.belongsTo(models.Prefecture);
+    this.User = Category.belongsTo(models.User);
+    this.Expenses = Category.hasMany(models.Expense);
   };
 
   return Category;

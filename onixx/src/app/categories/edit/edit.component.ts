@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from 'src/app/services/users.service';
+import { CategoriesService } from 'src/app/services/categories.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef } from 'ngx-bootstrap';
@@ -17,21 +17,20 @@ export class EditComponent implements OnInit {
   currentUser: User;
   id: number;
 
+
   constructor(
-    private usersService: UsersService,
-    private bsModalRef: BsModalRef,
-    private fb: FormBuilder
+    private categoriesService: CategoriesService,
+    private fb: FormBuilder,
+    private bsModalRef: BsModalRef
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       id: [null],
-      name: [null],
-      email: [null],
-      role: [null]
+      description: [null]
     });
-    const user$ = this.usersService.listOne(this.id);
-    user$.subscribe(data => this.updateForm(data['user']));
+    const category$ = this.categoriesService.listOne(this.id);
+    category$.subscribe(data => this.updateForm(data['category']));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -40,25 +39,21 @@ export class EditComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.usersService.edit({
+    this.categoriesService.edit({
       id: this.form.value.id,
-      name: this.form.value.name,
-      email: this.form.value.email,
-      role: this.form.value.role
+      description: this.form.value.description
     }).subscribe(
       success => {
         this.bsModalRef.hide();
       },
-      error => this.error = `Erro ao editar usuário. Servidor retornou ${error}`
+      error => this.error = `Erro ao editar categoria. Servidor retornou ${error}`
     );
   }
 
-  updateForm(user) {
+  updateForm(category) {
     this.form.patchValue({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
+      id: category.id,
+      description: category.description
     });
   }
 

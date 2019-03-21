@@ -1,23 +1,26 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description
+* @version @version 1.2.0
+* @description Controller for User entities
 */
+
 const { User } = require('../models');
 const authService = require('../services/auth.service');
 const { to, ReE, ReS } = require('../services/util.service');
-const Prefecture = require('../models/prefecture.model');
+const Sequelize = require('sequelize');
 
+const Op = Sequelize.Op;
+
+//Creates a user
 const create = async (req, res) => {
-    const body = req.body;
-    if(!body.unique_key && !body.email && !body.username){
+    const data = req.body;
+    if(!data.unique_key && !data.email && !data.username){
         return ReE(res, 'Por favor, informe um e-mail ou nome de usuário para cadastro.', 400);
-    } else if(!body.password){
+    } else if(!data.password){
         return ReE(res, 'Insira corretamente uma senha para cadastro.');
     }else{
-        body.prefecture = Prefecture;
         let err, user;
-        [err, user] = await to(authService.createUser(body));
+        [err, user] = await to(authService.createUser(data));
 
         if(err) return ReE(res, err, 409);
         return ReS(res, {message:'Novo usuário cadastrado com sucesso.', user:user.toJSON(), token:user.getJWT()}, 201);
@@ -25,6 +28,7 @@ const create = async (req, res) => {
 }
 module.exports.create = create;
 
+//Reads one user
 const get = async (req, res) => {
     let uid = req.params.user_id;
     
@@ -37,9 +41,16 @@ const get = async (req, res) => {
 }
 module.exports.get = get;
 
-
+//Reads all users
 const getAll = async (req, res) => {
-    [err, users] = await to(User.findAll());
+    const u = req.user;
+    [err, users] = await to(User.findAll({
+        where: {
+            PrefectureId: u.PrefectureId,
+            id: { [Op.not]: u.id }
+        },
+        order: [['name', 'ASC']]
+    }));
     if(err) return TE(err.message);
 
     for (user of users) user.password = undefined;
@@ -47,11 +58,13 @@ const getAll = async (req, res) => {
 }
 module.exports.getAll = getAll;
 
+//Updates an user
 const update = async (req, res) => {
-    let err, user, data
-    user = req.user;
+    let err, user
+    console.log(req.body);
+    user = req.u;
     data = req.body;
-    user.set(data);
+    user.set(req.body);
 
     [err, user] = await to(user.save());
     if(err){
@@ -62,6 +75,7 @@ const update = async (req, res) => {
 }
 module.exports.update = update;
 
+//Deletes an user
 const remove = async (req, res) => {
     let user, err;
     user = req.user;
@@ -72,7 +86,7 @@ const remove = async (req, res) => {
 }
 module.exports.remove = remove;
 
-//Using JWT e Authentication services to best connected experience
+//Using JWT + authentication service to best connected experience
 const login = async (req, res) => {
     const body = req.body;
     let err, user;

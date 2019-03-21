@@ -1,7 +1,7 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description Setup everything for the app
+* @version 2.0.0
+* @description User model schema
 */
 
 //Dependencies
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         name : DataTypes.STRING,
         role : {type: DataTypes.ENUM(CONFIG.user_role), allowNull: false, defaultValue: CONFIG.user_default_role},
         email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
-        username : {type: DataTypes.STRING, allowNull: false, unique: true, validate: { len: {args: [5, 20], msg: "Nome de usuário deve possuir de 5 a 20 caracteres"} }},
+        username : {type: DataTypes.STRING, allowNull: true, unique: true },
         password: { type: DataTypes.STRING, allowNull: false },
         token: DataTypes.VIRTUAL,
         status: { type: DataTypes.ENUM(CONFIG.user_status), allowNull: CONFIG.allow_null_status, defaultValue: CONFIG.user_default_status },
@@ -24,13 +24,13 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = models => {
-        User.belongsTo(models.Prefecture);
-        User.hasMany(models.Expense);
-        User.hasMany(models.Provider);
-        User.hasMany(models.Category);
+        this.Prefecture = User.belongsTo(models.Prefecture);
+        this.Expenses = User.hasMany(models.Expense);
+        this.Providers = User.hasMany(models.Provider);
+        this.Categories = User.hasMany(models.Category);
     };
 
-    User.beforeSave(async (user, options) => {
+    User.beforeSave(async (user) => {
         let err;
         if (user.changed('password')){
             let salt, hash
