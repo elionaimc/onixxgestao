@@ -21,18 +21,24 @@
             maxlength="40" required />
         </div>
       </div>
+    <div class="row justify-content-center py-3">
+        <div class="text-center">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onClose()">Cancelar</button>
+          <button type="button" [disabled]="!f.form.valid" class="btn btn-primary" id="cadastrar"
+            name="cadastrar" (click)="openModal(template)">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+    <ng-template #template>
+      <div class="modal-body text-center">
+        <p>Tem certeza que deseja cadastrar um novo fornecedor?</p>
       <div class="row justify-content-center py-1">
         <div *ngIf="error" class="alert alert-warning">
           <small>{{error}}</small>
         </div>
+      </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
+        <button type="button" class="btn btn-outline-danger" (click)="onSubmit(f)" >Confirmar</button>
       </div>
-    <div class="row justify-content-center py-3">
-      <div class="text-center">
-        <button type="button" class="btn btn-outline-success" data-dismiss="modal" (click)="onClose()">Cancelar</button>
-        <button type="submit" [disabled]="!f.form.valid" class="btn btn-primary" id="cadastrar"
-          name="cadastrar">Cadastrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </ng-template>
 </div>

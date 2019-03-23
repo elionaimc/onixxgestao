@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { Category } from 'src/app/models/category.model';
 import { User } from 'src/app/models/user.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-create',
@@ -17,12 +16,12 @@ export class CreateComponent implements OnInit {
   error: string;
   category: Category;
   currentUser: User;
+  modalRef: BsModalRef;
 
   constructor(
     private categoriesService: CategoriesService,
-    private bsModalRef: BsModalRef,
-    private router: Router,
-    public route: ActivatedRoute
+    private modalService: BsModalService,
+    private bsModalRef: BsModalRef
   ) { }
 
   ngOnInit() {
@@ -42,16 +41,30 @@ export class CreateComponent implements OnInit {
     this.categoriesService.create(this.category)
       .subscribe(
         success => {
-          this.bsModalRef.hide();
-          this.router.navigate(['/categories']);
+          if (success['success']) this.confirm();
+          else { this.error = 'Erro ao criar uma nova categoria. Verifique os dados e tente novamente.' }
         },
-        error => this.error = error
+        error => {
+          this.error = 'Não é possível cadastrar uma categoria que já existe.';
+        }
       );
   }
 
   onClose() {
     this.bsModalRef.hide();
-    this.router.navigate(['/categories']);
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  confirm(): void {
+    this.modalRef.hide();
+    this.bsModalRef.hide();
+  }
+
+  decline(): void {
+    this.error = null;
+    this.modalRef.hide();
+  }
 }

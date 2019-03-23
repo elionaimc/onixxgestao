@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ProvidersService } from 'src/app/services/providers.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-edit',
@@ -16,10 +16,12 @@ export class EditComponent implements OnInit {
   error: string;
   currentUser: User;
   id: number;
+  modalRef: BsModalRef;
 
   constructor(
     private providersService: ProvidersService,
     private fb: FormBuilder,
+    private modalService: BsModalService,
     private bsModalRef: BsModalRef
   ) { }
 
@@ -45,7 +47,8 @@ export class EditComponent implements OnInit {
       cnpj: this.form.value.cnpj
     }).subscribe(
         success => {
-        this.bsModalRef.hide();
+          if (success['success']) this.confirm();
+          else { this.error = 'Erro ao editar fornecedor. Verifique os dados e tente novamente.' }
         },
         error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
       );
@@ -59,9 +62,21 @@ export class EditComponent implements OnInit {
     });
   }
 
-  onCancel() {
-    this.form.reset();
+  onClose() {
     this.bsModalRef.hide();
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  confirm(): void {
+    this.modalRef.hide();
+    this.bsModalRef.hide();
+  }
+
+  decline(): void {
+    this.error = null;
+    this.modalRef.hide();
+  }
 }

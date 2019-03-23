@@ -11,6 +11,7 @@ import { ParamErrorComponent } from '../layout/param-error/param-error.component
 import { ServerErrorComponent } from '../layout/server-error/server-error.component';
 import { FormsModule } from '@angular/forms';
 import { LayoutModule } from '../layout/layout.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LayoutModule } from '../layout/layout.module';
     CommonModule,
     ExpensesRoutingModule,
     FormsModule,
-    LayoutModule
+    LayoutModule,
+    FontAwesomeModule
   ]
 })
 export class ExpensesModule { }

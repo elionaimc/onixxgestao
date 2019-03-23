@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/models/user.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-create',
@@ -16,12 +15,12 @@ export class CreateComponent implements OnInit {
   error: string;
   user: any;
   currentUser: User;
+  modalRef: BsModalRef;
 
   constructor(
     private usersService: UsersService,
+    private modalService: BsModalService,
     private bsModalRef: BsModalRef,
-    private router: Router,
-    public route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -43,8 +42,8 @@ export class CreateComponent implements OnInit {
     this.usersService.create(this.user)
       .subscribe(
         success => {
-          this.bsModalRef.hide();
-          this.router.navigate(['/users']);
+          if (success['success']) this.confirm();
+          else { this.error = 'Erro ao criar um novo usuário. Verifique os dados e tente novamente.' }
         },
         error => this.error = error
       );
@@ -52,7 +51,19 @@ export class CreateComponent implements OnInit {
 
   onClose() {
     this.bsModalRef.hide();
-    this.router.navigate(['/users']);
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  confirm(): void {
+    this.modalRef.hide();
+    this.bsModalRef.hide();
+  }
+
+  decline(): void {
+    this.error = null;
+    this.modalRef.hide();
+  }
 }

@@ -1,7 +1,7 @@
 <div class="alert my-0" role="alert">
   <div class="modal-header border-bottom border-light">
     <h4 class="modal-title">Editar Fornecedor</h4>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -21,18 +21,25 @@
             placeholder="Ex: 000.000.000/0000-00" minlength="5" maxlength="100" required />
         </div>
       </div>
-      <div class="row justify-content-center py-1">
-        <div *ngIf="error" class="alert alert-warning">
-          <small>{{error}}</small>
-        </div>
-      </div>
       <div class="row justify-content-center py-3">
         <div class="text-center">
-          <button type="reset" class="btn btn-outline-success" (click)="onCancel()">Cancelar</button>
-          <button type="submit" [disabled]="!form.valid" class="btn btn-primary" id="editar"
-            name="editar">Editar</button>
+          <button type="reset" class="btn btn-outline-success" (click)="onClose()">Cancelar</button>
+          <button type="button" [disabled]="!form.valid" class="btn btn-primary" id="editar"
+            name="editar" (click)="openModal(template)">Editar</button>
         </div>
       </div>
     </div>
   </form>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Tem certeza que deseja editar este fornecedor?</p>
+      <div class="row justify-content-center py-1">
+        <div *ngIf="error" class="alert alert-warning">
+          <small>{{error}}</small>
+        </div>
+      </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
+      <button type="button" class="btn btn-outline-danger" (click)="onSubmit()">Confirmar</button>
+    </div>
+  </ng-template>
 </div>
+

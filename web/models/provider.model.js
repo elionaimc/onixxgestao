@@ -6,8 +6,10 @@
 
 module.exports = (sequelize, DataTypes) => {
   let Provider = sequelize.define('Provider', {
-    socialName: DataTypes.STRING,
-    cnpj: DataTypes.STRING,
+    socialName: { type: DataTypes.STRING, allowNull: false, unique: true },
+    cnpj: { type: DataTypes.STRING, allowNull: false, unique: 'providerPrefecture' },
+    PrefectureId: { type: DataTypes.INTEGER, allowNull: false, unique: 'providerPrefecture' },
+    UserId: { type: DataTypes.INTEGER, allowNull: false },
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });
   

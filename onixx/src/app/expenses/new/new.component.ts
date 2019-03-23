@@ -3,6 +3,7 @@ import { Expense } from 'src/app/models/expense.model';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { catchError } from 'rxjs/operators';
+import { faPencilAlt, faCheck, faPlus, faSync } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-new',
@@ -14,6 +15,11 @@ export class NewComponent implements OnInit {
   splash = true;
   expenses$: Observable<Expense[]>;
   error$ = new Subject<boolean>();
+  emptyMessage = 'Não exitem despesas pendentes!';
+  faPencilAlt = faPencilAlt;
+  faCheck = faCheck;
+  faPlus = faPlus;
+  faSync = faSync;
 
   constructor(private service: ExpensesService) { }
 

@@ -9,7 +9,7 @@ module.exports.to = async (promise) => {
     return [null, res];
 };
 
-ReE = (res, err, code) => { // Error Web Response
+ReE = (res, err, code) => {
     if(typeof err == 'object' && typeof err.message != 'undefined'){
         err = err.message;
     }
@@ -19,11 +19,11 @@ ReE = (res, err, code) => { // Error Web Response
 };
 module.exports.ReE = ReE;
 
-ReS = (res, data, code) => { // Success Web Response
+ReS = (res, data, code) => {
     let send_data = {success:true};
 
     if(typeof data == 'object'){
-        send_data = Object.assign(data, send_data);//merge the objects
+        send_data = Object.assign(data, send_data);
     }
 
     if(typeof code !== 'undefined') res.statusCode = code;
@@ -32,7 +32,7 @@ ReS = (res, data, code) => { // Success Web Response
 };
 module.exports.ReS = ReS;
 
-TE = (err_message, log) => { // TE stands for Throw Error
+TE = (err_message, log) => {
     if(log === true){
         console.error(err_message);
     }

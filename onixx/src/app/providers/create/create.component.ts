@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ProvidersService } from 'src/app/services/providers.service';
 import { Provider } from 'src/app/models/provider.model';
 import { User } from 'src/app/models/user.model';
-import { Router, ActivatedRoute} from '@angular/router';
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-create',
@@ -17,12 +16,12 @@ export class CreateComponent implements OnInit {
   error: string;
   provider: Provider;
   currentUser: User;
+  modalRef: BsModalRef;
 
   constructor(
     private providersService: ProvidersService,
-    private bsModalRef: BsModalRef,
-    private router: Router,
-    public route: ActivatedRoute
+    private modalService: BsModalService,
+    private bsModalRef: BsModalRef
     ) { }
 
   ngOnInit() {
@@ -43,16 +42,30 @@ export class CreateComponent implements OnInit {
     this.providersService.create(this.provider)
       .subscribe(
         success => {
-          this.bsModalRef.hide();
-          this.router.navigate(['/providers']);
+          if (success['success']) this.confirm();
+          else { this.error = 'Erro ao criar um novo fornecedor. Verifique os dados e tente novamente.' }
         },
-        error => this.error = error
+        error => {
+          this.error = 'Verifique os dados (incluindo o CNPJ) e tente novamente.';
+        }
       );
   }
 
   onClose() {
     this.bsModalRef.hide();
-    this.router.navigate(['/providers']);
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  confirm(): void {
+    this.modalRef.hide();
+    this.bsModalRef.hide();
+  }
+
+  decline(): void {
+    this.error = null;
+    this.modalRef.hide();
+  }
 }

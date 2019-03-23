@@ -5,15 +5,13 @@
 */
 
 //Actions for Expense entity
-const { Expense, Provider } = require('../models');
+const { Expense, Provider, Category, User } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
 
 //Creates a expense
 const create = async (req, res) => {
     let err, expense;
-    //get data from request object
     let expense_info = req.body;
-    //Assynchronous function
     [err, expense] = await to(Expense.create(expense_info));
     if(err) return ReE(res, err, 422);
 
@@ -28,11 +26,25 @@ module.exports.create = create;
 const getAll = async (req, res) => {
     let user = req.user;
     let err, expenses;
+    let results = [];
     
     let clause = req.query.status? { PrefectureId: user.PrefectureId, isActive: true, status: req.query.status } : { PrefectureId: user.PrefectureId, isActive: true };
 
-    [err, expenses] = await to( Expense.findAll({ where: clause, include: [Provider] }));
+    [err, expenses] = await to(Expense.findAll({ where: clause, include: [{ model: Provider, attributes: ["socialName", "cnpj"] }, { model: Category, attributes: ["description"] }, { model: User, attributes: ["name"] }]  }));
     if (err) TE(err.message);
+    // for(e in expenses) {
+    //     User.findOne({
+    //         where: { id: expenses[e]['DeciderId'] },
+    //         attributes: ['name']
+    //     }).then((d) => {
+    //         expenses[e]['Decider'] = d['name'];
+    //         console.log(expenses[e]['Decider']);
+    //         results.push(expenses[e]);
+    //         console.log(results[e]['Decider']);
+    //         //return ReS(res, { expenses: results });
+    //     });
+    //     //console.log(expenses[e]);
+    // }
 
     return ReS(res, { expenses: expenses });
 }

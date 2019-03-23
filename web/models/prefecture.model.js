@@ -6,8 +6,8 @@
 
 module.exports = (sequelize, DataTypes) => {
   let Prefecture = sequelize.define('Prefecture', {
-    name: DataTypes.STRING,
-    code: DataTypes.STRING,
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING, allowNull: true, unique: true },
     image: DataTypes.STRING,
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });

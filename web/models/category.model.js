@@ -6,7 +6,8 @@
 
 module.exports = (sequelize, DataTypes) => {
   let Category = sequelize.define('Category', {
-    description: DataTypes.STRING,
+    description: { type: DataTypes.STRING, allowNull: false, unique: 'categoryPrefecture' },
+    PrefectureId: { type: DataTypes.INTEGER, unique: 'categoryPrefecture' },
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }
   });
   

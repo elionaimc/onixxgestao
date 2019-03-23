@@ -13,7 +13,7 @@ import { JwtInterceptor } from './concierge/jwt.interceptor';
 import { ErrorInterceptor } from './concierge/error.interceptor';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationGuard } from './guards/authentication.guard';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { SharedModule } from './shared/shared.module';
 import { AlertModalComponent } from './shared/alert-modal/alert-modal.component';
 registerLocaleData(ptBr);
@@ -28,6 +28,7 @@ registerLocaleData(ptBr);
     AppRoutingModule,
     LayoutModule,
     HttpClientModule,
+    TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
     SharedModule
   ],

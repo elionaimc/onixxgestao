@@ -1,47 +1,93 @@
 <div class="card mt-3 border-0">
-
-  <div class="card-header bg-white border-0">
+  <div class="card-header border-0 bg-white">
     <div class="float-left">
-      <h4>Despesas autorizadas</h4>
+      <h4>Despesas Autorizadas</h4>
     </div>
     <div class="float-right">
-      <button type="button" class="btn btn-primary btn-sm" (click)="onRefresh()">Atualizar</button>
+      <button type="button" class="btn btn-outline-primary" (click)="create()">
+        <fa-icon [icon]="faPlus"></fa-icon> <span class="d-none d-lg-inline">Cadastrar</span>
+      </button>
+      <button type="button" class="btn btn-outline-success" (click)="onRefresh()">
+        <fa-icon [icon]="faSync"></fa-icon> <span class="d-none d-lg-inline">Atualizar</span>
+      </button>
     </div>
   </div>
-
-  <div *ngIf="expenses$ | async as response; else loadingError">
-    <div class="table table-hover col-sm-offset-3" *ngIf="response.success; else loading">
-      <div class="px-2 py-2">
+  <div class="card-body">
+    <div class="panel row" *ngIf="expenses$ | async as response; else loadingError">
+      <div class="table table-hover" *ngIf="response.success; else loading">
         <div class="card mt-3 border-0" *ngIf="response.expenses.length == 0">
           <div class="card-body">
             <div class="alert light">
-              <h3>Tudo certo por aqui!</h3>
+              <h3>Tudo certo.</h3>
               <hr>
-              <p><strong>Nenhuma despesa autorizada para exibir.</strong></p>
+              <p>Nenhuma despesa autorizada ainda!</p>
             </div>
           </div>
         </div>
-        <a [routerLink]="[ '/expenses', expense.id ]" *ngFor="let expense of response.expenses">
-          <div class="card border-success">
-            <h5 class="card-header text-white bg-success">{{ expense.id }} - {{ expense.Provider.name }}</h5>
-            <div class="card-body text-success">
-              <span class="card-title">{{ expense.requested_value | currency:'BRL':'R$ ' }}</span>
-              <p class="card-text">Vencimento: {{ expense.due_date | date: 'dd/MM/yyyy' }}</p>
-            </div>
-          </div>
-          <br />
-        </a>
+        <div class="card mt-3 border border-success" *ngFor="let expense of response.expenses">
+          <table class="table table-hover mb-0" *ngIf="response.success; else paramError">
+            <thead>
+              <tr>
+                <th class="border-0 bg-white text-success">
+                  {{ expense.Provider.socialName }}
+                </th>
+                <th class="border-0 bg-white">
+                  <span class="float-right">
+                    <button class="btn btn-danger mb-1 btn-sm" (click)="deny(expense.id)">
+                      <fa-icon [icon]="faTimes"></fa-icon>
+                    </button>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2">
+                  <a [routerLink]="[ '/expenses', expense.id ]" class="text-secondary">
+                    <div class="row cols">
+                      <div class="col-sm-6 text-success">
+                        <small>AUTORIZADO:</small>
+                        <h3>
+                          {{ expense.authorizedValue | currency:'BRL':'R$ ' }}
+                        </h3>
+                        <span class="text-muted">
+                          Solicitado: {{ expense.requestedValue | currency:'BRL':'R$ ' }}
+                        </span>
+                      </div>
+                      <div class="col-sm-6">
+                        <small>Vencimento: </small><strong>{{ expense.dueDate | date: 'dd/MM/yyyy' }}</strong><br />
+                        <small>
+                          Categoria: {{ expense.Category.description }}
+                        </small><br />
+                        <small>
+                          Solicitado em {{ expense.createdAt | date: 'dd/MM/yyyy' }}
+                          <span class="d-none d-lg-inline">
+                            por {{ expense.User.name }}
+                          </span>
+                        </small>
+                      </div>
+                    </div>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
+    <ng-template #paramError>
+      <app-param-error [message]="emptyMessage"></app-param-error>
+    </ng-template>
+
+    <ng-template #loading>
+      <app-loading></app-loading>
+    </ng-template>
+
+    <ng-template #loadingError>
+      <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
+        <app-param-error message="Entre em contato com o administrador do sistema!" type="danger"></app-param-error>
+      </div>
+    </ng-template>
   </div>
-
-  <ng-template #loading>
-    <app-loading></app-loading>
-  </ng-template>
-
-  <ng-template #loadingError>
-    <div *ngIf="error$ | async; else loading" class="card mt-3 border-0">
-      <app-server-error></app-server-error>
-    </div>
-  </ng-template>
 </div>

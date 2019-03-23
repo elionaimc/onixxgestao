@@ -16,7 +16,7 @@ const create = async (req, res) => {
     const data = req.body;
     if(!data.unique_key && !data.email && !data.username){
         return ReE(res, 'Por favor, informe um e-mail ou nome de usuário para cadastro.', 400);
-    } else if(!data.password){
+    } else if(!data.password || data.password == '_FNORD'){
         return ReE(res, 'Insira corretamente uma senha para cadastro.');
     }else{
         let err, user;
@@ -93,8 +93,18 @@ const login = async (req, res) => {
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
 
-    user.token = user.getJWT();
+    user.getPrefecture().then(
+        prefecture => {
+            if (!prefecture.isActive) {
+                return ReE(res, 'O e-mail ou nome de usuário informados não funcionou.', 422);
+            } else {
+                user.token = user.getJWT();
 
-    return res.json(user);
+                return res.json(user);
+            }
+        }
+    );
+
+    
 }
 module.exports.login = login;
