@@ -4,6 +4,8 @@ import { Observable, Subject, EMPTY } from 'rxjs';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { catchError } from 'rxjs/operators';
 import { faPencilAlt, faCheck, faPlus, faSync } from '@fortawesome/free-solid-svg-icons';
+import { BsModalService } from 'ngx-bootstrap';
+import { DetailComponent } from '../detail/detail.component';
 
 @Component({
   selector: 'app-new',
@@ -21,24 +23,31 @@ export class NewComponent implements OnInit {
   faPlus = faPlus;
   faSync = faSync;
 
-  constructor(private service: ExpensesService) { }
+  modalOptions = {
+    class: 'modal-lg'
+  }
+
+  constructor(
+    private service: ExpensesService,
+    private modalService: BsModalService
+    ) { }
 
   ngOnInit() {
     this.onRefresh();
   }
 
+  edit(id) {
+    this.modalOptions['initialState'] = { id: id };
+    this.modalService.show(DetailComponent, this.modalOptions);
+  }
+
   onRefresh() {
     this.expenses$ = this.service.listNew()
-      .pipe(
-        catchError(error => {
-          this.error$.next(true);
-          return EMPTY;
-        })
-      );
+    .pipe(
+      catchError(error => {
+        this.error$.next(true);
+        return EMPTY;
+      })
+    );
   }
-
-  ionViewDidLoad() {
-    setTimeout(() => this.splash = false, 1000);
-  }
-
 }

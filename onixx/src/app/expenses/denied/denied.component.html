@@ -14,7 +14,7 @@
   </div>
   <div class="card-body">
     <div class="panel row" *ngIf="expenses$ | async as response; else loadingError">
-      <div class="table table-hover" *ngIf="response.success; else loading">
+      <div class="table " *ngIf="response.success; else loading">
         <div class="card mt-3 border-0" *ngIf="response.expenses.length == 0">
           <div class="card-body">
             <div class="alert light">
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="card mt-3 border border-secondary" *ngFor="let expense of response.expenses">
-            <table class="table table-hover mb-0" *ngIf="response.success; else paramError">
+            <table class="table mb-0" *ngIf="response.success; else paramError">
               <thead>
                 <tr>
                   <th class="border-0 bg-light text-secondary">
@@ -36,13 +36,15 @@
               <tbody>
                 <tr>
                   <td>
-                    <a [routerLink]="[ '/expenses', expense.id ]" class="text-secondary">
                       <div class="row cols">
                         <div class="col-sm-6">
                           <small>Solicitado:</small>
                           <h3 class="text-danger" style="text-decoration:line-through">
                             {{ expense.requestedValue | currency:'BRL':'R$ ' }}
                           </h3>
+                          <small class="text-muted">
+                            Recusada em {{ expense.decisionDate | date: 'dd/MM/yyyy' }}
+                          </small>
                         </div>
                         <div class="col-sm-6">
                           <small>Vencimento: </small><strong>{{ expense.dueDate | date: 'dd/MM/yyyy' }}</strong><br/>
@@ -57,7 +59,6 @@
                           </small>
                         </div>
                       </div>
-                    </a>
                   </td>
                 </tr>
               </tbody>

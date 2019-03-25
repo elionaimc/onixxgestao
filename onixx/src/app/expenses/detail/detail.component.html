@@ -4,10 +4,10 @@
       <div class="card-header"
         [ngClass]="{'bg-light': response.expense.status=='nova', 'bg-danger': response.expense.status=='recusada', 'bg-success': response.expense.status=='autorizada'}">
         <div class="card-subtitle" [ngClass]="{'text-white': response.expense.status!='nova'}">
-          Cód.: {{ response.expense.id }} - {{ response.expense.Provider.name }}
+          Cód.: {{ response.expense.id }} - {{ response.expense.Provider.socialName }}
         </div>
         <div class="card-title" [ngClass]="{'text-white': response.expense.status!='nova'}">
-          <span class="badge badge-light">Solicitado:</span> {{ response.expense.requested_value | currency: 'BRL' }}
+          <span class="badge badge-light">Solicitado:</span> {{ response.expense.requestedValue | currency: 'BRL' }}
           <br />
         </div>
       </div>
@@ -20,7 +20,7 @@
           </p>
           <p class="card-text">
             <span class="badge badge-light">Vencimento:</span><br />
-            {{ response.expense.due_date | date: 'dd/MM/yyyy' }}
+            {{ response.expense.dueDate | date: 'dd/MM/yyyy' }}
           </p>
           <p class="card-text"><span class="badge badge-light">Detalhes:</span><br />
             <span class="content">{{ response.expense.description }}</span>
@@ -28,7 +28,7 @@
           </p>
           <div class="card-title" *ngIf="response.expense.status == 'autorizada' ">
             <span class="badge badge-light">Autorizado:</span>
-            {{ response.expense.authorized_value == NULL? response.expense.requested_value : response.expense.authorized_value | currency: 'BRL' }}
+            {{ response.expense.authorizedValue == null ? response.expense.requestedValue : response.expense.authorizedValue | currency: 'BRL' }}
           </div>
           <small>
             Cadastrada em {{ response.expense.createdAt | date: 'dd/MM/yyyy' }} por {{ response.expense.User.name }}
@@ -46,8 +46,8 @@
             </div>
             <div class="row justify-content-center">
               <div class="col-sm-9">
-                <input type="number" id="authorized" class="form-control" [(ngModel)]="response.expense.authorized_value"
-                  #authorized="ngModel" name="authorized_value" autofocus />
+                <input type="number" id="authorized" class="form-control" [(ngModel)]="response.expense.authorizedValue"
+                  #authorized="ngModel" name="authorizedValue" autofocus />
               </div>
             </div>
             <div class="row justify-content-center py-3">

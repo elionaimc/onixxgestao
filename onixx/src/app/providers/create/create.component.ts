@@ -4,6 +4,7 @@ import { ProvidersService } from 'src/app/services/providers.service';
 import { Provider } from 'src/app/models/provider.model';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -17,6 +18,7 @@ export class CreateComponent implements OnInit {
   provider: Provider;
   currentUser: User;
   modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private providersService: ProvidersService,
@@ -57,6 +59,10 @@ export class CreateComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }))
   }
 
   confirm(): void {
@@ -67,5 +73,6 @@ export class CreateComponent implements OnInit {
   decline(): void {
     this.error = null;
     this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 }

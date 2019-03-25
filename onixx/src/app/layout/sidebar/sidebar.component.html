@@ -20,7 +20,7 @@
         <fa-icon [icon]="faTruck"></fa-icon> Fornecedores
       </a>
     </li>
-    <li>
+    <li *ngIf="currentUser.role != 'analista'">
       <a
       [routerLink]="['/categories']"
       routerLinkActive="active"

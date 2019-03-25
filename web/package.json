@@ -37,6 +37,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pdfkit": "^0.9.0",
+    "random-hash": "^4.0.1",
     "sequelize": "^4.42.1",
     "sequelize-cli": "^5.4.0",
     "serve-favicon": "^2.5.0",

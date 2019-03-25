@@ -33,10 +33,10 @@ export class ExpensesService {
     return this.http.get<Expense>(this.RESOURCE + '/' + id);
   }
 
-  updateOne(id, authorized_value, status) {
+  updateOne(id, authorizedValue, status) {
     return this.http.put(
       this.RESOURCE + '/' + id,
-      { authorized_value: authorized_value, status: status }
+      { authorizedValue: authorizedValue, status: status }
     ).pipe(
       map(success => {
         if (success) {

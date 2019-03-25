@@ -25,7 +25,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.control = this.route.params.subscribe(params => {
-      this.id = params['id'];
+      //this.id = params['id'];
       this.expense$ = this.service.listOne(this.id)
         .pipe(
           catchError(error => {
@@ -41,7 +41,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     if (f.invalid) {
       return;
     }
-    this.service.updateOne(this.id, f.form.value.authorized_value, status)
+    this.service.updateOne(this.id, f.form.value.authorizedValue, status)
       .subscribe();
   }
 

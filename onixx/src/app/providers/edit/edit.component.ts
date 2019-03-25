@@ -1,8 +1,9 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { ProvidersService } from 'src/app/services/providers.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -17,12 +18,14 @@ export class EditComponent implements OnInit {
   currentUser: User;
   id: number;
   modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private providersService: ProvidersService,
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef
+    private bsModalRef: BsModalRef,
+    private changeDetection: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -63,12 +66,18 @@ export class EditComponent implements OnInit {
   }
 
   onClose() {
+    this.error = null;
     this.bsModalRef.hide();
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }
+    ))
+  };
 
   confirm(): void {
     this.modalRef.hide();
@@ -78,5 +87,6 @@ export class EditComponent implements OnInit {
   decline(): void {
     this.error = null;
     this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 }

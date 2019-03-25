@@ -1,6 +1,6 @@
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { AlertModalService } from './../../services/alert-modal.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Category } from 'src/app/models/category.model';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -19,6 +19,7 @@ export class ListComponent implements OnInit {
   categories$: Observable<Category[]>;
   error$ = new Subject<boolean>();
   emptyMessage = 'Não exitem categorias cadastradas!';
+  modalRef: BsModalRef;
   faPencilAlt = faPencilAlt;
   faCheck = faCheck;
   faPlus = faPlus;
@@ -59,6 +60,14 @@ export class ListComponent implements OnInit {
     this.modalService.show(EditComponent, this.modalOptions);
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  decline(): void {
+    this.modalRef.hide();
+  }
+
   changeState(id, isActive) {
     this.categoriesService.edit({
       id: id,
@@ -67,6 +76,7 @@ export class ListComponent implements OnInit {
       success => this.onRefresh(),
       error => this.alertService.showAlertDanger(`Erro ao editar categoria. Servidor retornou ${error}`)
     );
+    this.modalRef.hide();
   }
 
 }

@@ -28,13 +28,13 @@
           <table class="table table-hover mb-0" *ngIf="response.success; else paramError">
             <thead>
               <tr>
-                <th class="border-0 bg-white text-success">
+                <th class="border-0 bg-success text-white">
                   {{ expense.Provider.socialName }}
                 </th>
-                <th class="border-0 bg-white">
+                <th class="border-0 bg-success text-white">
                   <span class="float-right">
-                    <button class="btn btn-danger mb-1 btn-sm" (click)="deny(expense.id)">
-                      <fa-icon [icon]="faTimes"></fa-icon>
+                    <button class="btn btn-danger mb-0 btn-sm" (click)="deny(expense.id)">
+                      <fa-icon [icon]="faTimes"></fa-icon> Cancelar
                     </button>
                   </span>
                 </th>
@@ -64,6 +64,10 @@
                           <span class="d-none d-lg-inline">
                             por {{ expense.User.name }}
                           </span>
+                        </small>
+                        <br/>
+                        <small class="text-muted">
+                          Autorizado em {{ expense.decisionDate | date: 'dd/MM/yyyy' }}
                         </small>
                       </div>
                     </div>

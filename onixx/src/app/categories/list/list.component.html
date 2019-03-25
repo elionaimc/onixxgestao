@@ -35,16 +35,28 @@
                     <fa-icon [icon]="faPencilAlt"></fa-icon>
                   </button>
                   <button *ngIf="category.isActive" class="btn btn-success mb-1 btn-sm"
-                    (click)="changeState(category.id, category.isActive)">
+                    (click)="openModal(template)">
                     <fa-icon [icon]="faCheck"></fa-icon>
                   </button>
                   <button *ngIf="!category.isActive" class="btn btn-outline-secondary mb-1 btn-sm"
-                    (click)="changeState(category.id, category.isActive)">
+                    (click)="openModal(template)">
                     <fa-icon [icon]="faCheck"></fa-icon>
                   </button>
                 </div>
               </span>
             </td>
+            <ng-template #template>
+              <div class="modal-body text-center">
+                <p>Tem certeza que deseja editar esta categoria?</p>
+                <div class="row justify-content-center py-1">
+                  <div *ngIf="error" class="alert alert-warning">
+                    <small>{{error}}</small>
+                  </div>
+                </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
+                <button type="button" class="btn btn-outline-danger"
+                  (click)="changeState(category.id, category.isActive)">Confirmar</button>
+              </div>
+            </ng-template>
           </tr>
         </tbody>
       </table>

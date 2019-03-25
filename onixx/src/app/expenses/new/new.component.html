@@ -43,7 +43,7 @@
               <tbody>
                 <tr >
                   <td colspan="2">
-                    <a [routerLink]="[ '/expenses', expense.id ]" class="text-secondary">
+                    <a (click)="edit(expense.id)" class="text-secondary">
                       <div class="row cols">
                         <div class="col-sm-6">
                           <small>Solicitado:</small>

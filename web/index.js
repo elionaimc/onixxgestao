@@ -12,6 +12,9 @@ const passport = require('passport');
 const pe = require('parse-error');
 const cors = require('cors');
 
+const generateHash = require('random-hash');
+console.log(generateHash.generateHash({ length: 8 }));
+
 //Definitions for routing and connection
 const wpa = require('./config/routes.wpa');
 const api = require('./config/routes.api');

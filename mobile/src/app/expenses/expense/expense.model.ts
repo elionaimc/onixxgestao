@@ -2,12 +2,12 @@ export interface Expense {
     id: number;
     description: string;
     file: string;
-    due_date: string;
-    authorized_by: number;
-    authorization_code: string;
-    authorization_date: string;
-    requested_value: number;
-    authorized_value: number;
+    dueDate: string;
+    DeciderId: number;
+    authorizationCode: string;
+    decisionDate: string;
+    requestedValue: number;
+    authorizedValue: number;
     status: string;
     CategoryId: string;
     PrefectureId: number;
