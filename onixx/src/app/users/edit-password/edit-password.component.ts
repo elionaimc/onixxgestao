@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './edit.component.html',
+  templateUrl: './edit-password.component.html',
   preserveWhitespaces: true
 })
-export class EditComponent implements OnInit {
+export class EditPasswordComponent implements OnInit {
 
   submitted = false;
   form: FormGroup;
@@ -30,26 +30,28 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       id: [null],
-      name: [null],
-      email: [null],
-      role: [null],
-      password: [null]
+      newPassword: [null],
+      newPasswordConfirm: [null]
     });
-    const user$ = this.usersService.listOne(this.id);
-    user$.subscribe(data => this.updateForm(data['user']));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
+  checkPasswords() { // here we have the 'passwords' group
+    let pass = this.form.value.newPassword;
+    let confirmPass = this.form.value.newPasswordConfirm;
+
+  return pass === confirmPass ? null : { notSame: true }     
+}
+
   onSubmit() {
     this.submitted = true;
-    if (this.form.invalid) {
-      return;
+    if (this.form.invalid || this.checkPasswords()) {
+      return this.error = 'Erro ao editar um usuário. Verifique os dados e tente novamente.';
     }
-    this.usersService.edit({
+    this.usersService.editPassword({
       id: this.form.value.id,
-      name: this.form.value.name,
-      email: this.form.value.email,
-      role: this.form.value.role
+      newPassword: this.form.value.newPassword,
+      newPasswordConfirm: this.form.value.newPasswordConfirm
     }).subscribe(
       success => {
         if (success['success']) this.decline();
@@ -62,9 +64,8 @@ export class EditComponent implements OnInit {
   updateForm(user) {
     this.form.patchValue({
       id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
+      newPassword: '',
+      newPasswordConfirm: ''
     });
   }
 

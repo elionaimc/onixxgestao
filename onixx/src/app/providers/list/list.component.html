@@ -20,8 +20,10 @@
             <th class="border-0 bg-dark text-white">
               Razão Social
               <button [ngClass]="{'btn-light': inactives, 'btn-outline-light': !inactives }"
-                class="btn mb-1 btn-sm float-right" (click)="inactives = !inactives"
-                data-toggle="tooltip" title="{{!inactives ? 'Exibir' : 'Esconder'}} inativos" >
+                class="btn mb-1 btn-sm float-right"
+                (click)="inactives = !inactives"
+                tooltip="{{!inactives ? 'Exibir' : 'Esconder'}} inativos"
+                placement="left">
                 <fa-icon [icon]="faEyeSlash"></fa-icon>
               </button>
             </th>

@@ -13,7 +13,19 @@ import { DetailComponent } from '../detail/detail.component';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
+  styles: [
+    `
+      :host >>> .tooltip-inner {
+        background-color: #007BFF;
+        color: #fff;
+      }
+      :host >>> .tooltip.left .tooltip-arrow:before,
+      :host >>> .tooltip.left .tooltip-arrow {
+        border-left-color: #007BFF;
+      }
+    `
+  ]
 })
 export class ListComponent implements OnInit {
 

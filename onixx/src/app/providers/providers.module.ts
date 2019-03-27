@@ -12,6 +12,7 @@ import { ServerErrorComponent } from '../layout/server-error/server-error.compon
 import { EditComponent } from './edit/edit.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxMaskModule } from 'ngx-mask';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [ListComponent, DetailComponent, CreateComponent, EditComponent],
@@ -30,6 +31,7 @@ import { NgxMaskModule } from 'ngx-mask';
     LayoutModule,
     ReactiveFormsModule,
     NgxMaskModule.forRoot(),
+    TooltipModule.forRoot(),
     FontAwesomeModule
   ]
 })

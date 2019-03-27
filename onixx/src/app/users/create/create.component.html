@@ -24,14 +24,14 @@
       <div class="row justify-content-center py-1">
         <div class="col-sm-6">
           <label for="password">Senha</label>
-          <input type="text" class="form-control" ngModel #password="ngModel" name="password" placeholder="Ex: $enH4-F0Rte" minlength="5"
+          <input type="password" class="form-control" ngModel #password="ngModel" name="password" placeholder="Ex: $enH4-F0Rte" minlength="5"
             maxlength="100" required />
         </div>
         <div class="col-sm-6">
           <label for="role">Função</label>
           <select class="form-control" ngModel #role="ngModel" name="role" required>
             <option selected value="analista">Analista</option>
-            <option value="gestor">Gestor</option>
+            <option value="gestor">Gestor(a)</option>
           </select>
         </div>
       </div>
@@ -49,13 +49,13 @@
   </form>
     <ng-template #template>
       <div class="modal-body text-center">
-        <p>Tem certeza que deseja cadastrar nova categoria?</p>
-      <div class="row justify-content-center py-1">
-        <div *ngIf="error" class="alert alert-warning">
-          <small>{{error}}</small>
-        </div>
-      </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
-        <button type="button" class="btn btn-outline-danger" (click)="onSubmit(f)" >Confirmar</button>
+        <p>Tem certeza que deseja cadastrar um novo usuário?</p>
+        <div class="row justify-content-center py-1">
+          <div *ngIf="error" class="alert alert-warning">
+            <small>{{error}}</small>
+          </div>
+        </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
+        <button type="button" class="btn btn-outline-primary" (click)="onSubmit(f)">Confirmar</button>
       </div>
     </ng-template>
 </div>

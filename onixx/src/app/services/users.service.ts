@@ -28,4 +28,13 @@ export class UsersService {
   edit(u) {
     return this.http.put<User>(`${this.RESOURCE}${u.id}`, u).pipe(take(1));
   }
+
+  editPassword(u) {
+    console.log('editou password');
+    const user = {
+      id: u.id,
+      password: u.newPassword
+    }
+    return this.http.put<User>(`${this.RESOURCE}${u.id}`, user).pipe(take(1));
+  }
 }

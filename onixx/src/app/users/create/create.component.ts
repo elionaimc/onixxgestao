@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -16,6 +17,7 @@ export class CreateComponent implements OnInit {
   user: any;
   currentUser: User;
   modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private usersService: UsersService,
@@ -42,10 +44,12 @@ export class CreateComponent implements OnInit {
     this.usersService.create(this.user)
       .subscribe(
         success => {
-          if (success['success']) this.confirm();
+          if (success['success']) this.decline();
           else { this.error = 'Erro ao criar um novo usuário. Verifique os dados e tente novamente.' }
         },
-        error => this.error = error
+        error => {
+          this.error = 'Verifique os dados (incluindo a senha) e tente novamente.';
+        }
       );
   }
 
@@ -55,15 +59,15 @@ export class CreateComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
-
-  confirm(): void {
-    this.modalRef.hide();
-    this.bsModalRef.hide();
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }))
   }
 
   decline(): void {
     this.error = null;
     this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 }

@@ -9,8 +9,6 @@ const authService = require('../services/auth.service');
 const { to, ReE, ReS } = require('../services/util.service');
 const Sequelize = require('sequelize');
 
-const Op = Sequelize.Op;
-
 //Creates a user
 const create = async (req, res) => {
     const data = req.body;
@@ -45,10 +43,7 @@ module.exports.get = get;
 const getAll = async (req, res) => {
     const u = req.user;
     [err, users] = await to(User.findAll({
-        where: {
-            PrefectureId: u.PrefectureId,
-            id: { [Op.not]: u.id }
-        },
+        where: { PrefectureId: u.PrefectureId },
         order: [['name', 'ASC']]
     }));
     if(err) return TE(err.message);

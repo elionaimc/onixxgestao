@@ -11,6 +11,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LayoutModule } from '../layout/layout.module';
 import { ParamErrorComponent } from '../layout/param-error/param-error.component';
 import { ServerErrorComponent } from '../layout/server-error/server-error.component';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [ListComponent, DetailComponent, CreateComponent, EditComponent],
@@ -28,7 +29,8 @@ import { ServerErrorComponent } from '../layout/server-error/server-error.compon
     FormsModule,
     LayoutModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    TooltipModule.forRoot()
   ]
 })
 export class CategoriesModule { }

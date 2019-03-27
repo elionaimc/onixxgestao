@@ -11,14 +11,17 @@ import { LayoutModule } from '../layout/layout.module';
 import { ParamErrorComponent } from '../layout/param-error/param-error.component';
 import { ServerErrorComponent } from '../layout/server-error/server-error.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EditPasswordComponent } from './edit-password/edit-password.component';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
-  declarations: [ListComponent, DetailComponent, CreateComponent, EditComponent],
+  declarations: [ListComponent, DetailComponent, CreateComponent, EditComponent, EditPasswordComponent],
   entryComponents: [
     ListComponent,
     DetailComponent,
     CreateComponent,
     EditComponent,
+    EditPasswordComponent,
     ParamErrorComponent,
     ServerErrorComponent
   ],
@@ -28,7 +31,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     LayoutModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    TooltipModule.forRoot()
   ]
 })
 export class UsersModule { }

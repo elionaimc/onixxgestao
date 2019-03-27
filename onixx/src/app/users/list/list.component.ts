@@ -6,14 +6,27 @@ import { Observable, Subject, EMPTY } from 'rxjs';
 import { UsersService } from 'src/app/services/users.service';
 import { catchError } from 'rxjs/operators';
 import { CreateComponent } from '../create/create.component';
-import { faCheck, faPencilAlt, faPlus, faSync, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPencilAlt, faPlus, faSync, faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons';
 import { EditComponent } from '../edit/edit.component';
 import { DetailComponent } from '../detail/detail.component';
+import { EditPasswordComponent } from '../edit-password/edit-password.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
+  styles: [
+    `
+      :host >>> .tooltip-inner {
+        background-color: #007BFF;
+        color: #fff;
+      }
+      :host >>> .tooltip.left .tooltip-arrow:before,
+      :host >>> .tooltip.left .tooltip-arrow {
+        border-left-color: #007BFF;
+      }
+    `
+  ]
 })
 export class ListComponent implements OnInit {
 
@@ -21,7 +34,9 @@ export class ListComponent implements OnInit {
   error$ = new Subject<boolean>();
   emptyMessage = 'Não exitem usuários cadastrados!';
   modalRef: BsModalRef;
+  currentUser: User;
   faPencilAlt = faPencilAlt;
+  faLock = faLock;
   faCheck = faCheck;
   faPlus = faPlus;
   faSync = faSync;
@@ -41,6 +56,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.onRefresh();
     this.modalService.onHide.subscribe(() => this.onRefresh());
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   onRefresh() {
@@ -69,6 +85,11 @@ export class ListComponent implements OnInit {
   edit(id) {
     this.modalOptions['initialState'] = { id: id };
     this.modalService.show(EditComponent, this.modalOptions);
+  }
+
+  editPassword(id) {
+    this.modalOptions['initialState'] = { id: id };
+    this.modalService.show(EditPasswordComponent, this.modalOptions);
   }
 
   detail(id) {
