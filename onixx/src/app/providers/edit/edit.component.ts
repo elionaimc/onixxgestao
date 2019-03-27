@@ -24,8 +24,7 @@ export class EditComponent implements OnInit {
     private providersService: ProvidersService,
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef,
-    private changeDetection: ChangeDetectorRef
+    private bsModalRef: BsModalRef
   ) { }
 
   ngOnInit() {
@@ -50,7 +49,7 @@ export class EditComponent implements OnInit {
       cnpj: this.form.value.cnpj
     }).subscribe(
         success => {
-          if (success['success']) this.confirm();
+          if (success['success']) this.decline();
           else { this.error = 'Erro ao editar fornecedor. Verifique os dados e tente novamente.' }
         },
         error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
@@ -78,11 +77,6 @@ export class EditComponent implements OnInit {
       }
     ))
   };
-
-  confirm(): void {
-    this.modalRef.hide();
-    this.bsModalRef.hide();
-  }
 
   decline(): void {
     this.error = null;

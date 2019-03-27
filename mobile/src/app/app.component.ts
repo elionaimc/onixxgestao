@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   sidebar = false;
-  currentUser: User;
+  currentUser: User | boolean;
 
   constructor(
     private platform: Platform,

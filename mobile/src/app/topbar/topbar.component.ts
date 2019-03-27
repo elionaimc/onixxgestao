@@ -22,7 +22,7 @@ export class TopbarComponent implements OnInit {
   faUserCog = faUserCog;
   faBars = faBars;
   sidebar = false;
-  currentUser: User;
+  currentUser: User | boolean;
 
   @Output() showSidebar = new EventEmitter();
 

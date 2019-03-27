@@ -1,0 +1,7 @@
+{
+  "name": "Onixx Gestor",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,9 +1,12 @@
-<div class="card mt-3 border-0">
+<div class="card mt-0 border-0">
   <div *ngIf="category$ | async as response; else loadingError">
     <div *ngIf="response.success; else paramError">
       <div class="card">
-        <div class="card-header bg-light" [ngClass]="{'text-danger': response.category.isActive == false}">
-          <h3>{{ response.category.description }}</h3>
+        <div class="modal-header card-header bg-light text-primary" [ngClass]="{'text-muted': !response.category.isActive}">
+          <h3 class="modal-title">{{ response.category.description }}</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="card-body">
           <p class="card-text">
@@ -12,7 +15,6 @@
               por {{ response.category.User.name }}.
             </small>
           </p>
-          <a [routerLink]="[ '/categories']" class="card-link">Voltar</a>
         </div>
       </div>
     </div>

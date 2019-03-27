@@ -4,6 +4,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
 import { Category } from 'src/app/models/category.model';
 import { User } from 'src/app/models/user.model';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -17,6 +18,7 @@ export class CreateComponent implements OnInit {
   category: Category;
   currentUser: User;
   modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private categoriesService: CategoriesService,
@@ -41,7 +43,7 @@ export class CreateComponent implements OnInit {
     this.categoriesService.create(this.category)
       .subscribe(
         success => {
-          if (success['success']) this.confirm();
+          if (success['success']) this.decline();
           else { this.error = 'Erro ao criar uma nova categoria. Verifique os dados e tente novamente.' }
         },
         error => {
@@ -56,15 +58,15 @@ export class CreateComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
-
-  confirm(): void {
-    this.modalRef.hide();
-    this.bsModalRef.hide();
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }))
   }
 
   decline(): void {
     this.error = null;
     this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 }

@@ -1,9 +1,12 @@
-<div class="card mt-3 border-0">
+<div class="card mt-0 border-0">
   <div *ngIf="users$ | async as response; else loadingError">
     <div *ngIf="response.success; else paramError">
       <div class="card">
-        <div class="card-header bg-light" [ngClass]="{'text-danger': response.user.isActive == false}">
-          <h3>{{ response.user.name }} - ({{ response.user.role }})</h3>
+        <div class="modal-header card-header bg-light text-primary" [ngClass]="{'text-muted': !response.user.isActive}">
+          <h3 class="modal-title">{{ response.user.name }} <small>({{ response.user.role }})</small></h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="card-body">
 
@@ -13,7 +16,6 @@
               Usuário cadastrado em {{ response.user.createdAt | date: 'dd/MM/yyyy' }}.
             </small>
           </p>
-          <a [routerLink]="[ '/users']" class="card-link">Voltar</a>
         </div>
       </div>
     </div>

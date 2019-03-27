@@ -25,6 +25,17 @@ import { ExpenseComponent } from './expenses/expense/expense.component';
 import { ExpenseDetailComponent } from './expenses/expense-detail/expense-detail.component';
 import { AuthorizedExpensesComponent } from './expenses/authorized-expenses/authorized-expenses.component';
 import { DeniedExpensesComponent } from './expenses/denied-expenses/denied-expenses.component';
+import { IonicStorageModule, Storage } from '@ionic/storage';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsfactory(storage) {
+  return {
+    tokenGetter: () => {
+      return storage.get('currentUser');
+    },
+    whitelistedDomains: ['localhost:1982', 'wakenfun.com.br']
+  }
+}
 registerLocaleData(ptBr);
 
 @NgModule({
@@ -42,6 +53,14 @@ registerLocaleData(ptBr);
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     HttpClientModule,
+    IonicStorageModule.forRoot(),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsfactory,
+        deps: [Storage]
+      }
+    }),
     ExpensesModule
   ],
   providers: [

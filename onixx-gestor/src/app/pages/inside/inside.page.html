@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inside</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+ <h3>Só quem pode, mano!</h3>
+ <p>{{ data }}</p>
+
+ <ion-button expand="full" (click)="loadSpecialInfo()">Load Special Info</ion-button>
+ <ion-button expand="full" (click)="logout()">Logout</ion-button>
+ <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
+</ion-content>

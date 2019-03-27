@@ -1,51 +1,52 @@
 /*
 * @author Elionai Moura Cordeiro
-* @version 1.0.0
-* @description Setup everything for the app
+* @version 1.3.0
+* @description setup and mashing up everything for the app come alive
 */
 
-//Dependencies
+// dependencies
 const express = require('express');
-const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const pe = require('parse-error');
 const cors = require('cors');
+const { ReE } = require('./services/util.service');
 
-const generateHash = require('random-hash');
-console.log(generateHash.generateHash({ length: 8 }));
+// const generateHash = require('random-hash');
+// console.log(generateHash.generateHash({ length: 8 }));
 
-//Definitions for routing and connection
+// definitions for routing and connection
 const wpa = require('./config/routes.wpa');
 const api = require('./config/routes.api');
 const app = express();
 const CONFIG = require('./config/globals');
 
-//Initializing enviroment
-app.use(logger('dev'));
+// initializing enviroment
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Passport
+// passport
 app.use(passport.initialize());
 
-//Connect to database and load models
+// connect to database and load models
 const models = require("./models");
-models.sequelize.authenticate().then(() => {
-    console.log("_FNORD » Onixx App is connected to database: ", CONFIG.db_name);
-})
-.catch(err => {
-  //HAL explains error on database connection
-  console.error("_FNORD » I´m sorry Dave. I´m afraid I can´t connect to database: ",CONFIG.db_name);
-});
-if(CONFIG.app==='dev'){
-    models.sequelize.sync();
-}
 
-//CORS
+// database tests for connect and sync
+// models.sequelize.authenticate()
+// .catch(err => {
+//   // HAL explains error on database connection
+//   console.error("_FNORD » I´m sorry Dave. I´m afraid I can´t connect to database: ", CONFIG.db_name);
+// });
+
+// at development enviroment, syncronize database
+// if(CONFIG.app==='dev'){
+//     models.sequelize.sync();
+// }
+
+// CORS enabled
 app.use(cors());
 
-//Routes and errors handling
+// routes and errors handling
 app.use('/api', api);
 
 app.get('*', wpa);
@@ -63,20 +64,18 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  return ReE(res, err.message, err.status);
 });
 
 module.exports = app;
 
-//Promise handler
+// promise handler
 process.on('unhandledRejection', error => {
-    console.error('Uncaught Error', pe(error));
+    console.error('Erro não esperado ', pe(error));
 });
 
-//Just run, server, RUN!
+// just run, server, RUN!
 app.listen(CONFIG.port, () => {
-  //Samantha tells that the system is up and running
+  // Samantha tells that the system is up and running
   console.log('_FNORD » The past is just a story we tell ourselves on port ' + CONFIG.port + '.');
 });

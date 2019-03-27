@@ -68,7 +68,7 @@ const update = async (req, res) => {
 
     [err, user] = await to(user.save());
     if(err){
-        if(err.message=='Erro de validação') err = 'Este e-mail ou nome de usuário já existe em nossa base de dados.';
+        if(err.message=='validation error') err = 'Este e-mail ou nome de usuário já existe em nossa base de dados.';
         return ReE(res, err);
     }
     return ReS(res, {message :'Atualizar usuário: '+user.email});
@@ -96,7 +96,7 @@ const login = async (req, res) => {
     user.getPrefecture().then(
         prefecture => {
             if (!prefecture.isActive) {
-                return ReE(res, 'O e-mail ou nome de usuário informados não funcionou.', 422);
+                return ReE(res, 'O e-mail ou senha não funcionou. Tente novamente.', 422);
             } else {
                 user.token = user.getJWT();
 
@@ -104,6 +104,23 @@ const login = async (req, res) => {
             }
         }
     );
+
+    // return res.json(
+    //     {
+    //         "name": "Gestor Teste",
+    //         "password": "_FNORD",
+    //         "email": "gestor@gmail.com",
+    //         "status": "ativo",
+    //         "role": "gestor",
+    //         "id": 2,
+    //         "PrefectureId": 2,
+    //         "Prefecture": {
+    //             "name": "Prefeitura de Bom Jesus",
+    //             "image": "bomjesusrn.png"
+    //         },
+    //         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE1NTM2Mzg0MTYsImV4cCI6MTU1MzY0ODQxNn0.Ik1jm1U695Wm6X-CTnakH7KyOI4-jydSowukmwOxZdA"
+    //     }
+    // );
 
     
 }

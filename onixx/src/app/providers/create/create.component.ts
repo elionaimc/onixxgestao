@@ -44,7 +44,7 @@ export class CreateComponent implements OnInit {
     this.providersService.create(this.provider)
       .subscribe(
         success => {
-          if (success['success']) this.confirm();
+          if (success['success']) this.decline();
           else { this.error = 'Erro ao criar um novo fornecedor. Verifique os dados e tente novamente.' }
         },
         error => {
@@ -63,11 +63,6 @@ export class CreateComponent implements OnInit {
       this.modalService.onHide.subscribe((reason: string) => {
         if (reason) this.decline();
       }))
-  }
-
-  confirm(): void {
-    this.modalRef.hide();
-    this.bsModalRef.hide();
   }
 
   decline(): void {

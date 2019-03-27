@@ -3,6 +3,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -17,6 +18,7 @@ export class EditComponent implements OnInit {
   currentUser: User;
   id: number;
   modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
 
   constructor(
@@ -46,10 +48,10 @@ export class EditComponent implements OnInit {
       description: this.form.value.description
     }).subscribe(
       success => {
-        if (success['success']) this.confirm();
-        else { this.error = 'Erro ao editar. Verifique os dados e tente novamente.' }
+        if (success['success']) this.decline();
+        else { this.error = 'Erro ao editar uma categoria. Verifique os dados e tente novamente.' }
       },
-      error => this.error = `Erro ao editar categoria. Servidor retornou ${error}`
+      error => this.error = `Erro ao editar uma categoria. Servidor retornou ${error}`
     );
   }
 
@@ -66,16 +68,17 @@ export class EditComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
-
-  confirm(): void {
-    this.modalRef.hide();
-    this.bsModalRef.hide();
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }
+      ))
   }
 
   decline(): void {
     this.error = null;
     this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 
 }

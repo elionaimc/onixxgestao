@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, EMPTY } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, take } from 'rxjs/operators';
 import { Provider } from 'src/app/models/provider.model';
 import { ProvidersService } from 'src/app/services/providers.service';
@@ -20,8 +19,6 @@ export class DetailComponent implements OnInit {
   id: number;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private providersService: ProvidersService,
     private alertService: AlertModalService,
     private bsModalRef: BsModalRef
@@ -29,14 +26,14 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.provider$ = this.providersService.listOne(this.id)
-        .pipe(
-          take(1),
-          catchError(error => {
-            this.alertService.showAlertDanger(error);
-            this.error$.next(true);
-            return EMPTY;
-          })
-        );
+    .pipe(
+      take(1),
+      catchError(error => {
+        this.alertService.showAlertDanger(error);
+        this.error$.next(true);
+        return EMPTY;
+      })
+    );
   }
 
   onClose() {

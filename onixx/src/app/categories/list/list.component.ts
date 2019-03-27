@@ -6,8 +6,9 @@ import { Observable, Subject, EMPTY } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { catchError } from 'rxjs/operators';
 import { CreateComponent } from '../create/create.component';
-import { faCheck, faPencilAlt, faPlus, faSync } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPencilAlt, faPlus, faSync, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { EditComponent } from '../edit/edit.component';
+import { DetailComponent } from '../detail/detail.component';
 
 @Component({
   selector: 'app-list',
@@ -24,6 +25,8 @@ export class ListComponent implements OnInit {
   faCheck = faCheck;
   faPlus = faPlus;
   faSync = faSync;
+  faEyeSlash = faEyeSlash;
+  inactives = false;
 
   modalOptions = {
     class: 'modal-lg'
@@ -51,6 +54,14 @@ export class ListComponent implements OnInit {
       );
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  decline(): void {
+    this.modalRef.hide();
+  }
+
   create() {
     this.modalService.show(CreateComponent, this.modalOptions);
   }
@@ -60,12 +71,9 @@ export class ListComponent implements OnInit {
     this.modalService.show(EditComponent, this.modalOptions);
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
-  }
-
-  decline(): void {
-    this.modalRef.hide();
+  detail(id) {
+    this.modalOptions['initialState'] = { id: id };
+    this.modalService.show(DetailComponent, this.modalOptions);
   }
 
   changeState(id, isActive) {
