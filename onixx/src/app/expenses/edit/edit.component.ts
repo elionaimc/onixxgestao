@@ -1,5 +1,5 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { UsersService } from 'src/app/services/users.service';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { ProvidersService } from 'src/app/services/providers.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './edit-password.component.html',
+  templateUrl: './edit.component.html',
   preserveWhitespaces: true
 })
-export class EditPasswordComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   submitted = false;
   form: FormGroup;
@@ -21,53 +21,46 @@ export class EditPasswordComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   constructor(
-    private usersService: UsersService,
+    private providersService: ProvidersService,
+    private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef,
-    private fb: FormBuilder
+    private bsModalRef: BsModalRef
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       id: [null],
-      newPassword: [null],
-      newPasswordConfirm: [null]
+      cnpj: [null],
+      socialName: [null]
     });
-    const user$ = this.usersService.listOne(this.id);
-    user$.subscribe(data => this.updateForm(data['user']));
+    const provider$ = this.providersService.listOne(this.id);
+    provider$.subscribe(data => this.updateForm(data['provider']));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  checkPasswords() { // here we have the 'passwords' group
-    let pass = this.form.value.newPassword;
-    let confirmPass = this.form.value.newPasswordConfirm;
-
-  return pass === confirmPass ? null : { notSame: true }     
-}
-
   onSubmit() {
     this.submitted = true;
-    if (this.form.invalid || this.checkPasswords()) {
-      return this.error = 'Erro ao editar um usuário. Verifique os dados e tente novamente.';
+    if (this.form.invalid) {
+      return;
     }
-    this.usersService.editPassword({
+    this.providersService.edit({
       id: this.form.value.id,
-      newPassword: this.form.value.newPassword,
-      newPasswordConfirm: this.form.value.newPasswordConfirm
+      socialName: this.form.value.socialName,
+      cnpj: this.form.value.cnpj
     }).subscribe(
       success => {
         if (success['success']) this.decline();
-        else { this.error = 'Erro ao editar um usuário. Verifique os dados e tente novamente.' }
+        else { this.error = 'Erro ao editar fornecedor. Verifique os dados e tente novamente.' }
       },
-      error => this.error = `Erro ao editar um usuário. Servidor retornou ${error}`
+      error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
     );
   }
 
-  updateForm(user) {
+  updateForm(provider) {
     this.form.patchValue({
-      id: user.id,
-      newPassword: '',
-      newPasswordConfirm: ''
+      id: provider.id,
+      socialName: provider.socialName,
+      cnpj: provider.cnpj
     });
   }
 
@@ -90,5 +83,4 @@ export class EditPasswordComponent implements OnInit {
     this.modalRef.hide();
     this.bsModalRef.hide();
   }
-
 }

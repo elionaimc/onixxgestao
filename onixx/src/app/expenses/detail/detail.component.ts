@@ -1,52 +1,93 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Observable, Subject, Subscription, EMPTY } from 'rxjs';
 import { Expense } from 'src/app/models/expense.model';
 import { ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { catchError } from 'rxjs/operators';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-detail',
-  templateUrl: './detail.component.html'
+  templateUrl: './detail.component.html',
+  preserveWhitespaces: true
 })
-export class DetailComponent implements OnInit, OnDestroy {
+export class DetailComponent implements OnInit {
 
-  splash = true;
-  id: number;
-  expense$: Observable<Expense>;
-  error$ = new Subject<boolean>();
-  control: Subscription;
   submitted = false;
+  form: FormGroup;
+  error: string;
+  currentUser: User;
+  id: number;
+  modalRef: BsModalRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private service: ExpensesService) { }
+    private expensesService: ExpensesService,
+    private fb: FormBuilder,
+    private modalService: BsModalService,
+    private bsModalRef: BsModalRef
+    ) { }
 
   ngOnInit() {
-    this.control = this.route.params.subscribe(params => {
-      //this.id = params['id'];
-      this.expense$ = this.service.listOne(this.id)
-        .pipe(
-          catchError(error => {
-            this.error$.next(true);
-            return EMPTY;
-          })
-        );
+    this.form = this.fb.group({
+      id: [null],
+      requestedValue: [null],
+      authorizedValue: [null]
+    });
+    const expenses$ = this.expensesService.listOne(this.id);
+    expenses$.subscribe(data => {
+      this.updateForm(data['expense']);
+    });
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  onSubmit() {
+    console.log('Enviou form');
+    // this.submitted = true;
+    // if (this.form.invalid) {
+    //   return;
+    // }
+    // this.expensesService.edit({
+    //   id: this.form.value.id,
+    //   socialName: this.form.value.socialName,
+    //   cnpj: this.form.value.cnpj
+    // }).subscribe(
+    //   success => {
+    //     if (success['success']) this.decline();
+    //     else { this.error = 'Erro ao editar fornecedor. Verifique os dados e tente novamente.' }
+    //   },
+    //   error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
+    // );
+  }
+
+  updateForm(expense) {
+    this.form.patchValue({
+      id: expense.id,
+      requestedValue: parseFloat(expense.requestedValue)
     });
   }
 
-  onSubmit(f: NgForm, status) {
-    this.submitted = true;
-    if (f.invalid) {
-      return;
-    }
-    this.service.updateOne(this.id, f.form.value.authorizedValue, status)
-      .subscribe();
+  onClose() {
+    this.error = null;
+    this.bsModalRef.hide();
   }
 
-  ngOnDestroy(): void {
-    this.control.unsubscribe();
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (reason) this.decline();
+      }
+      ))
+  };
+
+  decline(): void {
+    this.error = null;
+    this.modalRef.hide();
+    this.bsModalRef.hide();
   }
 
 }

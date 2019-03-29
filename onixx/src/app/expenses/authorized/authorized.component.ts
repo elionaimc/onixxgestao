@@ -35,6 +35,10 @@ export class AuthorizedComponent implements OnInit {
       );
   }
 
+  create() {
+    ///
+  }
+
   ionViewDidLoad() {
     setTimeout(() => this.splash = false, 4000);
   }

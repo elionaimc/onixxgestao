@@ -2,9 +2,9 @@
   <ul class="list-group sticky-top">
       <div class="sidebar-heading bg-primary shadow">
         <li routerLink="/home">
-          <img src="/assets/img/{{ this.currentUser.Prefecture.image }}"
-          alt="{{ this.currentUser.Prefecture.name }}"
-          title="{{ this.currentUser.Prefecture.name }}" />
+          <img src="/assets/img/{{ this.currentUser['Prefecture']['image'] }}"
+          alt="{{ this.currentUser['Prefecture']['name'] }}"
+          title="{{ this.currentUser['Prefecture']['name'] }}" />
         </li>
       </div>
     <li *ngIf="currentUser.role != 'analista'">

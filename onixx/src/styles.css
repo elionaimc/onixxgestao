@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~ngx-bootstrap/datepicker/bs-datepicker.css';
 
 body {
   overflow-x: hidden;
@@ -12,6 +13,22 @@ a, a:hover {
 h5 {
   margin-top: 0 !important;
   font-weight: bold !important;
+}
+
+td.week, .weeks thead tr th:nth-child(1) {
+  display: none !important;
+}
+
+.bs-datepicker-head {
+  background-color: #007BFF !important;
+}
+
+input.upload-button {
+  display: none !important;
+}
+
+.form-control.authorized {
+  font-size: 1.5rem !important;
 }
 
 td div span {
@@ -330,9 +347,9 @@ table td, table th {
     font-size: 3.5rem;
   }
 }
-.ng-valid[required], .ng-valid.required  {
-  border: 1px solid #42A948; /* green */
-  border-left: 5px solid #42A948;
+.ng-valid[required], .ng-valid.required, label.ng-valid  {
+  border: 1px solid #42A948 !important; /* green */
+  border-left: 5px solid #42A948 !important;
 }
 
 .ng-invalid:not(form)  {

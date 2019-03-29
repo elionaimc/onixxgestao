@@ -1,0 +1,89 @@
+<div class="alert my-0" role="alert">
+  <div class="modal-header border-bottom border-light">
+    <h4 class="modal-title">Nova Despesa</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form class="form-auth" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-sm-4 form-group">
+          <label for="dueDate">Data de vencimento</label>
+          <input type="text" placeholder="Vencimento" class="form-control"
+          formControlName="dueDate" [minDate]="minDate"
+          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'pt-br', adaptivePosition: true }" bsDatepicker required>
+        </div>
+        <div class="col-sm-8 form-group">
+          <label for="category">Categoria</label>
+          <input type="text" class="form-control" required
+          [typeaheadOptionsLimit]="ncat" [typeaheadMinLength]="0"
+          placeholder="Selecione uma categoria" [typeahead]="categories"
+          formControlName="category" name="category"
+          typeaheadOptionField="description"  />
+        </div>
+      </div>
+      <div class="row justify-content-center mt-1">
+        <div class="col-sm-4 form-group">
+          <label for="requestedValue">Valor solicitado</label>
+          <input type="text" placeholder="R$ 00,00" class="form-control" formControlName="requestedValue" name="authorizedValue"
+            mask="dot_separator.2" prefix="R$ " maxlength="20" required />
+        </div>
+        <div class="col-sm-8 form-group">
+          <label for="provider">Fornecedor</label>
+          <input type="text" class="form-control" required 
+            [typeaheadOptionsLimit]="5" [typeaheadMinLength]="0"
+            placeholder="Nome do Fornecedor" [typeahead]="providers" formControlName="provider"
+            typeaheadOptionField="socialName" name="provider" />
+        </div>
+      </div>
+      <div class="row justify-content-center mt-1">
+        <div class="col-sm-12 form-group">
+          <label for="razaoSocial">Descrição da despesa</label>
+          <input type="text" class="form-control" minlength="5" maxlength="100" required
+            placeholder="Ex: Pregão 999-2019 - Material de escritório"
+            formControlName="description" name="description" name="description" />
+        </div>
+        <div class="col-sm-12 form-group">
+          <div *ngIf="error" class="alert alert-warning">
+            <small><strong>Erro: </strong> {{error}}</small>
+          </div>
+          <label for="file" >Anexo</label><br/>
+        <label 
+        [ngClass]="{'ng-valid': validFile }"
+        class="border btn rounded justify-content-left col-sm-12 float-left">
+          <span class="text-secondary float-left d-inline-block text-truncate"
+           style="max-width: 250px;">{{ form.value.file ? form.value.file.split('\\').pop() :'Selecione um arquivo'}}</span>
+          <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)"
+            [uploadInput]="uploadInput" formControlName="file" class="form-control upload-button">
+        </label>
+        </div>
+      </div>
+      <!--<div class="row justify-content-center py-1">
+        <div class="col-sm-12">
+          <label for="CNPJ">CNPJ</label>
+          <input type="text" class="form-control" ngModel #cnpj="ngModel" name="cnpj"
+            placeholder="Ex: 000.000.000/0000-00" minlength="15" maxlength="20" mask="000.000.000/0000-00" required />
+        </div>
+      </div>-->
+      <div class="row justify-content-center mt-1">
+        <div class="text-center">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onClose()">Cancelar</button>
+          <button type="button" [disabled]="!form.valid" class="btn btn-primary" id="cadastrar" name="cadastrar"
+            (click)="openModal(template)">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Tem certeza que deseja cadastrar uma nova despesa?</p>
+      <div class="row justify-content-center py-1">
+        <div *ngIf="error" class="alert alert-warning">
+          <small>{{error}}</small>
+        </div>
+      </div><button type="button" class="btn btn-outline-success" (click)="decline()">Não!</button>
+      <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Confirmar</button>
+    </div>
+  </ng-template>
+  </form>
+</div>

@@ -2,29 +2,41 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ExpensesRoutingModule } from './expenses-routing.module';
-import { NewComponent } from './new/new.component';
+import { PendingComponent } from './pending/pending.component';
 import { AuthorizedComponent } from './authorized/authorized.component';
 import { DeniedComponent } from './denied/denied.component';
 import { DetailComponent } from './detail/detail.component';
 import { LoadingComponent } from '../layout/loading/loading.component';
 import { ParamErrorComponent } from '../layout/param-error/param-error.component';
 import { ServerErrorComponent } from '../layout/server-error/server-error.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutModule } from '../layout/layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EditComponent } from './edit/edit.component';
+import { CreateComponent } from './create/create.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { TooltipModule, TypeaheadModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { NgxUploaderModule } from 'ngx-uploader';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
   declarations: [
-    NewComponent,
-    AuthorizedComponent,
-    DeniedComponent,
-    DetailComponent
-  ],
-  entryComponents: [
-    NewComponent,
+    PendingComponent,
     AuthorizedComponent,
     DeniedComponent,
     DetailComponent,
+    EditComponent,
+    CreateComponent
+  ],
+  entryComponents: [
+    PendingComponent,
+    AuthorizedComponent,
+    DeniedComponent,
+    DetailComponent,
+    EditComponent,
+    CreateComponent,
     LoadingComponent,
     ParamErrorComponent,
     ServerErrorComponent
@@ -34,6 +46,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ExpensesRoutingModule,
     FormsModule,
     LayoutModule,
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
+    TooltipModule.forRoot(),
+    TypeaheadModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    NgxUploaderModule,
     FontAwesomeModule
   ]
 })

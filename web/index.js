@@ -6,6 +6,7 @@
 
 // dependencies
 const express = require('express');
+const upload = require('./upload');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const pe = require('parse-error');
@@ -48,6 +49,7 @@ app.use(cors());
 
 // routes and errors handling
 app.use('/api', api);
+app.post('/upload', upload);
 
 app.get('*', wpa);
 

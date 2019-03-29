@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     file: DataTypes.STRING,
     dueDate: DataTypes.DATEONLY,
     decisionDate: DataTypes.DATEONLY,
-    requestedValue: { type: DataTypes.DECIMAL(10, 2), validate: { isNumeric: true } },
-    authorizedValue: { type: DataTypes.DECIMAL(10, 2), validate: { isNumeric: true } },
+    requestedValue: { type: DataTypes.DECIMAL(15, 2), validate: { isNumeric: true } },
+    authorizedValue: { type: DataTypes.DECIMAL(15, 2), validate: { isNumeric: true } },
     authorizationCode: { type: DataTypes.STRING, allowNull: true, unique: true },
     status: { type: DataTypes.ENUM(CONFIG.expense_status), allowNull: false, defaultValue: CONFIG.expense_status_default },
     isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }

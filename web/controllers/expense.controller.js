@@ -30,7 +30,14 @@ const getAll = async (req, res) => {
     
     let clause = req.query.status? { PrefectureId: user.PrefectureId, isActive: true, status: req.query.status } : { PrefectureId: user.PrefectureId, isActive: true };
 
-    [err, expenses] = await to(Expense.findAll({ where: clause, include: [{ model: Provider, attributes: ["socialName", "cnpj"] }, { model: Category, attributes: ["description"] }, { model: User, attributes: ["name"] }]  }));
+    [err, expenses] = await to(Expense.findAll({
+        where: clause, 
+        include: [
+            { model: Provider, attributes: ["socialName", "cnpj"] },
+            { model: Category, attributes: ["description"] },
+            { model: User, attributes: ["name"] }
+        ],
+        order: [['id', 'DESC']]  }));
     if (err) TE(err.message);
     // for(e in expenses) {
     //     User.findOne({

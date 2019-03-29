@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Expense } from '../models/expense.model';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,10 @@ export class ExpensesService {
   public denied = new HttpParams().set('status', 'recusada');
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  create(expense: Expense) {
+    return this.http.post<Expense>(this.RESOURCE, expense).pipe(take(1));
+  }
 
   listNew() {
     return this.http.get<Expense[]>(this.RESOURCE, { params: this.new });

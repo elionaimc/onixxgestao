@@ -1,6 +1,6 @@
 <div class="alert my-0" role="alert">
   <div class="modal-header border-bottom border-light">
-    <h4 class="modal-title">Detalha despesa</h4>
+    <h4 class="modal-title">Editar Fornecedor</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -9,15 +9,16 @@
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-sm-12">
-          <label for="authorizedValue">Autorizar</label>
-          <input
-          type="text"
-          class="form-control authorized"
-          formControlName="requestedValue"
-          name="authorizedValue"
-          mask="dot_separator.2"
-          prefix="R$ "
-          maxlength="20" required />
+          <label for="razaoSocial">Razão Social</label>
+          <input type="text" class="form-control" formControlName="socialName" name="razaoSocial"
+            placeholder="Ex: Indústrias Acme LTDA" minlength="5" maxlength="100" required />
+        </div>
+      </div>
+      <div class="row justify-content-center py-1">
+        <div class="col-sm-12">
+          <label for="CNPJ">CNPJ</label>
+          <input type="text" class="form-control" formControlName="cnpj" name="CNPJ"
+            placeholder="Ex: 000.000.000/0000-00" mask="000.000.000/0000-00" minlength="5" maxlength="100" required />
         </div>
       </div>
       <div class="row justify-content-center py-3">

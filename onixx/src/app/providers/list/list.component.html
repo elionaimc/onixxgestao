@@ -36,7 +36,7 @@
               class="row cols"
               style="cursor: pointer"
               [ngClass]="{'text-primary': provider.isActive, 'text-muted font-italic': !provider.isActive}">
-                <span (click)="detail(provider.id)" class="col-sm-10">{{ provider.socialName }}</span>
+                <span (click)="detail(provider.id)" class="col-sm-10">{{ provider.socialName }} (<small class="font-weight-bold">{{ provider.cnpj | mask: '000.000.000/0000-00'}}</small>)</span>
                 <div class="text-right col-sm-2">
                   <div class="btn-group mr-2" role="group" aria-label="Second group">
                     <button class="btn btn-outline-primary mb-1 btn-sm" (click)="edit(provider.id)">

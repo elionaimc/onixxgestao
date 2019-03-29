@@ -34,6 +34,10 @@ export class DeniedComponent implements OnInit {
       );
   }
 
+  create() {
+    ////
+  }
+
   ionViewDidLoad() {
     setTimeout(() => this.splash = false, 4000);
   }

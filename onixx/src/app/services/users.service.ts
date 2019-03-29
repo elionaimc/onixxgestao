@@ -30,7 +30,6 @@ export class UsersService {
   }
 
   editPassword(u) {
-    console.log('editou password');
     const user = {
       id: u.id,
       password: u.newPassword
