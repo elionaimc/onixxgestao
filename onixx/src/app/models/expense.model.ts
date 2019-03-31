@@ -6,8 +6,8 @@ export interface Expense {
     DeciderId: number;
     authorizationCode: string;
     authorizationDate: string;
-    requestedValue: number;
-    authorizedValue: number;
+    requestedValue: string;
+    authorizedValue: string;
     status: string;
     CategoryId: number;
     PrefectureId: number;

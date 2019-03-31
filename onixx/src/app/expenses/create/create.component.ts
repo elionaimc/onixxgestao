@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, HostListener, EventEmitter } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, HostListener, EventEmitter } from '@angular/core';
 import { Observable, Subject, Subscription, EMPTY } from 'rxjs';
 import { Provider } from 'src/app/models/provider.model';
-import { ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses.service';
-import { catchError, tap, take } from 'rxjs/operators';
-import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
+import { catchError, take } from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef, BsDatepickerDirective } from 'ngx-bootstrap';
 import { User } from 'src/app/models/user.model';
 import { ProvidersService } from 'src/app/services/providers.service';
@@ -12,6 +11,9 @@ import { AlertModalService } from 'src/app/services/alert-modal.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { Category } from 'src/app/models/category.model';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-detail',
@@ -53,13 +55,12 @@ export class CreateComponent implements OnInit {
     private providersService: ProvidersService,
     private categoriesService: CategoriesService,
     private alertService: AlertModalService,
-    private route: ActivatedRoute,
     private expensesService: ExpensesService,
     private fb: FormBuilder,
     private modalService: BsModalService,
     private bsModalRef: BsModalRef
   ) {
-    this.options = { concurrency: 1, maxUploads: 3 };
+    this.options = { concurrency: 1, maxUploads: 1 };
     this.files = []; // local uploading files array
     this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
     this.humanizeBytes = humanizeBytes;
@@ -143,12 +144,13 @@ export class CreateComponent implements OnInit {
     }
     expense.PrefectureId = this.currentUser['PrefectureId'];
     expense.UserId = this.currentUser['id'];
-    expense.file = (this.form.value.file) ? this.form.value.file.split('\\').pop() : null;
+    let ext = (this.form.value.file) ? this.form.value.file.split('\\').pop() : null;
+    expense.file = (ext) ? new Date().valueOf() + '.' + ext.split('.').pop() : null;
     
-    this.startUpload(expense);
     this.expensesService.create(expense).subscribe(
       success => {
         if (success['success']) {
+          if (expense.file) this.startUpload(expense.file);
           this.decline();
         }
         else { this.error = 'Erro ao cadastrar despesa. Verifique os dados e tente novamente.' }
@@ -187,20 +189,25 @@ export class CreateComponent implements OnInit {
   }
 
   onUploadOutput(output: UploadOutput): void {
-    if (output.file && output.file.type !== 'text/plain') {
-      console.log(output.file.type);
-      switch(output.file.type) {
-        case 'application/pdf': ;
-        case 'image/png': ;
-        case 'image/jpeg': ;
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 
-        this.validFile = true;
-        this.error = '';
-        break;
-        default: {
-          this.validFile = false;
-          this.error = 'Selecione um arquivo .png, .jpg, .pdf ou .docx';
-          break;
+    console.log(output.file);
+    if (output.file) {
+      if (output.file.size > 2248221) {
+        this.validFile = false;
+        this.error = 'Arquivo inválido. Tamanho máximo permitido: 2MB.';
+      } else {
+        switch (output.file.type) {
+          case 'application/pdf': ;
+          case 'image/png': ;
+          case 'image/jpeg': ;
+          case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            this.validFile = true;
+            this.error = '';
+            break;
+          default: {
+            this.validFile = false;
+            this.error = 'Selecione um arquivo .png, .jpg, .pdf ou .docx';
+            break;
+          }
         }
       }
     }
@@ -249,7 +256,7 @@ export class CreateComponent implements OnInit {
       type: 'uploadAll',
       url: 'http://localhost:1982/upload',
       method: 'POST',
-      data: { expense: expense }
+      data: expense
     };
 
     this.uploadInput.emit(event);

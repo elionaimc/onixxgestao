@@ -17,9 +17,6 @@ import { CreateComponent } from './create/create.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { TooltipModule, TypeaheadModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { NgxUploaderModule } from 'ngx-uploader';
-import { defineLocale } from 'ngx-bootstrap/chronos';
-import { ptBrLocale } from 'ngx-bootstrap/locale';
-defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
   declarations: [

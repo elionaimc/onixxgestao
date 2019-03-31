@@ -32,14 +32,14 @@ app.use(passport.initialize());
 // connect to database and load models
 const models = require("./models");
 
-// database tests for connect and sync
+// // database tests for connect and sync
 // models.sequelize.authenticate()
 // .catch(err => {
 //   // HAL explains error on database connection
 //   console.error("_FNORD » I´m sorry Dave. I´m afraid I can´t connect to database: ", CONFIG.db_name);
 // });
 
-// at development enviroment, syncronize database
+// // at development enviroment, syncronize database
 // if(CONFIG.app==='dev'){
 //     models.sequelize.sync();
 // }

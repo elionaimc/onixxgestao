@@ -49,4 +49,9 @@ export class ExpensesService {
       })
     );
   }
+
+  edit(expense) {
+    console.log(expense);
+    return this.http.put<Expense>(`${this.RESOURCE}/${expense.id}`, expense).pipe(take(1));
+  }
 }

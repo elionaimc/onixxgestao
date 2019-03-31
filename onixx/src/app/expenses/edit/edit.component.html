@@ -1,24 +1,38 @@
 <div class="alert my-0" role="alert">
   <div class="modal-header border-bottom border-light">
-    <h4 class="modal-title">Editar Fornecedor</h4>
+    <h4 class="modal-title">Editar Despesa</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <form class="form-auth" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="card-body">
-      <div class="row justify-content-center">
-        <div class="col-sm-12">
-          <label for="razaoSocial">Razão Social</label>
-          <input type="text" class="form-control" formControlName="socialName" name="razaoSocial"
-            placeholder="Ex: Indústrias Acme LTDA" minlength="5" maxlength="100" required />
+      <div class="row justify-content-center mt-1">
+        <div class="col-sm-4 form-group">
+          <label for="requestedValue">Valor solicitado</label>
+          <input type="text" placeholder="R$ 00,00" class="form-control" formControlName="requestedValue" name="requestedValue"
+            mask="dot_separator.2" prefix="R$ " maxlength="20" required [dropSpecialCharacters]="false" />
+        </div>
+        <div class="col-sm-8 form-group">
+          <label for="file">Anexo</label><br />
+          <label [ngClass]="{'ng-valid': validFile }" class="border btn rounded justify-content-left col-sm-12 float-left">
+            <span class="text-secondary float-left d-inline-block">
+              {{ form.value.file ? form.value.file :'Clique para alterar o arquivo anexo.'}}
+            </span>
+            <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)"
+              [uploadInput]="uploadInput" formControlName="file" class="form-control upload-button">
+          </label>
         </div>
       </div>
-      <div class="row justify-content-center py-1">
-        <div class="col-sm-12">
-          <label for="CNPJ">CNPJ</label>
-          <input type="text" class="form-control" formControlName="cnpj" name="CNPJ"
-            placeholder="Ex: 000.000.000/0000-00" mask="000.000.000/0000-00" minlength="5" maxlength="100" required />
+      <div class="row justify-content-center mt-1">
+        <div class="col-sm-12 form-group">
+          <div *ngIf="error" class="alert alert-warning">
+            <small><strong>Erro: </strong> {{error}}</small>
+          </div>
+          <label for="razaoSocial">Descrição da despesa</label>
+          <input type="text" class="form-control" minlength="5" maxlength="100" required
+            placeholder="Ex: Pregão 999-2019 - Material de escritório" formControlName="description"
+            name="description" />
         </div>
       </div>
       <div class="row justify-content-center py-3">
@@ -32,7 +46,7 @@
   </form>
   <ng-template #template>
     <div class="modal-body text-center">
-      <p>Tem certeza que deseja editar este fornecedor?</p>
+      <p>Tem certeza que deseja editar esta despesa?</p>
       <div class="row justify-content-center py-1">
         <div *ngIf="error" class="alert alert-warning">
           <small>{{error}}</small>

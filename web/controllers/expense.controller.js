@@ -70,6 +70,20 @@ module.exports.get = get;
 
 //Updates a expense
 const update = async (req, res) => {
+    let err, expense;
+    expense = req.expense;
+    expense.set(req.body);
+
+    [err, expense] = await to(expense.save());
+    if (err) {
+        return ReE(res, err);
+    }
+    return ReS(res, { expense: expense.toJSON() });
+}
+module.exports.update = update;
+
+//Updates a expense for authorization
+const authorize = async (req, res) => {
     let err, expense, data;
     if (req.body.status === 'autorizada') {
         data = req.body;

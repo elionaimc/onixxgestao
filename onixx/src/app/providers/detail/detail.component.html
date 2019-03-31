@@ -11,7 +11,7 @@
       </div>
       <div class="card-body">
         
-        <h5 class="card-subtitle mb-2 text-muted">CNPJ: {{ response.provider.cnpj | mask: '000.000.000/0000-00' }}</h5>
+        <h5 class="card-subtitle mb-2 text-muted">CNPJ: {{ response.provider.cnpj | mask: '00.000.000/0000-00' }}</h5>
         <p class="card-text">
           <small>
             Fornecedor cadastrado em {{ response.provider.createdAt | date: 'dd/MM/yyyy' }}
