@@ -33,7 +33,7 @@
                 </th>
                 <th class="border-0 bg-success text-white">
                   <span class="float-right">
-                    <button class="btn btn-danger mb-0 btn-sm" (click)="deny(expense.id)">
+                    <button class="btn btn-danger mb-0 btn-sm" (click)="openModal(recusar, expense.id)">
                       <fa-icon [icon]="faTimes"></fa-icon> Cancelar
                     </button>
                   </span>
@@ -43,7 +43,7 @@
             <tbody>
               <tr>
                 <td colspan="2">
-                  <a [routerLink]="[ '/expenses', expense.id ]" class="text-secondary">
+                  <a href="{{RESOURCE}}/authorized/{{expense.authorizationCode}}" target="_blank" class="text-secondary">
                     <div class="row cols">
                       <div class="col-sm-6 text-success">
                         <small>AUTORIZADO:</small>
@@ -79,6 +79,19 @@
         </div>
       </div>
     </div>
+
+    <ng-template #recusar>
+      <div class="modal-body text-center">
+        <p>Tem certeza que deseja DESAUTORIZAR esta despesa?</p>
+        <div class="row justify-content-center py-1">
+          <div *ngIf="error" class="alert alert-warning">
+            <small>{{error}}</small>
+          </div>
+        </div><button type="button" class="btn btn-outline-primary" (click)="decline()">Não!</button>
+        <button type="button" class="btn btn-outline-danger" (click)="deny(this.id)" id="recusada"
+          name="recusada">DESAUTORIZAR</button>
+      </div>
+    </ng-template>
 
     <ng-template #paramError>
       <app-param-error [message]="emptyMessage"></app-param-error>

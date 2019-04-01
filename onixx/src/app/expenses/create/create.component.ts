@@ -13,6 +13,7 @@ import { Category } from 'src/app/models/category.model';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { Router } from '@angular/router';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -58,11 +59,12 @@ export class CreateComponent implements OnInit {
     private expensesService: ExpensesService,
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef
+    private bsModalRef: BsModalRef,
+    private router:Router
   ) {
     this.options = { concurrency: 1, maxUploads: 1 };
-    this.files = []; // local uploading files array
-    this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
+    this.files = [];
+    this.uploadInput = new EventEmitter<UploadInput>();
     this.humanizeBytes = humanizeBytes;
    }
 
@@ -152,6 +154,7 @@ export class CreateComponent implements OnInit {
         if (success['success']) {
           if (expense.file) this.startUpload(expense.file);
           this.decline();
+          this.router.navigate(['/expenses']);
         }
         else { this.error = 'Erro ao cadastrar despesa. Verifique os dados e tente novamente.' }
       },
@@ -211,50 +214,12 @@ export class CreateComponent implements OnInit {
         }
       }
     }
-    // switch (output.type) {
-    //   case 'allAddedToQueue':
-    //     // uncomment this if you want to auto upload files when added
-    //     // const event: UploadInput = {
-    //     //   type: 'uploadAll',
-    //     //   url: '/upload',
-    //     //   method: 'POST',
-    //     //   data: { foo: 'bar' }
-    //     // };
-    //     // this.uploadInput.emit(event);
-    //     break;
-    //   case 'addedToQueue':
-    //     if (typeof output.file !== 'undefined') {
-    //       this.files.push(output.file);
-    //     }
-    //     break;
-    //   case 'uploading':
-    //     if (typeof output.file !== 'undefined') {
-    //       // update current data in files array for uploading file
-    //       const index = this.files.findIndex((file) => typeof output.file !== 'undefined' && file.id === output.file.id);
-    //       this.files[index] = output.file;
-    //     }
-    //     break;
-    //   case 'removed':
-    //     // remove file from array when removed
-    //     this.files = this.files.filter((file: UploadFile) => file !== output.file);
-    //     break;
-    //   case 'dragOver':
-    //     this.dragOver = true;
-    //     break;
-    //   case 'dragOut':
-    //   case 'drop':
-    //     this.dragOver = false;
-    //     break;
-    //   case 'done':
-    //     // The file is downloaded
-    //     break;
-    // }
   }
 
   startUpload(expense): void {
     const event: UploadInput = {
       type: 'uploadAll',
-      url: 'http://localhost:1982/upload',
+      url: 'http://localhost:1982/api/upload',
       method: 'POST',
       data: expense
     };

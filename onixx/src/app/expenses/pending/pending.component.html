@@ -47,9 +47,10 @@
                       <div class="row cols">
                         <div class="col-sm-6">
                           <small>Solicitado:</small>
-                          <h3>
+                          <h3 class="mb-0">
                             {{ expense.requestedValue | currency:'BRL':'R$ ' }}
                           </h3>
+                          <small>{{ expense.description }}</small>
                         </div>
                         <div class="col-sm-6">
                           <small>Vencimento: </small><strong>{{ expense.dueDate | date: 'dd/MM/yyyy' }}</strong><br/>

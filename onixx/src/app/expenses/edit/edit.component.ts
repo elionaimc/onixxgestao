@@ -35,8 +35,8 @@ export class EditComponent implements OnInit {
     private bsModalRef: BsModalRef
   ) {
     this.options = { concurrency: 1, maxUploads: 1 };
-    this.files = []; // local uploading files array
-    this.uploadInput = new EventEmitter<UploadInput>(); // input events, we use this to emit data to ngx-uploader
+    this.files = [];
+    this.uploadInput = new EventEmitter<UploadInput>();
     this.humanizeBytes = humanizeBytes;
   }
 
@@ -136,7 +136,7 @@ export class EditComponent implements OnInit {
   startUpload(expense): void {
     const event: UploadInput = {
       type: 'uploadAll',
-      url: 'http://localhost:1982/upload',
+      url: 'http://localhost:1982/api/upload',
       method: 'POST',
       data: expense
     };

@@ -7,14 +7,12 @@
 // dependencies
 const express = require('express');
 const upload = require('./upload');
+const download = require('./download');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const pe = require('parse-error');
 const cors = require('cors');
 const { ReE } = require('./services/util.service');
-
-// const generateHash = require('random-hash');
-// console.log(generateHash.generateHash({ length: 8 }));
 
 // definitions for routing and connection
 const wpa = require('./config/routes.wpa');
@@ -48,8 +46,9 @@ const models = require("./models");
 app.use(cors());
 
 // routes and errors handling
+app.post('/api/upload', upload);
+app.get('/api/download/:file', download);
 app.use('/api', api);
-app.post('/upload', upload);
 
 app.get('*', wpa);
 

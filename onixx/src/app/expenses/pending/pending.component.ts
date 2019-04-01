@@ -8,6 +8,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { DetailComponent } from '../detail/detail.component';
 import { EditComponent } from '../edit/edit.component';
 import { CreateComponent } from '../create/create.component';
+import { AlertModalService } from 'src/app/services/alert-modal.service';
 
 @Component({
   selector: 'app-pending',
@@ -16,7 +17,6 @@ import { CreateComponent } from '../create/create.component';
 })
 export class PendingComponent implements OnInit {
 
-  splash = true;
   expenses$: Observable<Expense[]>;
   error$ = new Subject<boolean>();
   emptyMessage = 'Não exitem despesas pendentes!';
@@ -33,6 +33,7 @@ export class PendingComponent implements OnInit {
 
   constructor(
     private service: ExpensesService,
+    private alertService: AlertModalService,
     private modalService: BsModalService
     ) { }
 
@@ -43,12 +44,13 @@ export class PendingComponent implements OnInit {
 
   onRefresh() {
     this.expenses$ = this.service.listNew()
-    .pipe(
-      catchError(error => {
-        this.error$.next(true);
-        return EMPTY;
-      })
-    );
+      .pipe(
+        catchError(error => {
+          this.alertService.showAlertDanger(error);
+          this.error$.next(true);
+          return EMPTY;
+        })
+      );
   }
 
   openModal(template: TemplateRef<any>) {

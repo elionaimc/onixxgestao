@@ -7,6 +7,7 @@
 //Actions for Expense entity
 const { Expense, Provider, Category, User } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
+const { generateHash } = require('random-hash');
 
 //Creates a expense
 const create = async (req, res) => {
@@ -37,21 +38,8 @@ const getAll = async (req, res) => {
             { model: Category, attributes: ["description"] },
             { model: User, attributes: ["name"] }
         ],
-        order: [['id', 'DESC']]  }));
+        order: [['updatedAt', 'DESC']]  }));
     if (err) TE(err.message);
-    // for(e in expenses) {
-    //     User.findOne({
-    //         where: { id: expenses[e]['DeciderId'] },
-    //         attributes: ['name']
-    //     }).then((d) => {
-    //         expenses[e]['Decider'] = d['name'];
-    //         console.log(expenses[e]['Decider']);
-    //         results.push(expenses[e]);
-    //         console.log(results[e]['Decider']);
-    //         //return ReS(res, { expenses: results });
-    //     });
-    //     //console.log(expenses[e]);
-    // }
 
     return ReS(res, { expenses: expenses });
 }
@@ -73,6 +61,11 @@ const update = async (req, res) => {
     let err, expense;
     expense = req.expense;
     expense.set(req.body);
+    if (req.body.status === 'autorizada') {
+        const data={};
+        data.authorizationCode = generateHash({ length: 8 });
+        expense.set(data);
+    }
 
     [err, expense] = await to(expense.save());
     if (err) {
@@ -86,16 +79,7 @@ module.exports.update = update;
 const authorize = async (req, res) => {
     let err, expense, data;
     if (req.body.status === 'autorizada') {
-        data = req.body;
-        let date = Date.now();
-        data.authorized_by = req.user.id;
-        data.authorization_date = date;
-        data.authorization_code = req.user.id + date + '_' + date * req.body.authorized_value;
-    } else if (req.body.status === 'recusada') {
-        data = {
-            status: 'recusada',
-            authorized_by: req.user.id
-        };
+        data.authorizationCode = req.user.id + date + '_' + date * req.body.authorized_value;
     }
     expense = req.expense;
     expense.set(data);
@@ -106,7 +90,7 @@ const authorize = async (req, res) => {
     }
     return ReS(res, {expense:expense.toJSON()});
 }
-module.exports.update = update;
+module.exports.authorize = authorize;
 
 //Deletes a expense
 const remove = async (req, res) => {

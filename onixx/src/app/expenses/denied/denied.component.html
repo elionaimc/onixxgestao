@@ -51,11 +51,11 @@
                           <small>
                             Categoria: {{ expense.Category.description }}
                           </small><br/>
-                          <small>
+                          <!--<small>
                             Solicitado em {{ expense.createdAt | date: 'dd/MM/yyyy' }}
-                            <span class="d-none d-lg-inline">
-                               por {{ expense.User.name }} 
-                            </span>
+                          </small><br />-->
+                          <small>
+                            {{ expense.description }}
                           </small>
                         </div>
                       </div>

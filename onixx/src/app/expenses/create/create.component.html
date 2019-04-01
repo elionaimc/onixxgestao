@@ -53,19 +53,12 @@
         [ngClass]="{'ng-valid': validFile }"
         class="border btn rounded justify-content-left col-sm-12 float-left">
           <span class="text-secondary float-left d-inline-block text-truncate"
-           style="max-width: 250px;">{{ form.value.file ? form.value.file.split('\\').pop() :'Selecione um arquivo'}}</span>
+           style="max-width: 200px;">{{ form.value.file ? form.value.file.split('\\').pop() :'Selecione um arquivo'}}</span>
           <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)"
             [uploadInput]="uploadInput" formControlName="file" class="form-control upload-button">
         </label>
         </div>
       </div>
-      <!--<div class="row justify-content-center py-1">
-        <div class="col-sm-12">
-          <label for="CNPJ">CNPJ</label>
-          <input type="text" class="form-control" ngModel #cnpj="ngModel" name="cnpj"
-            placeholder="Ex: 000.000.000/0000-00" minlength="15" maxlength="20" mask="000.000.000/0000-00" required />
-        </div>
-      </div>-->
       <div class="row justify-content-center mt-1">
         <div class="text-center">
           <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onClose()">Cancelar</button>

@@ -37,21 +37,11 @@ export class ExpensesService {
     return this.http.get<Expense>(this.RESOURCE + '/' + id);
   }
 
-  updateOne(id, authorizedValue, status) {
-    return this.http.put(
-      this.RESOURCE + '/' + id,
-      { authorizedValue: authorizedValue, status: status }
-    ).pipe(
-      map(success => {
-        if (success) {
-          this.router.navigate(['/expenses']);
-        }
-      })
-    );
+  updateOne(id, expense) {
+    return this.http.put( this.RESOURCE + '/' + id, expense ).pipe(take(1));
   }
 
   edit(expense) {
-    console.log(expense);
     return this.http.put<Expense>(`${this.RESOURCE}/${expense.id}`, expense).pipe(take(1));
   }
 }

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { Expense } from 'src/app/models/expense.model';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { catchError } from 'rxjs/operators';
 import { faSync, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { CreateComponent } from '../create/create.component';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-denied',
@@ -12,16 +14,27 @@ import { faSync, faPlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class DeniedComponent implements OnInit {
 
-  splash = true;
   expenses$: Observable<Expense[]>;
   error$ = new Subject<boolean>();
+  emptyMessage = 'Não exitem despesas recusadas!';
+  modalRef: BsModalRef;
   faSync = faSync;
   faPlus = faPlus;
 
-  constructor(private service: ExpensesService) { }
+  modalOptions = {
+    class: 'modal-lg',
+    backdropClick: false
+  }
+
+
+  constructor(
+    private service: ExpensesService,
+    private modalService: BsModalService
+  ) { }
 
   ngOnInit() {
     this.onRefresh();
+    this.modalService.onHide.subscribe(() => this.onRefresh());
   }
 
   onRefresh() {
@@ -34,12 +47,12 @@ export class DeniedComponent implements OnInit {
       );
   }
 
-  create() {
-    ////
+  decline(): void {
+    this.modalRef.hide();
   }
 
-  ionViewDidLoad() {
-    setTimeout(() => this.splash = false, 4000);
+  create() {
+    this.modalService.show(CreateComponent, this.modalOptions);
   }
 
 }

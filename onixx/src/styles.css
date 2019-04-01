@@ -62,7 +62,6 @@ table td, table th {
   -moz-transition: margin .25s ease-out;
   -o-transition: margin .25s ease-out;
   transition: margin .25s ease-out;
-  border-right: 1px solid #007BFF;
   background:#fff !important
 }
 #sidebar-wrapper .sidebar-heading {

@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
-import { Observable, Subject, Subscription, EMPTY } from 'rxjs';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Expense } from 'src/app/models/expense.model';
-import { ActivatedRoute } from '@angular/router';
 import { ExpensesService } from 'src/app/services/expenses.service';
-import { catchError } from 'rxjs/operators';
-import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-detail',
@@ -22,19 +22,20 @@ export class DetailComponent implements OnInit {
   id: number;
   modalRef: BsModalRef;
   subscriptions: Subscription[] = [];
+  expense: Expense;
+  RESOURCE = environment.API;
 
   constructor(
-    private route: ActivatedRoute,
     private expensesService: ExpensesService,
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef
+    private bsModalRef: BsModalRef,
+    private router: Router
     ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       id: [null],
-      requestedValue: [null],
       authorizedValue: [null]
     });
     const expenses$ = this.expensesService.listOne(this.id);
@@ -44,29 +45,57 @@ export class DetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  onSubmit() {
-    console.log('Enviou form');
-    // this.submitted = true;
-    // if (this.form.invalid) {
-    //   return;
-    // }
-    // this.expensesService.edit({
-    //   id: this.form.value.id,
-    //   socialName: this.form.value.socialName,
-    //   cnpj: this.form.value.cnpj
-    // }).subscribe(
-    //   success => {
-    //     if (success['success']) this.decline();
-    //     else { this.error = 'Erro ao editar fornecedor. Verifique os dados e tente novamente.' }
-    //   },
-    //   error => this.error = `Erro ao editar fornecedor. Servidor retornou ${error}`
-    // );
+  onSubmit(status) {
+    console.log('Enviou form: ', status);
+    this.submitted = true;
+    if (this.form.invalid) {
+      return;
+    }
+    let denied = {
+      status: status,
+      DeciderId: this.currentUser['id'],
+      decisionDate: new Date(),
+      authorizationCode: null
+    };
+    let authorized = {};
+    if(status === 'autorizada') {
+      const v = '' + this.form.value.authorizedValue;
+      let cyphers = v.split('.');
+      let value = '';
+      for (let c in cyphers) value += cyphers[c];
+      this.form.value.authorizedValue = value;
+      authorized = {
+      authorizedValue: parseFloat(this.form.value.authorizedValue.replace('.', '').replace(',', '.')),
+      status: status,
+      DeciderId: this.currentUser['id'],
+      decisionDate: new Date()
+      }
+    };
+    let expense_ = (status === 'recusada') ? denied : authorized;
+    this.expensesService.updateOne(this.id, expense_).subscribe(
+      success => {
+        if (success && status === 'recusada') {
+          this.decline();
+          this.router.navigate(['/expenses/denied']);
+        } else if (success && status === 'autorizada') {
+          this.decline();
+          this.router.navigate(['/expenses/authorized']);
+        } else {
+          this.error = 'Erro ao atualizar despesa. Verifique os dados e tente novamente.';
+        }
+      },
+      error => {
+        console.log('erro: ', error);
+        this.error = `Erro ao atualizar despesa. Servidor retornou ${error}`
+      }
+    );
   }
 
   updateForm(expense) {
+    this.expense = expense;
     this.form.patchValue({
       id: expense.id,
-      requestedValue: parseFloat(expense.requestedValue)
+      authorizedValue: parseFloat(expense.requestedValue)
     });
   }
 
@@ -78,10 +107,12 @@ export class DetailComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
     this.subscriptions.push(
-      this.modalService.onHide.subscribe((reason: string) => {
-        if (reason) this.decline();
-      }
-      ))
+      this.modalService.onHide.subscribe(
+        (reason: string) => {
+          if (reason) this.decline();
+        }
+      )
+    )
   };
 
   decline(): void {

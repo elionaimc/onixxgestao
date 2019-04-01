@@ -47,7 +47,7 @@ export class ListComponent implements OnInit {
   constructor(
     private categoriesService: CategoriesService,
     private alertService: AlertModalService,
-    private modalService: BsModalService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit() {
