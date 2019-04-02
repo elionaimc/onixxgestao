@@ -8,6 +8,7 @@
 const express = require('express');
 const upload = require('./upload');
 const download = require('./download');
+const authorization = require('./authorization');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const pe = require('parse-error');
@@ -48,6 +49,7 @@ app.use(cors());
 // routes and errors handling
 app.post('/api/upload', upload);
 app.get('/api/download/:file', download);
+app.get('/api/authorized/:code', authorization);
 app.use('/api', api);
 
 app.get('*', wpa);

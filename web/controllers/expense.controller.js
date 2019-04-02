@@ -8,6 +8,8 @@
 const { Expense, Provider, Category, User } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');
 const { generateHash } = require('random-hash');
+const fs = require('fs');
+const pdf = require('html-pdf');
 
 //Creates a expense
 const create = async (req, res) => {
@@ -65,6 +67,39 @@ const update = async (req, res) => {
         const data={};
         data.authorizationCode = generateHash({ length: 8 });
         expense.set(data);
+        var file = __dirname + '/../files/private/' + data.authorizationCode + ".pdf";
+        let head = `
+    <head>
+      <title>Comprovante de autorização - ONIXX GESTOR</title>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+      <link rel="stylesheet" href="file:///${__dirname}/../files/public/assets/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>`;
+
+        let htmlBody = `${head} <div class="container"><div clas="row cols"><div class="col-xs-12">`;
+        htmlBody += `<div class="text-center panel" style="background-color: #007BFF !important;"><img src="file:///${__dirname}/../files/public/assets/img/bomjesusrn.png" title="Prefeitura" alt="logo da prefeitura" /></div>`;
+        htmlBody += `<h3 class="text-center" style="font-weight:bold !important;">Comprovante de autorização de despesa</h3>`;
+
+        htmlBody += `<div class="container">
+        <p style="font-weight:bold !important;">Despesa #${expense.id} <br/>Categoria: ${expense.Category.description}`;
+        htmlBody += `<br/>Fornecedor(a): ${expense.Provider.socialName} <br/>CNPJ: ${expense.Provider.cnpj.substring(0, 2)}.${expense.Provider.cnpj.substring(2, 5)}.${expense.Provider.cnpj.substring(5, 8)}/${expense.Provider.cnpj.substring(8, 12)}-${expense.Provider.cnpj.substring(12, 14)}</p>`;
+        htmlBody += `<p>Descrição:
+        <br/>${expense.description}</p>
+        <p style="font-weight:bold !important;">Valor autorizado: R$ ${req.body.real}</p>`;
+
+        htmlBody += `<div class="text-center" style="padding-top:15px;margin-top: 50px;border-top: 1px solid #007BFF !important;"><small>Autorização emitida em: ${expense.decisionDate.substring(8, 10)}/${expense.decisionDate.substring(5, 7)}/${expense.decisionDate.substring(0, 4)}</small></div>`;
+        htmlBody += `<div class="text-center"><small>Para assegurar que esta despesa permanece autorizada, <br/>acesse http://onixxgestor.com.br e informe o seguinte código: ${expense.authorizationCode}<small></div></div></div></div>`;
+        let htmlOptions = {
+            format: 'A4',
+            border: '1cm'
+        }
+
+        pdf.create(htmlBody, htmlOptions)
+            .toFile(file, (error, success) => {
+                if (error)
+                    return ReE(res, err);
+            });
     }
 
     [err, expense] = await to(expense.save());

@@ -46,7 +46,6 @@ export class DetailComponent implements OnInit {
   }
 
   onSubmit(status) {
-    console.log('Enviou form: ', status);
     this.submitted = true;
     if (this.form.invalid) {
       return;
@@ -55,20 +54,21 @@ export class DetailComponent implements OnInit {
       status: status,
       DeciderId: this.currentUser['id'],
       decisionDate: new Date(),
+      authorizedValue: null,
       authorizationCode: null
     };
     let authorized = {};
     if(status === 'autorizada') {
-      const v = '' + this.form.value.authorizedValue;
-      let cyphers = v.split('.');
-      let value = '';
-      for (let c in cyphers) value += cyphers[c];
-      this.form.value.authorizedValue = value;
+      // const v = '' + this.form.value.authorizedValue;
+      // let cyphers = v.split('.');
+      // let value = '';
+      // for (let c in cyphers) value += cyphers[c];
       authorized = {
-      authorizedValue: parseFloat(this.form.value.authorizedValue.replace('.', '').replace(',', '.')),
+      authorizedValue: parseFloat(this.form.value.authorizedValue.replace(',', '.')),
       status: status,
       DeciderId: this.currentUser['id'],
-      decisionDate: new Date()
+      decisionDate: new Date(),
+      real: this.real(this.form.value.authorizedValue)
       }
     };
     let expense_ = (status === 'recusada') ? denied : authorized;
@@ -85,17 +85,36 @@ export class DetailComponent implements OnInit {
         }
       },
       error => {
-        console.log('erro: ', error);
         this.error = `Erro ao atualizar despesa. Servidor retornou ${error}`
       }
     );
+  }
+
+  real(total) {
+    const digits = (parseInt(total.length) - 3);
+    let v = '';
+    let partial = '';
+    if (digits / 3 <= 1) { }
+    let dot = 0;
+    for (let i = digits - 1; i >= 0; i--) {
+      if (dot < 3) {
+        partial += total[i];
+        dot++;
+      } else {
+        partial += '.' + total[i];
+        dot = 1;
+      }
+    }
+    partial = total.toString()[digits + 2] + total.toString()[digits + 1] + ',' + partial;
+    for (let i = partial.length - 1; i >= 0; i--) v += partial[i];
+    return v;
   }
 
   updateForm(expense) {
     this.expense = expense;
     this.form.patchValue({
       id: expense.id,
-      authorizedValue: parseFloat(expense.requestedValue)
+      authorizedValue: expense.requestedValue.replace('.', ',')
     });
   }
 
