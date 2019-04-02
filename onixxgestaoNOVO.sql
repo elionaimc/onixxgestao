@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 02/04/2019 às 18:07
+-- Tempo de geração: 02/04/2019 às 19:40
 -- Versão do servidor: 8.0.15
 -- Versão do PHP: 7.1.23
 
@@ -83,7 +83,7 @@ INSERT INTO `Expenses` (`id`, `description`, `file`, `dueDate`, `decisionDate`, 
 (8, 'Cachaça Envelhecida Ouro', NULL, '2019-04-19', '2019-04-02', '99.70', NULL, NULL, 'recusada', 1, '2019-03-31 17:23:41', '2019-04-02 17:56:09', 2, 2, 2, 2, 6),
 (9, 'Folha de Pessoal', NULL, '2019-04-19', '2019-04-02', '979879.00', '979879.00', NULL, 'recusada', 1, '2019-04-01 14:15:47', '2019-04-02 17:56:56', 2, 2, 2, 2, 5),
 (10, 'Teste cadastro de despesa', '1554227705357.pdf', '2019-04-04', '2019-04-02', '97868.00', '97868.00', 'TYCmaNt5', 'autorizada', 1, '2019-04-01 14:18:28', '2019-04-02 17:55:39', 3, 2, 2, 2, 5),
-(11, 'Equipe para atuar na escola', NULL, '2019-04-06', NULL, '8768.00', NULL, NULL, 'nova', 1, '2019-04-01 18:24:34', '2019-04-02 17:57:50', 3, 2, NULL, 2, 6),
+(11, 'Equipe para atuar na escola', NULL, '2019-04-06', '2019-04-02', '8768.00', NULL, NULL, 'nova', 1, '2019-04-01 18:24:34', '2019-04-01 18:24:34', 3, 2, NULL, 2, 6),
 (12, 'Câmeras de vigilância', NULL, '2019-04-03', NULL, '98699.55', NULL, NULL, 'nova', 1, '2019-04-01 19:11:40', '2019-04-02 17:50:48', 3, 2, NULL, 2, 2),
 (13, 'Instalação do observatório na escola', NULL, '2019-04-16', NULL, '18923.55', NULL, NULL, 'nova', 1, '2019-04-02 17:12:04', '2019-04-02 17:19:54', 1, 2, NULL, 2, 6);
 
