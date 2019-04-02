@@ -1,14 +1,14 @@
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-primary shadow">
-  <button class="my-0 mr-md-auto font-weight-normal btn btn-link" id="menu-toggle" (click)="toggleMenu()">
+  <button class="my-0 mr-md-auto font-weight-normal text-white btn btn-link" id="menu-toggle" (click)="toggleMenu()">
     <fa-icon [icon]="faBars"></fa-icon>
   </button>
   <div class="btn-group" dropdown>
-    <a dropdownToggle type="button" class="btn btn-primary dropdown-toggle text-white"
-      aria-controls="logout">
+    <a dropdownToggle class="btn btn-link text-white dropdown-toggle"
+      aria-controls="logout" style="cursor:pointer;">
       <fa-icon [icon]="faUserCircle"></fa-icon> {{currentUser.name}}
   </a>
-    <ul id="logout" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-      <li role="menuitem btn-sm"><a class="dropdown-item" href="/logout">
+    <ul id="logout" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="logout">
+      <li role="menuitem btn-sm"><a class="dropdown-item" [routerLink]="['/logout']">
            SAIR <fa-icon [icon]="faSignOutAlt"></fa-icon>
         </a>
       </li>

@@ -64,7 +64,7 @@ export class EditComponent implements OnInit {
       description: this.form.value.description,
       requestedValue: parseFloat(this.form.value.requestedValue.replace('.', '').replace(',', '.'))
     };
-    if (this.validFile && this.form.value.file != null) {
+    if (this.validFile && this.form.value.file != null && this.form.value.file != '') {
       let ext = (this.form.value.file) ? this.form.value.file.split('\\').pop() : null;
       expense['file'] = (ext) ? new Date().valueOf() + '.' + ext.split('.').pop() : null;
     }
@@ -81,11 +81,12 @@ export class EditComponent implements OnInit {
   }
 
   updateForm(expense) {
+    let solicited = parseFloat(expense['requestedValue']);
     this.form.patchValue({
-      id: expense.id,
-      description: expense.description,
-      requestedValue: parseFloat(expense.requestedValue),
-      file: expense.file
+      id: expense['id'],
+      description: expense['description'],
+      requestedValue: solicited,
+      file: ''
     });
   }
 

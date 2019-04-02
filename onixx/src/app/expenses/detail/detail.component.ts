@@ -112,9 +112,10 @@ export class DetailComponent implements OnInit {
 
   updateForm(expense) {
     this.expense = expense;
+    let authorized = expense.requestedValue.replace('.', ',');
     this.form.patchValue({
       id: expense.id,
-      authorizedValue: expense.requestedValue.replace('.', ',')
+      authorizedValue: authorized
     });
   }
 
