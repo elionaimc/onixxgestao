@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Autorizadas
+    </ion-title>
+    <ion-buttons slot="end">
+      <button type="button" class="btn btn-primary btn-sm py-0" (click)="onRefresh()">
+        <ion-icon name="sync"></ion-icon>
+      </button>
+      <button type="button" class="btn btn-light btn-sm py-0" (click)="clearToken()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="panel row h-100" *ngIf="expenses$ | async as response; else loadingError">
+    <div class="table table-hover" *ngIf="response.success; else loading" style="height:100% !important;">
+      <ion-content padding style="min-height:100% !important;">
+        <div class="card mt-3 border-0" *ngIf="response.expenses.length == 0">
+          <div class="card-body">
+            <div class="alert alert-light">
+              <h3>PARABÉNS</h3>
+              <hr>
+              <p><strong>Nenhuma despesa recusada!</strong></p>
+            </div>
+          </div>
+        </div>
+        <ion-list>
+          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/expenses', expense.id ]" lines="none"
+            detail="false">
+            <ion-label>
+              <div class="card">
+                <h5 class="card-header alert-success mt-0">{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
+                <div class="card-body">
+                  <span class="card-title">{{ expense.requestedValue | currency:'BRL':'R$ ' }}</span>
+                  <p class="card-text">Vencimento: {{ expense.dueDate | date: 'dd/MM/yyyy' }}</p>
+                </div>
+              </div>
+              <br />
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="page < totalPage">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    </div>
+  </div>
+</ion-content>

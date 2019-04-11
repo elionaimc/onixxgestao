@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost:1982'
+  url: 'https://wakenfun.com.br/api'
 };
 
 /*

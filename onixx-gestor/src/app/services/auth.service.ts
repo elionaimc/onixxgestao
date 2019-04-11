@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   register(credentials) {
-    return this.http.post(`${this.url}/api/register`, credentials).pipe(
+    return this.http.post(`${this.url}/register`, credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.msg);
         throw new Error(e);
@@ -51,16 +51,16 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.http.post(`${this.url}/api/login`, credentials)
+    return this.http.post(`${this.url}/login`, credentials)
       .pipe(
         tap(res => {
           this.storage.set(TOKEN_KEY, res['token']);
           this.user = this.helper.decodeToken(res['token']);
+          //this.user = res;
           console.log(this.user);
           this.authenticationState.next(true);
         }),
         catchError(e => {
-          console.log(e);
           this.showAlert(e.error.message);
           throw new Error(e);
         })
@@ -74,13 +74,14 @@ export class AuthService {
   }
 
   getSpecialData() {
-    return this.http.get(`${this.url}/api/users`).pipe(
+    return this.http.get(`${this.url}/users/${this.user.user_id}`).pipe(
       catchError(e => {
         let status = e.status;
         if (status === 401) {
-          this.showAlert('You are not authorized for this!');
+          this.showAlert('Nível de acesso não permitido.');
           this.logout();
         }
+        console.error(e);
         throw new Error(e);
       })
     )
@@ -91,32 +92,21 @@ export class AuthService {
   }
 
   showAlert(msg) {
-    // let alert = this.alertController.create({
-    //   message: msg,
-    //   header: 'Fudeu!',
-    //   buttons: ['OK']
-    // });
-    // this.alertController.create()
-    // alert.then(alert => alert.present());
-
-
-
-
     const alert = this.alertController.create({
-      header: 'Cuidado!',
-      message: 'tem certeza que deseja <strong>fazer login</strong>???',
+      header: 'Ooops!',
+      message: 'Verifique os dados e tente novamente.',
       buttons: [
         {
           text: 'CANCELAR',
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            console.log('Cancelou');
           }
         }, {
-          text: 'ARROCHA',
+          text: 'OK',
           handler: () => {
-            console.log('Confirm Okay');
+            console.log('Confirmou');
           }
         }
       ]

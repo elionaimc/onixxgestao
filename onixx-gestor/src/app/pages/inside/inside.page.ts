@@ -24,7 +24,7 @@ export class InsidePage implements OnInit {
   loadSpecialInfo() {
     this.authService.getSpecialData().subscribe(
       res => {
-        this.data = res['message'];
+        this.data = res['message'] ? res['message'] : res['user']['name'];
       }
     );
   }

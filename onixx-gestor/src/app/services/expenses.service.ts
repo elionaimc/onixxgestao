@@ -3,14 +3,14 @@ import { environment } from 'src/environments/environment';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Expense } from '../models/expense.model';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
 
-  private readonly RESOURCE = `${environment.API}/expenses`;
+  private readonly RESOURCE = `${environment.url}/expenses`;
   public new = new HttpParams().set('status', 'nova');
   public authorized = new HttpParams().set('status', 'autorizada');
   public denied = new HttpParams().set('status', 'recusada');
@@ -38,7 +38,7 @@ export class ExpensesService {
   }
 
   updateOne(id, expense) {
-    return this.http.put( this.RESOURCE + '/' + id, expense ).pipe(take(1));
+    return this.http.put(this.RESOURCE + '/' + id, expense).pipe(take(1));
   }
 
   edit(expense) {
