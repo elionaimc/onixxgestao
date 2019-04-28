@@ -41,7 +41,6 @@
     "pdfkit": "^0.9.0",
     "random-hash": "^4.0.1",
     "sequelize": "^5.7.6",
-    "sequelize-cli": "^5.4.0",
     "serve-favicon": "^2.5.0",
     "validator": "^10.11.0"
   }
