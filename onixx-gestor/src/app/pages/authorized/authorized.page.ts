@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Expense } from 'src/app/models/expense.model';
 import { Observable, Subject, EMPTY } from 'rxjs';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 
 @Component({
   selector: 'app-authorized',
@@ -13,12 +18,20 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./authorized.page.scss'],
 })
 export class AuthorizedPage implements OnInit {
+  RESOURCE = environment.url;
+
+  expenses$: Observable<Expense[]>;
+  error$ = new Subject<boolean>();
 
   constructor(
     private authService: AuthService,
     private storage: Storage,
     private toastController: ToastController,
-    private service: ExpensesService
+    private service: ExpensesService,
+    private document: DocumentViewer,
+    private transfer: FileTransfer,
+    private file: File,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -32,16 +45,13 @@ export class AuthorizedPage implements OnInit {
   clearToken() {
     this.storage.remove('access_token');
 
-    let toast = this.toastController.create({
+    const toast = this.toastController.create({
       message: 'Token expirou por isso foi removido',
       duration: 3000
     });
     toast.then(toast => toast.present());
     this.logout();
   }
-
-  expenses$: Observable<Expense[]>;
-  error$ = new Subject<boolean>();
 
   onRefresh() {
     this.expenses$ = this.service.listAuthorized()
@@ -51,6 +61,27 @@ export class AuthorizedPage implements OnInit {
           return EMPTY;
         })
       );
+  }
+
+  downloadAndOpenPdf(file: string) {
+    const options: DocumentViewerOptions = {
+      title: 'Meu PDF'
+    };
+
+    let path = null;
+    const f = `${this.RESOURCE}/download/${file}.pdf`;
+   console.log(`${this.RESOURCE}/download/${file}.pdf`);
+
+    if (this.platform.is('ios')) {
+      path = this.file.documentsDirectory;
+    } else {
+      path = this.file.dataDirectory;
+    }
+    const transfer = this.transfer.create();
+    transfer.download(f, path + 'autorizada.pdf').then( entry => {
+      const u = entry.toURL();
+      this.document.viewDocument(u, 'application/pdf', options);
+    });
   }
 
 }

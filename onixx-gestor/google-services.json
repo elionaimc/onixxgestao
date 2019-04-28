@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "426188715170",
+    "firebase_url": "https://onixx-gestor-6f0b9.firebaseio.com",
+    "project_id": "onixx-gestor-6f0b9",
+    "storage_bucket": "onixx-gestor-6f0b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426188715170:android:83ae8cec363becbe",
+        "android_client_info": {
+          "package_name": "br.com.onixxgestao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426188715170-tkp7ppb4t7vohe393vq4rrr5pd0576si.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAnBT65rE-DYBmCwFpO512JQeL9EDZtTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426188715170-tkp7ppb4t7vohe393vq4rrr5pd0576si.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "426188715170-9o1a2u7r97r9kmm0cg3c8hg2prud7tq9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.onixxgestao"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

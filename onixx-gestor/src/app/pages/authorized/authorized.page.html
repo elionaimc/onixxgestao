@@ -1,15 +1,15 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Autorizadas
     </ion-title>
     <ion-buttons slot="end">
-      <button type="button" class="btn btn-primary btn-sm py-0" (click)="onRefresh()">
+      <button type="button" class="btn btn-light btn-sm py-0" (click)="onRefresh()">
         <ion-icon name="sync"></ion-icon>
       </button>
-      <button type="button" class="btn btn-light btn-sm py-0" (click)="clearToken()">
+      <button type="button" class="btn btn-primary btn-sm py-0" (click)="clearToken()">
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
@@ -30,12 +30,12 @@
           </div>
         </div>
         <ion-list>
-          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/expenses', expense.id ]" lines="none"
+          <ion-item *ngFor="let expense of response.expenses" lines="none"
             detail="false">
             <ion-label>
               <div class="card">
-                <h5 class="card-header alert-success mt-0">{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
-                <div class="card-body">
+                <h5 class="card-header bg-success text-white mt-0">{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
+                <div class="card-body" (click)="downloadAndOpenPdf(expense.authorizationCode)">
                   <span class="card-title">{{ expense.requestedValue | currency:'BRL':'R$ ' }}</span>
                   <p class="card-text">Vencimento: {{ expense.dueDate | date: 'dd/MM/yyyy' }}</p>
                 </div>

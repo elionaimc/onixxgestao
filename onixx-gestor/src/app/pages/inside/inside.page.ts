@@ -21,14 +21,6 @@ export class InsidePage implements OnInit {
   ngOnInit() {
   }
 
-  loadSpecialInfo() {
-    this.authService.getSpecialData().subscribe(
-      res => {
-        this.data = res['message'] ? res['message'] : res['user']['name'];
-      }
-    );
-  }
-
   logout() {
     this.authService.logout();
   }

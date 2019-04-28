@@ -54,11 +54,13 @@ export class AuthService {
     return this.http.post(`${this.url}/login`, credentials)
       .pipe(
         tap(res => {
-          this.storage.set(TOKEN_KEY, res['token']);
-          this.user = this.helper.decodeToken(res['token']);
-          //this.user = res;
-          console.log(this.user);
-          this.authenticationState.next(true);
+          if (res['role'] === 'gestor' || res['role'] === 'god') {
+            this.storage.set(TOKEN_KEY, res['token']);
+            this.user = this.helper.decodeToken(res['token']);
+            this.authenticationState.next(true);
+          } else {
+            this.showAlert('Nível de acesso não permitido.');
+          }
         }),
         catchError(e => {
           this.showAlert(e.error.message);
@@ -73,41 +75,19 @@ export class AuthService {
     });
   }
 
-  getSpecialData() {
-    return this.http.get(`${this.url}/users/${this.user.user_id}`).pipe(
-      catchError(e => {
-        let status = e.status;
-        if (status === 401) {
-          this.showAlert('Nível de acesso não permitido.');
-          this.logout();
-        }
-        console.error(e);
-        throw new Error(e);
-      })
-    )
-  }
-
   isAuthenticated() {
     return this.authenticationState.value;
   }
 
   showAlert(msg) {
+    let m = msg ? msg : 'Verifique os dados e tente novamente.';
     const alert = this.alertController.create({
       header: 'Ooops!',
-      message: 'Verifique os dados e tente novamente.',
+      message: m,
       buttons: [
         {
-          text: 'CANCELAR',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Cancelou');
-          }
-        }, {
           text: 'OK',
-          handler: () => {
-            console.log('Confirmou');
-          }
+          handler: () => { }
         }
       ]
     });

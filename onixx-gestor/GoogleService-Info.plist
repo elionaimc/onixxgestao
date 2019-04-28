@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>426188715170-9o1a2u7r97r9kmm0cg3c8hg2prud7tq9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.426188715170-9o1a2u7r97r9kmm0cg3c8hg2prud7tq9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBmjfZSY2uj2ubPFvzrPi5PxC_jGXfBusE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>426188715170</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>br.com.onixxgestao</string>
+	<key>PROJECT_ID</key>
+	<string>onixx-gestor-6f0b9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>onixx-gestor-6f0b9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:426188715170:ios:83ae8cec363becbe</string>
+	<key>DATABASE_URL</key>
+	<string>https://onixx-gestor-6f0b9.firebaseio.com</string>
+</dict>
+</plist>

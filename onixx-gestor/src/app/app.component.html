@@ -2,14 +2,20 @@
   <ion-split-pane>
     <ion-menu>
       <ion-header>
-        <ion-toolbar>
-          <ion-title>Despesas</ion-title>
+        <ion-toolbar color="primary">
+          <ion-title>
+            <img
+            src="/assets/img/bomjesusrn.png"
+            alt="Prefeitura de Bom Jesus"
+            title="Prefeitura de Bom Jesus"
+            style="width:150px !important;"/>
+          </ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" lines="none">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
