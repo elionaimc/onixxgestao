@@ -6,7 +6,7 @@
     <ion-title>Pendentes
     </ion-title>
     <ion-buttons slot="end">
-      <button type="button" class="btn btn-light btn-sm py-0" (click)="onRefresh()">
+      <button type="button" class="btn btn-primary btn-sm py-0" (click)="onRefresh()">
         <ion-icon name="sync"></ion-icon>
       </button>
       <button type="button" class="btn btn-primary btn-sm py-0" (click)="logout()">
@@ -30,18 +30,17 @@
           </div>
         </div>
         <ion-list>
-          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/expenses', expense.id ]" lines="none"
+          <ion-item *ngFor="let expense of response.expenses" [routerLink]="[ '/detail', expense.id ]" lines="none"
             detail="false">
             <ion-label>
               <div class="card">
                 <h5 class="card-header bg-primary mt-0 text-white">#{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
                 <div class="card-body">
-                  <h1 class="text-primary">{{ expense.requestedValue | currency:'BRL':'R$ ' }}</h1>
+                  <h1 class="text-primary">{{ expense.requestedValue | currency: 'BRL' }}</h1>
                   <p class="card-text"><small>Vencimento: </small><b>{{ expense.dueDate | date: 'dd/MM/yyyy' }}</b><br/>
                   <small>Solicitante: {{ expense.User.name }}</small></p>
                 </div>
               </div>
-              <br />
             </ion-label>
           </ion-item>
         </ion-list>

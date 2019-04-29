@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { LoginPage } from './login.page';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    NgxMaskModule.forRoot(),
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],

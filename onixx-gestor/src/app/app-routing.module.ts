@@ -18,9 +18,19 @@ const routes: Routes = [
   },
   {
     path: 'pending',
-    loadChildren: './pages/pending/pending.module#PendingPageModule'
+    loadChildren: './pages/pending/pending.module#PendingPageModule',
+    canActivate: [AuthGuardService]
   },
-  { path: 'detail', loadChildren: './pages/detail/detail.module#DetailPageModule' }
+  {
+    path: 'detail',
+    loadChildren: './pages/detail/detail.module#DetailPageModule',
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'detail/:expense',
+    loadChildren: './pages/detail/detail.module#DetailPageModule',
+    canActivate: [AuthGuardService]
+  }
 ];
 
 @NgModule({

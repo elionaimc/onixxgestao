@@ -6,7 +6,7 @@
     <ion-title>Autorizadas
     </ion-title>
     <ion-buttons slot="end">
-      <button type="button" class="btn btn-light btn-sm py-0" (click)="onRefresh()">
+      <button type="button" class="btn btn-primary btn-sm py-0" (click)="onRefresh()">
         <ion-icon name="sync"></ion-icon>
       </button>
       <button type="button" class="btn btn-primary btn-sm py-0" (click)="logout()">
@@ -30,17 +30,15 @@
           </div>
         </div>
         <ion-list>
-          <ion-item *ngFor="let expense of response.expenses" lines="none"
-            detail="false">
+          <ion-item *ngFor="let expense of response.expenses" lines="none" detail="false">
             <ion-label>
               <div class="card">
-                <h5 class="card-header bg-success text-white mt-0">{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
+                <h5 class="card-header bg-success text-white mt-0">#{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
                 <div class="card-body" (click)="downloadAndOpenPdf(expense.authorizationCode)">
-                  <span class="card-title">{{ expense.requestedValue | currency:'BRL':'R$ ' }}</span>
+                  <h1 class="text-success">{{ expense.authorizedValue | currency:'BRL':'R$ ' }}</h1>
                   <p class="card-text">Vencimento: {{ expense.dueDate | date: 'dd/MM/yyyy' }}</p>
                 </div>
               </div>
-              <br />
             </ion-label>
           </ion-item>
         </ion-list>

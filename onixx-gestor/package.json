@@ -47,6 +47,7 @@
     "cordova-sqlite-storage": "3.2.0",
     "core-js": "^2.5.4",
     "firebase": "^5.9.4",
+    "ngx-mask": "^7.9.3",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.29"
   },

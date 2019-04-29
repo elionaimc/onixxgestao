@@ -33,7 +33,7 @@ export class ExpensesService {
     return this.http.get<Expense[]>(this.RESOURCE, { params: this.denied });
   }
 
-  listOne(id: number) {
+  listOne(id: number | string) {
     return this.http.get<Expense>(this.RESOURCE + '/' + id);
   }
 

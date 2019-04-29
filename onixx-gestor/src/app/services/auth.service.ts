@@ -18,10 +18,25 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage,
-    private plt: Platform, private alertController: AlertController) {
+  constructor(
+    private http: HttpClient,
+    private helper: JwtHelperService,
+    private storage: Storage,
+    private plt: Platform,
+    private alertController: AlertController
+    ) {
     this.plt.ready().then(() => {
       this.checkToken();
+    });
+  }
+
+  getUser() {
+    this.storage.get(TOKEN_KEY).then(token => {
+      if (token) {
+        console.log(this.helper.decodeToken(token));
+        return this.helper.decodeToken(token);
+        }
+        return false;
     });
   }
 
