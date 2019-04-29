@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'https://wakenfun.com.br/api'
+  url: 'http://localhost:1982/api'
 };

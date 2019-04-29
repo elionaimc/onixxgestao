@@ -30,12 +30,12 @@ export function jwtOptionsfactory(storage) {
 }
 
 const config = {
-  apiKey: "AIzaSyCMBsBfx4jQeodpGJejQRuBd4OeWA1z59M",
-  authDomain: "onixx-gestor.firebaseapp.com",
-  databaseURL: "https://onixx-gestor.firebaseio.com",
-  projectId: "onixx-gestor",
-  storageBucket: "onixx-gestor.appspot.com",
-  messagingSenderId: "669655284230"
+  apiKey: "AIzaSyBiTJattmBloTSc4y6JBXpht5goXE4Vsxw",
+  authDomain: "onixx-gestor-6f0b9.firebaseapp.com",
+  databaseURL: "https://onixx-gestor-6f0b9.firebaseio.com",
+  projectId: "onixx-gestor-6f0b9",
+  storageBucket: "onixx-gestor-6f0b9.appspot.com",
+  messagingSenderId: "426188715170"
 };
 
 @NgModule({

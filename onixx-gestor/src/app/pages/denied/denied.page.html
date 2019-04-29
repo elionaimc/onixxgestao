@@ -34,10 +34,10 @@
             detail="false">
             <ion-label>
               <div class="card">
-                <h5 class="card-header alert-secondary mt-0">{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
+                <h5 class="card-header bg-secondary text-white mt-0">#{{ expense.id }} - {{ expense.Provider.socialName }}</h5>
                 <div class="card-body">
                   <span class="card-title">{{ expense.requestedValue | currency:'BRL':'R$ ' }}</span>
-                  <p class="card-text">Vencimento: {{ expense.dueDate | date: 'dd/MM/yyyy' }}</p>
+                  <p class="card-text"><small>Vencimento: <b>{{ expense.dueDate | date: 'dd/MM/yyyy' }}</b></small></p>
                 </div>
               </div>
               <br />

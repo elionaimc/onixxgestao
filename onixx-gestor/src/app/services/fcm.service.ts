@@ -36,7 +36,7 @@ export class FcmService {
 
     const data = {
       token,
-      userId: 'DoideraMano'
+      userId: 'Teste de Info'
     };
 
     return devicesRef.doc(token).set(data);
