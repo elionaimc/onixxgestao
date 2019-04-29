@@ -19,7 +19,8 @@ const routes: Routes = [
   {
     path: 'pending',
     loadChildren: './pages/pending/pending.module#PendingPageModule'
-  }
+  },
+  { path: 'detail', loadChildren: './pages/detail/detail.module#DetailPageModule' }
 ];
 
 @NgModule({

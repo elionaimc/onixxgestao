@@ -39,18 +39,14 @@ export class AuthorizedPage implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-  }
-
-  clearToken() {
     this.storage.remove('access_token');
 
     const toast = this.toastController.create({
-      message: 'Token expirou por isso foi removido',
+      message: 'Sessão encerrada com sucesso.',
       duration: 3000
     });
     toast.then(toast => toast.present());
-    this.logout();
+    this.authService.logout();
   }
 
   onRefresh() {
@@ -65,12 +61,11 @@ export class AuthorizedPage implements OnInit {
 
   downloadAndOpenPdf(file: string) {
     const options: DocumentViewerOptions = {
-      title: 'Meu PDF'
+      title: 'Autorização de despesa: ' + file
     };
 
     let path = null;
     const f = `${this.RESOURCE}/download/${file}.pdf`;
-   console.log(`${this.RESOURCE}/download/${file}.pdf`);
 
     if (this.platform.is('ios')) {
       path = this.file.documentsDirectory;
@@ -78,7 +73,7 @@ export class AuthorizedPage implements OnInit {
       path = this.file.dataDirectory;
     }
     const transfer = this.transfer.create();
-    transfer.download(f, path + 'autorizada.pdf').then( entry => {
+    transfer.download(f, `${path}${file}.pdf`).then( entry => {
       const u = entry.toURL();
       this.document.viewDocument(u, 'application/pdf', options);
     });

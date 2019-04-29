@@ -1,5 +1,5 @@
-<ion-content padding bg-primary>
-  <img class="mb-4" src="/assets/img/onixx.png" alt="Onixx Sistemas" class="mx-auto d-block p-3" />
+<ion-content padding bg-primary >
+  <img class="mb-4" src="/assets/img/onixx.png" alt="Onixx Sistemas" class="mx-auto d-block p-3 mt-5" />
   <form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">E-mail</ion-label>
@@ -11,7 +11,7 @@
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
 
-    <button expand="full" type="submit" [disabled]="!credentialsForm.valid" class="btn btn-primary rounded mt-2">
+    <button type="submit" [disabled]="!credentialsForm.valid" class="mx-auto d-block btn btn-primary rounded mt-3">
       Entrar
     </button>
   </form>

@@ -26,18 +26,14 @@ export class DeniedPage implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-  }
-
-  clearToken() {
     this.storage.remove('access_token');
 
-    let toast = this.toastController.create({
-      message: 'Token expirou por isso foi removido',
+    const toast = this.toastController.create({
+      message: 'Sessão encerrada com sucesso.',
       duration: 3000
     });
     toast.then(toast => toast.present());
-    this.logout();
+    this.authService.logout();
   }
 
   expenses$: Observable<Expense[]>;
