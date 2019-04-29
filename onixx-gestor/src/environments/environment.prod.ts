@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'http://localhost:1982/api'
+  url: 'https://onixxgestor.com.br/api'
 };
