@@ -12,7 +12,10 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './pending.page.html',
   styleUrls: ['./pending.page.scss'],
 })
-export class PendingPage implements OnInit {
+export class PendingPage implements OnInit, OnDestroy {
+  ngOnDestroy() {
+    this.expenses$.subscribe().unsubscribe();
+  }
 
   constructor(
     private authService: AuthService,
