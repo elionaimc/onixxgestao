@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         email : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Insira um e-mail válido."} }},
         username : {type: DataTypes.STRING, allowNull: true, unique: true },
         password: { type: DataTypes.STRING, allowNull: false },
+        smarttoken: { type: DataTypes.STRING },
         token: DataTypes.VIRTUAL,
         status: { type: DataTypes.ENUM(CONFIG.user_status), allowNull: CONFIG.allow_null_status, defaultValue: CONFIG.user_default_status },
         isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1 }

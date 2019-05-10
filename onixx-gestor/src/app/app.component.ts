@@ -52,7 +52,6 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.notificationSetup();
       this.authService.authenticationState.subscribe(
         state => {
           if (state) {
@@ -71,17 +70,5 @@ export class AppComponent {
       duration: 3000
     });
     toast.present();
-  }
-
-  private notificationSetup() {
-    this.fcm.getToken();
-    this.fcm.onNotifications().subscribe(
-      (msg) => {
-        if (this.platform.is('ios')) {
-          this.presentToast(msg.aps.alert);
-        } else {
-          this.presentToast(msg.body);
-        }
-      });
   }
 }

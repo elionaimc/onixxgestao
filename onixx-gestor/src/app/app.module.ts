@@ -29,7 +29,7 @@ export function jwtOptionsfactory(storage) {
     tokenGetter: () => {
       return storage.get('access_token');
     },
-    whitelistedDomains: ['localhost:1982', 'wakenfun.com.br']
+    whitelistedDomains: ['localhost:1982', 'onixxgestor.com.br']
   }
 }
 

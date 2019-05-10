@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -17,7 +17,7 @@ import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-vi
   templateUrl: './authorized.page.html',
   styleUrls: ['./authorized.page.scss'],
 })
-export class AuthorizedPage implements OnInit {
+export class AuthorizedPage implements OnInit, OnDestroy {
   RESOURCE = environment.url;
 
   expenses$: Observable<Expense[]>;
@@ -77,6 +77,10 @@ export class AuthorizedPage implements OnInit {
       const u = entry.toURL();
       this.document.viewDocument(u, 'application/pdf', options);
     });
+  }
+
+  ngOnDestroy() {
+    this.expenses$.subscribe().unsubscribe();
   }
 
 }

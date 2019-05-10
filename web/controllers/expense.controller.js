@@ -10,9 +10,11 @@ const { to, ReE, ReS } = require('../services/util.service');
 const { generateHash } = require('random-hash');
 const fs = require('fs');
 const pdf = require('html-pdf');
+let flag = true;
 
 //Creates a expense
 const create = async (req, res) => {
+    let user = req.user;
     let err, expense;
     let expense_info = req.body;
     [err, expense] = await to(Expense.create(expense_info));
@@ -21,6 +23,47 @@ const create = async (req, res) => {
     [err, expense] = await to(expense.save());
     if(err) return ReE(res, err, 422);
     let expense_json = expense.toJSON();
+
+    // messaging while creating
+    var admin = require("firebase-admin");
+    var serviceAccount = require("../onixx-gestor-6f0b9-firebase-adminsdk-y01pp-8b3a3eb5b2.json");
+    var registrationToken = "c4wnuVt-mpA:APA91bHLeu06hZIQQ8ZQcDDoSjDl2YsAvHsDsBTfQsHTHSLzZoG-4flq_nDDUGAebYQCnLSGsAJs2mP5K2OytvM_3Xkc_a02KW5q_xpS5VCXQSxcwbtxIvvWoozo_lt99BgX6haus2h-";
+    
+    const config = {
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://onixx-gestor-6f0b9.firebaseio.com"
+    };
+    !admin.apps.length ? admin.initializeApp(config) : admin.app();
+
+    var payload = {
+        notification: {
+            title: "Nova despesa criada",
+            body: "Despesa criada com sucesso: " + expense_json.id
+        }
+    };
+
+    var options = {
+        priority: "high",
+        timeToLive: 60 * 60 * 24
+    };
+
+    [err, users] = await to(User.findAll({ where: { PrefectureId: user.PrefectureId } }));
+
+   if (users) {
+       for (user of users) {
+           if (user.smarttoken) {
+               admin.messaging().sendToDevice(user.smarttoken, payload, options)
+                   .then(function (response) {
+                       console.log("Successfully sent message:", response);
+                   })
+                   .catch(function (error) {
+                       console.log("Error sending message:", error);
+                   });
+           }
+       }
+   }
+        //#end of messaging
+
     return ReS(res, {expense:expense_json}, 201);
 }
 module.exports.create = create;

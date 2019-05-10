@@ -99,24 +99,5 @@ const login = async (req, res) => {
             }
         }
     );
-
-    // return res.json(
-    //     {
-    //         "name": "Gestor Teste",
-    //         "password": "_FNORD",
-    //         "email": "gestor@gmail.com",
-    //         "status": "ativo",
-    //         "role": "gestor",
-    //         "id": 2,
-    //         "PrefectureId": 2,
-    //         "Prefecture": {
-    //             "name": "Prefeitura de Bom Jesus",
-    //             "image": "bomjesusrn.png"
-    //         },
-    //         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE1NTM2Mzg0MTYsImV4cCI6MTU1MzY0ODQxNn0.Ik1jm1U695Wm6X-CTnakH7KyOI4-jydSowukmwOxZdA"
-    //     }
-    // );
-
-    
 }
 module.exports.login = login;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -12,7 +12,7 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './denied.page.html',
   styleUrls: ['./denied.page.scss'],
 })
-export class DeniedPage implements OnInit {
+export class DeniedPage implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
@@ -47,6 +47,10 @@ export class DeniedPage implements OnInit {
           return EMPTY;
         })
       );
+  }
+
+  ngOnDestroy() {
+    this.expenses$.subscribe().unsubscribe();
   }
 
 }

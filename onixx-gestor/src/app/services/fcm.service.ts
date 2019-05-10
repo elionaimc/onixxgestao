@@ -27,6 +27,7 @@ export class FcmService {
     }
 
     this.saveToken(token);
+    return token;
   }
 
   private saveToken(token) {
